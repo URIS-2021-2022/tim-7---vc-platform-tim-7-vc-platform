@@ -1,0 +1,13 @@
+arrange:
+  - index.md
+  - getting-started
+  - user-guide
+  - BA docs
+  - developer-guide
+  - fundamentals
+  - techniques
+  - CLI-tools
+  - release-information
+  - ...
+  - support.md
+  - license.md

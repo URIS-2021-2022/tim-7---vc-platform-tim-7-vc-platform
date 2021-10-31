@@ -1,0 +1,474 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "installModuleBundle": {
+            "type": "string",
+            "allowedValues": [
+                "Demo",
+                "Commerce",
+                "None"
+            ],
+            "defaultValue": "Demo",
+            "metadata": {
+                "description": "Group(s) of modules to install automatically during initial Platform setup. Select None to install empty platform."
+            }
+        },
+        "appServicePlanSkuName": {
+            "type": "string",
+            "defaultValue": "B2",
+            "allowedValues": [
+                "F1",
+                "D1",
+                "B1",
+                "B2",
+                "B3",
+                "S1",
+                "S2",
+                "S3",
+                "P1",
+                "P2",
+                "P3",
+                "P4"
+            ],
+            "metadata": {
+                "description": "Describes plan's pricing tier and capacity. Check details at https://azure.microsoft.com/pricing/details/app-service/"
+            }
+        },
+        "branch": {
+            "type": "string",
+            "defaultValue": "master"
+        },
+        "repoUrl": {
+            "type": "string",
+            "defaultValue": "https://github.com/VirtoCommerce/vc-platform"
+        },
+        "repoUrlStoreFront": {
+            "type": "string",
+            "defaultValue": "https://github.com/VirtoCommerce/vc-storefront"
+        },
+        "baseTime": {
+            "type": "string",
+            "defaultValue": "[take(toLower(utcNow()), 15)]",
+            "metadata": {
+                "description": "UTC time of template side"
+            }
+        },
+        "appServiceName": {
+            "type": "string",
+            "defaultValue": "[concat('backend', parameters('baseTime'))]",
+            "metadata": {
+                "description": "Unique Web App Name of the VirtoCommerce platform to create in .azurewebsites.net"
+            }
+        },
+        "appServiceName_StoreFront": {
+            "type": "string",
+            "defaultValue": "[concat('frontend', parameters('baseTime'))]",
+            "metadata": {
+                "description": "Unique Web App Name of the StoreFront to create in .azurewebsites.net"
+            }
+        },
+        "sqlAdministratorLogin": {
+            "type": "string",
+            "defaultValue": "sql-admin",
+            "metadata": {
+                "description": "The administrator username of the SQL logical server. Your login name must not contain a SQL Identifier or a typical system name (like admin, administrator, sa, root, dbmanager, loginmanager, etc.) or a built-in database user or role (like dbo, guest, public, etc.)"
+            }
+        },
+        "searchServiceName": {
+            "type": "string",
+            "defaultValue": "[concat('search', parameters('baseTime'))]",
+            "metadata": {
+                "description": "The name of the search service to create"
+            }
+        },
+        "searchServiceReplicas": {
+            "type": "int",
+            "metadata": {
+                "description": "The number of the search service replicas"
+            },
+            "defaultValue": 1
+        },
+        "cacheName": {
+            "type": "string",
+            "defaultValue": "[concat('redis', parameters('baseTime'))]",
+            "metadata": {
+                "description": "The name of the redis cache to create"
+            }
+        }
+    },
+    "variables": {
+        "searchServiceScope": "demo",
+        "storageName": "[concat('storage', parameters('baseTime'))]",
+        "storageType": "Standard_LRS",
+        "moduleBundles": {
+            "Demo": {
+                "configValue": "demo"
+            },
+            "Commerce": {
+                "configValue": "commerce"
+            },
+            "None": {
+                "configValue": ""
+            }
+        },
+        "cacheSKUName": "Standard",
+        "cacheSKUFamily": "C",
+        "cacheSKUCapacity": 0,
+        "searchSKU": "standard",
+        "sqlServerName": "[concat('sqlserver', parameters('baseTime'))]",
+        "dbName": "[concat('db', parameters('baseTime'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2019-06-01",
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('storageName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "[variables('storageType')]",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2"
+        },
+        {
+            "apiVersion": "2014-04-01",
+            "type": "Microsoft.Sql/servers",
+            "name": "[variables('sqlServerName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "version": "12.0",
+                "administratorLogin": "[parameters('sqlAdministratorLogin')]",
+                "administratorLoginPassword": "[concat(listKeys(resourceId('Microsoft.Storage/storageAccounts/', variables('storageName')), '2015-06-15').key1)]"
+            },
+            "resources": [
+                {
+                    "apiVersion": "2014-04-01",
+                    "type": "databases",
+                    "name": "[variables('dbName')]",
+                    "location": "[resourceGroup().location]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', variables('sqlServerName'))]"
+                    ],
+                    "properties": {
+                        "edition": "Basic",
+                        "collation": "SQL_Latin1_General_CP1_CI_AS",
+                        "maxSizeBytes": "1073741824",
+                        "requestedServiceObjectiveId": "DD6D99BB-F193-4EC1-86F2-43D3BCCBC49C"
+                    }
+                },
+                {
+                    "type": "firewallrules",
+                    "name": "AllowAllWindowsAzureIps",
+                    "location": "[resourceGroup().location]",
+                    "apiVersion": "2014-04-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', variables('sqlServerName'))]"
+                    ],
+                    "properties": {
+                        "endIpAddress": "0.0.0.0",
+                        "startIpAddress": "0.0.0.0"
+                    }
+                }
+            ]
+        },
+        {
+            "apiVersion": "2018-02-01",
+            "type": "Microsoft.Web/serverfarms",
+            "name": "[parameters('appServiceName')]",
+            "location": "[resourceGroup().location]",
+            "kind": "app",
+            "sku": {
+                "name": "[parameters('appServicePlanSkuName')]",
+                "capacity": 1
+            },
+            "properties": {
+                "name": "[parameters('appServiceName')]",
+                "numberOfWorkers": "1",
+                "reserved": false
+            }
+        },
+        {
+            "apiVersion": "2018-02-01",
+            "type": "Microsoft.Web/serverfarms",
+            "name": "[parameters('appServiceName_StoreFront')]",
+            "location": "[resourceGroup().location]",
+            "kind": "app",
+            "sku": {
+                "name": "[parameters('appServicePlanSkuName')]",
+                "capacity": 1
+            },
+            "properties": {
+                "name": "[parameters('appServiceName_StoreFront')]",
+                "numberOfWorkers": "1",
+                "reserved": false
+            }
+        },
+        {
+            "name": "[parameters('searchServiceName')]",
+            "type": "Microsoft.Search/searchServices",
+            "apiVersion": "2015-08-19",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "azureSearch"
+            },
+            "properties": {
+                "replicaCount": "[parameters('searchServiceReplicas')]",
+                "partitionCount": 1
+            },
+            "sku": {
+                "name": "[variables('searchSKU')]"
+            }
+        },
+        {
+            "apiVersion": "2018-11-01",
+            "type": "Microsoft.Web/sites",
+            "name": "[parameters('appServiceName')]",
+            "location": "[resourceGroup().location]",
+            "kind": "app",
+            "dependsOn": [
+                "[concat('Microsoft.Web/serverFarms/', parameters('appServiceName'))]"
+            ],
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('appServiceName'))]": "empty"
+            },
+            "properties": {
+                "name": "[parameters('appServiceName')]",
+                "serverFarmId": "[concat( resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('appServiceName'))]",
+                "siteConfig": {
+                    "requestTracingEnabled": true,
+                    "requestTracingExpirationTime": "9999-12-31T23:59:00Z",
+                    "httpLoggingEnabled": true,
+                    "logsDirectorySizeLimit": 100,
+                    "detailedErrorLoggingEnabled": true,
+                    "clientAffinityEnabled": true,
+                    "use32BitWorkerProcess": false,
+                    "alwaysOn": true,
+                    "httpsOnly": true,
+                    "http20Enabled": true,
+                    "minTlsVersion": "1.2",
+                    "ftpsState": "Disabled",
+                    "appSettings": [
+                        {
+                            "name": "ExternalModules:AutoInstallModuleBundles",
+                            "value": "[variables('moduleBundles')[parameters('installModuleBundle')].configValue]"
+                        },
+                        {
+                            "name": "Assets:Provider",
+                            "value": "AzureBlobStorage"
+                        },
+                        {
+                            "name": "Assets:AzureBlobStorage:ConnectionString",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts/', variables('storageName')), '2015-06-15').key1, ';EndpointSuffix=core.windows.net')]"
+                        },
+                        {
+                            "name": "Content:Provider",
+                            "value": "AzureBlobStorage"
+                        },
+                        {
+                            "name": "Content:AzureBlobStorage:ConnectionString",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts/', variables('storageName')), '2015-06-15').key1, ';EndpointSuffix=core.windows.net')]"
+                        },
+                        {
+                            "name": "Content:AzureBlobStorage:RootPath",
+                            "value": "cms"
+                        },
+                        {
+                            "name": "Search:AzureSearch:Key",
+                            "value": "[listAdminKeys(resourceId('Microsoft.Search/searchServices', parameters('searchServiceName')),'2015-08-19').primaryKey]"
+                        },
+                        {
+                            "name": "Search:AzureSearch:SearchServiceName",
+                            "value": "[parameters('searchServiceName')]"
+                        },
+                        {
+                            "name": "Search:Provider",
+                            "value": "AzureSearch"
+                        },
+                        {
+                            "name": "Search:Scope",
+                            "value": "[variables('searchServiceScope')]"
+                        },
+                        {
+                            "name": "VirtoCommerce:DiscoveryPath",
+                            "value": "../modules"
+                        },
+                        {
+                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                            "value": "12.18.0"
+                        }
+                    ],
+                    "connectionStrings": [
+                        {
+                            "name": "VirtoCommerce",
+                            "connectionString": "[concat('Data Source=tcp:', reference(concat('Microsoft.Sql/servers/', variables('sqlServerName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', variables('dbName'), ';User Id=', parameters('sqlAdministratorLogin'), '@', variables('sqlServerName'), ';Password=', listKeys(resourceId('Microsoft.Storage/storageAccounts/', variables('storageName')), '2015-06-15').key1, ';MultipleActiveResultSets=False;Connection Timeout=30;Trusted_Connection=False;Encrypt=True;')]",
+                            "type": "SQLAzure"
+                        },
+                        {
+                            "name": "RedisConnectionString",
+                            "connectionString": "[concat(parameters('cacheName'),'.redis.cache.windows.net:6380,abortConnect=false,ssl=True,allowAdmin=True,password=', listKeys(resourceId('Microsoft.Cache/Redis', parameters('cacheName')),'2016-04-01').primaryKey)]",
+                            "type": "Custom"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "dotnetcore"
+                        }
+                    ],
+                    "virtualApplications": [
+                        {
+                            "virtualPath": "/",
+                            "physicalPath": "site\\wwwroot\\platform",
+                            "virtualDirectories": [
+                                {
+                                    "virtualPath": "/modules",
+                                    "physicalPath": "site\\wwwroot\\modules"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "resources": [
+                {
+                    "apiVersion": "2018-11-01",
+                    "name": "web",
+                    "type": "sourcecontrols",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites/', parameters('appServiceName'))]"
+                    ],
+                    "properties": {
+                        "RepoUrl": "[parameters('repoUrl')]",
+                        "branch": "[parameters('branch')]",
+                        "IsManualIntegration": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "[parameters('appServiceName_StoreFront')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "kind": "app",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[concat('Microsoft.Web/serverFarms/', parameters('appServiceName_StoreFront'))]"
+            ],
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('appServiceName_StoreFront'))]": "empty"
+            },
+            "properties": {
+                "enabled": true,
+                "serverFarmId": "[concat( resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('appServiceName_StoreFront'))]",
+                "siteConfig": {
+                    "requestTracingEnabled": true,
+                    "requestTracingExpirationTime": "9999-12-31T23:59:00Z",
+                    "httpLoggingEnabled": true,
+                    "logsDirectorySizeLimit": 100,
+                    "detailedErrorLoggingEnabled": true,
+                    "clientAffinityEnabled": true,
+                    "use32BitWorkerProcess": false,
+                    "webSocketsEnabled": true,
+                    "alwaysOn": true,
+                    "httpsOnly": true,
+                    "http20Enabled": true,
+                    "minTlsVersion": "1.2",
+                    "ftpsState": "Disabled",
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "dotnetcore"
+                        }
+                    ],
+                    "appSettings": [
+                        {
+                            "name": "ASPNETCORE_ENVIRONMENT",
+                            "value": "Production"
+                        },
+                        {
+                            "name": "IdentityOptions:Password:RequiequireUppercase",
+                            "value": "true"
+                        },
+                        {
+                            "name": "IdentityOptions:Password:RequireDigit",
+                            "value": "true"
+                        },
+                        {
+                            "name": "VirtoCommerce:Endpoint:Url",
+                            "value": "[concat('https://', parameters('appServiceName'), '.azurewebsites.net')]"
+                        },
+						{
+							"name": "VirtoCommerce:Endpoint:Password",
+							"value": "StorePass-1",
+							"slotSetting": false
+						},
+						{
+							"name": "VirtoCommerce:Endpoint:UserName",
+							"value": "frontend",
+							"slotSetting": false
+						}
+                    ],
+                    "connectionStrings": [
+                        {
+							"name": "ContentConnectionString",
+							"connectionString": "[concat('provider=AzureBlobStorage;rootPath=cms;DefaultEndpointsProtocol=https;AccountName=', variables('storageName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts/', variables('storageName')), '2015-06-15').key1, ';EndpointSuffix=core.windows.net')]",
+                            "type": "Custom"
+                        }
+                    ]
+                }
+            },
+            "resources": [
+                {
+                    "apiVersion": "2018-11-01",
+                    "name": "web",
+                    "type": "sourcecontrols",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites/', parameters('appServiceName_StoreFront'))]"
+                    ],
+                    "properties": {
+                        "RepoUrl": "[parameters('repoUrlStoreFront')]",
+                        "branch": "[parameters('branch')]",
+                        "IsManualIntegration": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "[parameters('cacheName')]",
+            "type": "Microsoft.Cache/Redis",
+            "apiVersion": "2018-03-01",
+            "properties": {
+                "enableNonSslPort": false,
+                "minimumTlsVersion": "1.2",
+                "sku": {
+                    "name": "[variables('cacheSKUName')]",
+                    "family": "[variables('cacheSKUFamily')]",
+                    "capacity": "[variables('cacheSKUCapacity')]"
+                }
+            },
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "displayName": "redisCache"
+            }
+        }
+    ],
+    "outputs": {
+        "url": {
+            "type": "string",
+            "value": "[concat('https://', parameters('appServiceName'), '.azurewebsites.net')]"
+        },
+        "urlStorefront": {
+            "type": "string",
+            "value": "[concat('https://', parameters('appServiceName_StoreFront'), '.azurewebsites.net')]"
+        },
+        "defaultAdminLogin": {
+            "type": "string",
+            "value": "admin"
+        },
+        "contentStorageConnectionString": {
+            "type": "string",
+            "value": "[concat('provider=AzureBlobStorage;rootPath=cms;DefaultEndpointsProtocol=https;AccountName=', variables('storageName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts/', variables('storageName')), '2015-06-15').key1, ';EndpointSuffix=core.windows.net')]"
+        }
+    }
+}
