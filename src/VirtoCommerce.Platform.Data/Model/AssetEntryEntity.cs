@@ -100,7 +100,7 @@ namespace VirtoCommerce.Platform.Data.Model
             target.RelativeUrl = RelativeUrl;
             target.Size = Size;
             target.Group = Group;
-            // target.Id = Id;
+            
             target.TenantId = TenantId;
             target.TenantType = TenantType;
         }
