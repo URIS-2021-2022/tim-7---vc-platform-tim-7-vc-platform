@@ -78,46 +78,7 @@ namespace VirtoCommerce.Platform.Modules
 
             if (isValid)
             {
-                var installedModulesIds = _extModuleCatalog.Modules.OfType<ManifestModuleInfo>().Where(x => x.IsInstalled).Select(x => x.Id).ToArray();
-                var updatableModules = modules.Where(x => installedModulesIds.Contains(x.Id));
-                var installableModules = modules.Except(updatableModules);
-                var changedModulesLog = new List<ManifestModuleInfo>();
-                using (var scope = new TransactionScope(TransactionScopeOption.Required, TransactionManager.MaximumTimeout))
-                {
-                    try
-                    {
-                        foreach (var installableModule in installableModules)
-                        {
-                            Report(progress, ProgressMessageLevel.Info, "Installing '{0}'", installableModule);
-                            InnerInstall(installableModule, progress);
-                            changedModulesLog.Add(installableModule);
-                            installableModule.IsInstalled = true;
-                        }
-
-                        foreach (var newModule in updatableModules)
-                        {
-                            var existModule = _extModuleCatalog.Modules.OfType<ManifestModuleInfo>().Where(x => x.IsInstalled && x.Id == newModule.Id).First();
-                            var dstModuleDir = Path.Combine(_options.DiscoveryPath, existModule.Id);
-                            _fileManager.SafeDelete(dstModuleDir);
-                            Report(progress, ProgressMessageLevel.Info, "Updating '{0}' -> '{1}'", existModule, newModule);
-                            InnerInstall(newModule, progress);
-                            existModule.IsInstalled = false;
-                            newModule.IsInstalled = true;
-                            changedModulesLog.AddRange(new[] { existModule, newModule });
-                        }
-                        scope.Complete();
-                    }
-                    catch (Exception ex)
-                    {
-                        Report(progress, ProgressMessageLevel.Error, ex.ToString());
-                        Report(progress, ProgressMessageLevel.Error, "Rollback all changes...");
-                        //Revert changed modules state
-                        foreach (var changedModule in changedModulesLog)
-                        {
-                            changedModule.IsInstalled = !changedModule.IsInstalled;
-                        }
-                    }
-                }
+                ValidInstall(modules, progress);
             }
         }
 
@@ -242,6 +203,50 @@ namespace VirtoCommerce.Platform.Modules
         private static string GetModuleZipFileName(string moduleId, string version)
         {
             return string.Format(CultureInfo.InvariantCulture, "{0}_{1}{2}", moduleId, version, _packageFileExtension);
+        }
+
+        private void ValidInstall(IEnumerable<ManifestModuleInfo> modules, IProgress<ProgressMessage> progress)
+        {
+            var installedModulesIds = _extModuleCatalog.Modules.OfType<ManifestModuleInfo>().Where(x => x.IsInstalled).Select(x => x.Id).ToArray();
+            var updatableModules = modules.Where(x => installedModulesIds.Contains(x.Id));
+            var installableModules = modules.Except(updatableModules);
+            var changedModulesLog = new List<ManifestModuleInfo>();
+            using (var scope = new TransactionScope(TransactionScopeOption.Required, TransactionManager.MaximumTimeout))
+            {
+                try
+                {
+                    foreach (var installableModule in installableModules)
+                    {
+                        Report(progress, ProgressMessageLevel.Info, "Installing '{0}'", installableModule);
+                        InnerInstall(installableModule, progress);
+                        changedModulesLog.Add(installableModule);
+                        installableModule.IsInstalled = true;
+                    }
+
+                    foreach (var newModule in updatableModules)
+                    {
+                        var existModule = _extModuleCatalog.Modules.OfType<ManifestModuleInfo>().First(x => x.IsInstalled && x.Id == newModule.Id);
+                        var dstModuleDir = Path.Combine(_options.DiscoveryPath, existModule.Id);
+                        _fileManager.SafeDelete(dstModuleDir);
+                        Report(progress, ProgressMessageLevel.Info, "Updating '{0}' -> '{1}'", existModule, newModule);
+                        InnerInstall(newModule, progress);
+                        existModule.IsInstalled = false;
+                        newModule.IsInstalled = true;
+                        changedModulesLog.AddRange(new[] { existModule, newModule });
+                    }
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    Report(progress, ProgressMessageLevel.Error, ex.ToString());
+                    Report(progress, ProgressMessageLevel.Error, "Rollback all changes...");
+                    //Revert changed modules state
+                    foreach (var changedModule in changedModulesLog)
+                    {
+                        changedModule.IsInstalled = !changedModule.IsInstalled;
+                    }
+                }
+            }
         }
 
 
