@@ -21,7 +21,7 @@ namespace VirtoCommerce.Platform.Web
                   logging.AddConsole();
                   logging.AddDebug();
                   logging.AddEventSourceLogger();
-                  //Enable Azure logging
+                      //Enable Azure logging
                   //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-2.2#logging-in-azure
                   logging.AddAzureWebAppDiagnostics();
               })
