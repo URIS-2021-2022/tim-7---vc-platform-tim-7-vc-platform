@@ -163,10 +163,9 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
             {
                 var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
 
-                if (hasContentDispositionHeader)
+                if (hasContentDispositionHeader && MultipartRequestHelper.HasFileContentDisposition(contentDisposition))
                 {
-                    if (MultipartRequestHelper.HasFileContentDisposition(contentDisposition))
-                    {
+                   
                         var fileName = contentDisposition.FileName.Value;
                         targetFilePath = Path.Combine(uploadPath, fileName);
 
@@ -175,7 +174,7 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
                             await section.Body.CopyToAsync(targetStream);
                         }
 
-                    }
+                    
                 }
                 using (var packageStream = System.IO.File.Open(targetFilePath, FileMode.Open))
                 using (var package = new ZipArchive(packageStream, ZipArchiveMode.Read))
