@@ -17,7 +17,7 @@ namespace VirtoCommerce.Platform.Core.Common
     {
         #region IComparer<T>
 
-        private class Comparer<T> : IComparer<T>
+        private sealed class Comparer<T> : IComparer<T>
         {
             private readonly Func<T, T, int> compare;
 
