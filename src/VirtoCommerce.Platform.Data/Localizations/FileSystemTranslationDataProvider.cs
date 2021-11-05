@@ -51,13 +51,10 @@ namespace VirtoCommerce.Platform.Data.Localizations
         protected virtual JObject ReadTranslationJson(IEnumerable<string> files)
         {
             var result = new JObject();
-            foreach (var file in files)
+            foreach (var file in files.Where(f => File.Exists(f)))
             {
-                if (File.Exists(file))
-                {
-                    var part = JObject.Parse(File.ReadAllText(file));
-                    result.Merge(part, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Merge });
-                }
+                var part = JObject.Parse(File.ReadAllText(file));
+                result.Merge(part, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Merge });
             }
             return result;
         }

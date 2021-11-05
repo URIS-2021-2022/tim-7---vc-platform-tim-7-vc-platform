@@ -58,8 +58,8 @@ namespace VirtoCommerce.Platform.Web.Security
             recurringJobManager.WatchJobSetting(
                 settingsManager,
                 new SettingCronJobBuilder()
-                    .SetEnablerSetting(PlatformConstants.Settings.Security.EnablePruneExpiredTokensJob)
-                    .SetCronSetting(PlatformConstants.Settings.Security.CronPruneExpiredTokensJob)
+                    .SetEnablerSetting(PlatformConstants.Settings.InnerSecurity.EnablePruneExpiredTokensJob)
+                    .SetCronSetting(PlatformConstants.Settings.InnerSecurity.CronPruneExpiredTokensJob)
                     .ToJob<PruneExpiredTokensJob>(x => x.Process())
                     .Build());
 
