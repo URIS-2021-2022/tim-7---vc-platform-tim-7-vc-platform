@@ -236,34 +236,37 @@ namespace VirtoCommerce.Platform.Modules
             return $@"{nameof(LocalStorageModuleCatalog)}-{marker}";
         }
 
+     
         private void CopyAssemblies(string sourceParentPath, string targetDirectoryPath)
         {
             if (sourceParentPath != null)
             {
-                CopyAssembliesShortcut(sourceParentPath, targetDirectoryPath);
-            }
-        }
+                var sourceDirectoryPath = Path.Combine(sourceParentPath, "bin");
 
-        public void CopyAssembliesShortcut(string sourceParentPath, string targetDirectoryPath)
-        {
-            var sourceDirectoryPath = Path.Combine(sourceParentPath, "bin");
-
-            if (Directory.Exists(sourceDirectoryPath))
-            {
-                foreach (var sourceFilePath in Directory.EnumerateFiles(sourceDirectoryPath, "*.*", SearchOption.AllDirectories))
+                if (Directory.Exists(sourceDirectoryPath))
                 {
-                    // Copy all assembly related files except assemblies that are inlcuded in TPA list
-                    if (IsAssemblyRelatedFile(sourceFilePath) && !(IsAssemblyFile(sourceFilePath) && TPA.ContainsAssembly(Path.GetFileName(sourceFilePath))))
+                    foreach (var sourceFilePath in Directory.EnumerateFiles(sourceDirectoryPath, ".", SearchOption.AllDirectories))
                     {
-                        // Copy localization resource files to related subfolders
-                        var targetFilePath = Path.Combine(
-                            IsLocalizationFile(sourceFilePath) ? Path.Combine(targetDirectoryPath, Path.GetFileName(Path.GetDirectoryName(sourceFilePath)))
-                            : targetDirectoryPath,
-                            Path.GetFileName(sourceFilePath));
-                        CopyFile(sourceFilePath, targetFilePath);
+                        // Copy all assembly related files except assemblies that are inlcuded in TPA list
+                        if (IsAssemblyRelatedFile(sourceFilePath) && !(IsAssemblyFile(sourceFilePath) && TPA.ContainsAssembly(Path.GetFileName(sourceFilePath))))
+                        {
+                            // Copy localization resource files to related subfolders
+                            CopyAssembliesShortcut(targetDirectoryPath, sourceFilePath);
+                        }
                     }
                 }
             }
+        }
+
+        private void CopyAssembliesShortcut(string targetDirectoryPath, string sourceFilePath)
+        {
+            // Copy localization resource files to related subfolders
+            var targetFilePath = Path.Combine(
+                IsLocalizationFile(sourceFilePath) ? Path.Combine(targetDirectoryPath, Path.GetFileName(Path.GetDirectoryName(sourceFilePath)))
+                : targetDirectoryPath,
+                Path.GetFileName(sourceFilePath));
+            CopyFile(sourceFilePath, targetFilePath);
+
         }
 
         private void CopyFile(string sourceFilePath, string targetFilePath)
@@ -335,3 +338,5 @@ namespace VirtoCommerce.Platform.Modules
         }
     }
 }
+
+
