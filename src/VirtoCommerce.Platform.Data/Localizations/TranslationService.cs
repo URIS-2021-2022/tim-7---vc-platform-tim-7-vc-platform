@@ -22,7 +22,7 @@ namespace VirtoCommerce.Platform.Data.Localizations
             _options = options.Value;
         }
 
-        public JObject GetTranslationDataForLanguage(string lang = null)
+        public JObject GetTranslationDataForLanguage(string lang)
         {
             //read fallback localization json object first
             var fallbackCacheKey = CacheKey.With(GetType(), "FallbackJson");

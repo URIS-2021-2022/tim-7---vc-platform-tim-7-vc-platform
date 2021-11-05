@@ -42,7 +42,7 @@ namespace VirtoCommerce.Platform.Tests.UnitTests
             _translationDataProviderMock.Setup(x => x.GetTranslationDataForLanguage("en")).Returns(obj);
 
             //Act
-            var result = _translationService.GetTranslationDataForLanguage();
+            var result = _translationService.GetTranslationDataForLanguage(null);
             var token = result.SelectToken("en.platform.commands.test");
 
             //Assert
