@@ -43,6 +43,8 @@ namespace VirtoCommerce.Platform.Web.Swagger
             var provider = services.BuildServiceProvider();
             var modules = provider.GetService<IModuleCatalog>().Modules.OfType<ManifestModuleInfo>().Where(m => m.ModuleInstance != null).ToArray();
 
+            string coreUrl = "https://virtocommerce.com";
+
             services.AddSwaggerGen(c =>
             {
                 var platformInfo = new OpenApiInfo
@@ -55,7 +57,7 @@ namespace VirtoCommerce.Platform.Web.Swagger
                     {
                         Email = "support@virtocommerce.com",
                         Name = "Virto Commerce",
-                        Url = new Uri("https://virtocommerce.com")
+                        Url = new Uri(coreUrl)
                     },
                     License = new OpenApiLicense
                     {
