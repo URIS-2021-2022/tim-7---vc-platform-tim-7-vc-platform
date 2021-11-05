@@ -12,7 +12,7 @@ namespace VirtoCommerce.Platform.Data.Infrastructure
                 dbContextUoW.DbContext.ChangeTracker.AutoDetectChangesEnabled = false;
                 //We can't use QueryTrackingBehavior.NoTracking  because this will cause stop breaking-queries working that we use load dependencies in many places.
                 //https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.0/breaking-changes#notrackingresolution
-                // dbContextUoW.DbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+              
             }
         }
 

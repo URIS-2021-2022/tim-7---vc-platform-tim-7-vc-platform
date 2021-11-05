@@ -18,7 +18,7 @@ namespace VirtoCommerce.Platform.Web.TagHelpers
         private readonly LocalStorageModuleCatalogOptions _localStorageModuleCatalogOptions;
         private FileVersionHashProvider _fileVersionProvider;
 
-        public ModulesBundleTagHelperBase(ILocalModuleCatalog localModuleCatalog, IOptions<LocalStorageModuleCatalogOptions> options, IPlatformMemoryCache platformMemoryCache)
+        protected ModulesBundleTagHelperBase(ILocalModuleCatalog localModuleCatalog, IOptions<LocalStorageModuleCatalogOptions> options, IPlatformMemoryCache platformMemoryCache)
         {
             _localModuleCatalog = localModuleCatalog;
             _platformMemoryCache = platformMemoryCache;

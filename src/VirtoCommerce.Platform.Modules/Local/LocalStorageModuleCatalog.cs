@@ -240,22 +240,27 @@ namespace VirtoCommerce.Platform.Modules
         {
             if (sourceParentPath != null)
             {
-                var sourceDirectoryPath = Path.Combine(sourceParentPath, "bin");
+                CopyAssembliesShortcut(sourceParentPath, targetDirectoryPath);
+            }
+        }
 
-                if (Directory.Exists(sourceDirectoryPath))
+        public void CopyAssembliesShortcut(string sourceParentPath, string targetDirectoryPath)
+        {
+            var sourceDirectoryPath = Path.Combine(sourceParentPath, "bin");
+
+            if (Directory.Exists(sourceDirectoryPath))
+            {
+                foreach (var sourceFilePath in Directory.EnumerateFiles(sourceDirectoryPath, "*.*", SearchOption.AllDirectories))
                 {
-                    foreach (var sourceFilePath in Directory.EnumerateFiles(sourceDirectoryPath, "*.*", SearchOption.AllDirectories))
+                    // Copy all assembly related files except assemblies that are inlcuded in TPA list
+                    if (IsAssemblyRelatedFile(sourceFilePath) && !(IsAssemblyFile(sourceFilePath) && TPA.ContainsAssembly(Path.GetFileName(sourceFilePath))))
                     {
-                        // Copy all assembly related files except assemblies that are inlcuded in TPA list
-                        if (IsAssemblyRelatedFile(sourceFilePath) && !(IsAssemblyFile(sourceFilePath) && TPA.ContainsAssembly(Path.GetFileName(sourceFilePath))))
-                        {
-                            // Copy localization resource files to related subfolders
-                            var targetFilePath = Path.Combine(
-                                IsLocalizationFile(sourceFilePath) ? Path.Combine(targetDirectoryPath, Path.GetFileName(Path.GetDirectoryName(sourceFilePath)))
-                                : targetDirectoryPath,
-                                Path.GetFileName(sourceFilePath));
-                            CopyFile(sourceFilePath, targetFilePath);
-                        }
+                        // Copy localization resource files to related subfolders
+                        var targetFilePath = Path.Combine(
+                            IsLocalizationFile(sourceFilePath) ? Path.Combine(targetDirectoryPath, Path.GetFileName(Path.GetDirectoryName(sourceFilePath)))
+                            : targetDirectoryPath,
+                            Path.GetFileName(sourceFilePath));
+                        CopyFile(sourceFilePath, targetFilePath);
                     }
                 }
             }
