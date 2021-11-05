@@ -212,7 +212,17 @@ namespace VirtoCommerce.Platform.Core.Common
 
             var aComps = a.Split('.');
             var bComps = b.Split('.');
+            int r = CompareComponentBody(aComps, bComps);
+           if (r != 0)
+            {
+                return r;
+            }
 
+            return aComps.Length.CompareTo(bComps.Length);
+        }
+
+        private static int CompareComponentBody(string[] aComps,string[] bComps)
+        {
             var minLen = Math.Min(aComps.Length, bComps.Length);
             for (var i = 0; i < minLen; i++)
             {
@@ -237,8 +247,7 @@ namespace VirtoCommerce.Platform.Core.Common
                         return r;
                 }
             }
-
-            return aComps.Length.CompareTo(bComps.Length);
+            return 0;
         }
 
         #endregion IComparable Members
