@@ -98,12 +98,12 @@ namespace VirtoCommerce.Platform.Modules
             this.LoadModuleTypes(modulesToLoad);
         }
 
-        public void PostInitializeModule(ModuleInfo moduleInfo, IApplicationBuilder applicationBuilder)
+        public void PostInitializeModule(ModuleInfo moduleInfo, IApplicationBuilder appBuilder)
         {
             if (moduleInfo == null)
                 throw new ArgumentNullException("moduleInfo");
 
-            _moduleInitializer.PostInitialize(moduleInfo, applicationBuilder);
+            _moduleInitializer.PostInitialize(moduleInfo, appBuilder);
         }
 
         /// <summary>
