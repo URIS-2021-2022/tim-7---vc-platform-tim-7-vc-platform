@@ -12,7 +12,6 @@ namespace VirtoCommerce.Platform.Data.Repositories
 
         IQueryable<DynamicPropertyEntity> DynamicProperties { get; }
         IQueryable<DynamicPropertyDictionaryItemEntity> DynamicPropertyDictionaryItems { get; }
-        //IQueryable<DynamicPropertyObjectValueEntity> DynamicPropertyObjectValues { get; }
         IQueryable<OperationLogEntity> OperationLogs { get; }
 
         Task<DynamicPropertyDictionaryItemEntity[]> GetDynamicPropertyDictionaryItemByIdsAsync(string[] ids);

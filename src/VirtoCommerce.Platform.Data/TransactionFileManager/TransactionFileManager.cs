@@ -94,6 +94,7 @@ namespace VirtoCommerce.Platform.Data.TransactionFileManager
                     }
                     catch (IOException)
                     {
+                        // Do nothing
                     }
                 }
             }
