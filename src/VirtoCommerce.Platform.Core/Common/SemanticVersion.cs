@@ -215,7 +215,7 @@ namespace VirtoCommerce.Platform.Core.Common
             int r = CompareComponentBody(aComps, bComps);
            if (r != 0)
             {
-                return r;
+                return r; 
             }
 
             return aComps.Length.CompareTo(bComps.Length);
