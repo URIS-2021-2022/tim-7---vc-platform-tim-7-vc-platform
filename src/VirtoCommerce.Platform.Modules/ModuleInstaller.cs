@@ -101,43 +101,7 @@ namespace VirtoCommerce.Platform.Modules
 
             if (isValid)
             {
-                var changedModulesLog = new List<ManifestModuleInfo>();
-                using (var scope = new TransactionScope())
-                {
-                    try
-                    {
-                        foreach (var uninstallingModule in modules)
-                        {
-                            Report(progress, ProgressMessageLevel.Info, "Uninstalling '{0}'", uninstallingModule);
-                            //Call module Uninstall method
-                            if (uninstallingModule.ModuleInstance != null)
-                            {
-                                Report(progress, ProgressMessageLevel.Info, "Executing module.Uninstall() method");
-                                uninstallingModule.ModuleInstance.Uninstall();
-                            }
-                            var moduleDir = Path.Combine(_options.DiscoveryPath, uninstallingModule.Id);
-                            if (Directory.Exists(moduleDir))
-                            {
-                                Report(progress, ProgressMessageLevel.Info, "Deleting module {0} folder", moduleDir);
-                                _fileManager.SafeDelete(moduleDir);
-                            }
-                            Report(progress, ProgressMessageLevel.Info, "'{0}' uninstalled successfully.", uninstallingModule);
-                            uninstallingModule.IsInstalled = false;
-                            changedModulesLog.Add(uninstallingModule);
-                        }
-                        scope.Complete();
-                    }
-                    catch (Exception ex)
-                    {
-                        Report(progress, ProgressMessageLevel.Error, ex.ToString());
-                        Report(progress, ProgressMessageLevel.Error, "Rollback all changes...");
-                        //Revert changed modules state
-                        foreach (var changedModule in changedModulesLog)
-                        {
-                            changedModule.IsInstalled = !changedModule.IsInstalled;
-                        }
-                    }
-                }
+                ValidUninstall(modules, progress);
             }
         }
         #endregion
@@ -233,6 +197,47 @@ namespace VirtoCommerce.Platform.Modules
                         existModule.IsInstalled = false;
                         newModule.IsInstalled = true;
                         changedModulesLog.AddRange(new[] { existModule, newModule });
+                    }
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    Report(progress, ProgressMessageLevel.Error, ex.ToString());
+                    Report(progress, ProgressMessageLevel.Error, "Rollback all changes...");
+                    //Revert changed modules state
+                    foreach (var changedModule in changedModulesLog)
+                    {
+                        changedModule.IsInstalled = !changedModule.IsInstalled;
+                    }
+                }
+            }
+        }
+
+        private void ValidUninstall(IEnumerable<ManifestModuleInfo> modules, IProgress<ProgressMessage> progress)
+        {
+            var changedModulesLog = new List<ManifestModuleInfo>();
+            using (var scope = new TransactionScope())
+            {
+                try
+                {
+                    foreach (var uninstallingModule in modules)
+                    {
+                        Report(progress, ProgressMessageLevel.Info, "Uninstalling '{0}'", uninstallingModule);
+                        //Call module Uninstall method
+                        if (uninstallingModule.ModuleInstance != null)
+                        {
+                            Report(progress, ProgressMessageLevel.Info, "Executing module.Uninstall() method");
+                            uninstallingModule.ModuleInstance.Uninstall();
+                        }
+                        var moduleDir = Path.Combine(_options.DiscoveryPath, uninstallingModule.Id);
+                        if (Directory.Exists(moduleDir))
+                        {
+                            Report(progress, ProgressMessageLevel.Info, "Deleting module {0} folder", moduleDir);
+                            _fileManager.SafeDelete(moduleDir);
+                        }
+                        Report(progress, ProgressMessageLevel.Info, "'{0}' uninstalled successfully.", uninstallingModule);
+                        uninstallingModule.IsInstalled = false;
+                        changedModulesLog.Add(uninstallingModule);
                     }
                     scope.Complete();
                 }
