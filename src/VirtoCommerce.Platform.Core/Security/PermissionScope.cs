@@ -25,11 +25,6 @@ namespace VirtoCommerce.Platform.Core.Security
         /// </summary>
         public string Scope { get; set; }
 
-        //public virtual string ToJsonString()
-        //{
-        //    return $"{{Type: {Type}, Scope: {Scope}, Label: {Label}}}";
-        //}
-
         ////we don't use Json serialization/deserialization due to difficult inject json options on this level
         //public static PermissionScope TryParse(string input)
         //{

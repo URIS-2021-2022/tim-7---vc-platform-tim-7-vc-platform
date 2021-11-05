@@ -208,6 +208,7 @@ namespace VirtoCommerce.Platform.Security.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            throw new System.NotSupportedException();
         }
     }
 }
