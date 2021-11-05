@@ -37,11 +37,17 @@ namespace VirtoCommerce.Platform.Assets.AzureBlobStorage
         /// Get blob info by URL
         /// </summary>
         /// <param name="blobUrl">Absolute or relative URL to get blob</param>
-        public virtual async Task<BlobInfo> GetBlobInfoAsync(string blobUrl)
+       
+        public virtual Task<BlobInfo> GetBlobInfoAsync(string blobUrl)
         {
             if (string.IsNullOrEmpty(blobUrl))
                 throw new ArgumentNullException(nameof(blobUrl));
 
+            return GetBlobInfoInternalAsync(blobUrl);
+        }
+
+        public virtual async Task<BlobInfo> GetBlobInfoInternalAsync(string blobUrl)
+        {
             var uri = blobUrl.IsAbsoluteUrl() ? new Uri(blobUrl) : new Uri(_blobServiceClient.Uri, blobUrl.TrimStart(Delimiter[0]));
             BlobInfo result = null;
             try
