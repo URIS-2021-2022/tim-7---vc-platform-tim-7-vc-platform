@@ -19,7 +19,7 @@ namespace VirtoCommerce.Platform.Core.Assets
         public virtual bool IsExtensionBlacklisted(string path)
         {
             var blackList = _platformOptions.Value.FileExtensionsBlackList.Union(
-                _settingsManager?.GetObjectSettingAsync(PlatformConstants.Settings.Security.FileExtensionsBlackList.Name).Result.AllowedValues.Cast<string>() ?? new string[0]);
+                _settingsManager?.GetObjectSettingAsync(PlatformConstants.Settings.InnerSecurity.FileExtensionsBlackList.Name).Result.AllowedValues.Cast<string>() ?? new string[0]);
             return (blackList.Any(x => path.Trim().EndsWith(x.Trim(), StringComparison.OrdinalIgnoreCase)));
         }
     }

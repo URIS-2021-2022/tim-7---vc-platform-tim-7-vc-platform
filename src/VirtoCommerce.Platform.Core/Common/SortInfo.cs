@@ -19,7 +19,7 @@ namespace VirtoCommerce.Platform.Core.Common
         Descending = 1
     }
 
-    public class SortInfo : IEquatable<SortInfo>
+    public sealed class SortInfo : IEquatable<SortInfo>
     {
         public string SortColumn { get; set; }
         public SortDirection SortDirection { get; set; }

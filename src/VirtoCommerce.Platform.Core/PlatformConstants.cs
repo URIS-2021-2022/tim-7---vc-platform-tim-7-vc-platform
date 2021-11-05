@@ -83,7 +83,7 @@ namespace VirtoCommerce.Platform.Core
 
         public static class Settings
         {
-            public static class Security
+            public static class InnerSecurity
             {
                 public static SettingDescriptor SecurityAccountTypes { get; } = new SettingDescriptor
                 {
@@ -379,7 +379,7 @@ namespace VirtoCommerce.Platform.Core
                 }
             }
 
-            public static IEnumerable<SettingDescriptor> AllSettings => Security.AllSettings
+            public static IEnumerable<SettingDescriptor> AllSettings => InnerSecurity.AllSettings
                 .Concat(Setup.AllSettings)
                 .Concat(UserProfile.AllSettings)
                 .Concat(UserInterface.AllSettings)
