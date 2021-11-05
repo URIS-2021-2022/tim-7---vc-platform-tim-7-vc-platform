@@ -235,17 +235,18 @@ namespace VirtoCommerce.Platform.Core.Common
                 {
                     r = aNum.CompareTo(bNum);
                     if (r != 0) return r;
+
+                    continue;
                 }
-                else
-                {
-                    if (aIsNum)
-                        return -1;
-                    if (bIsNum)
-                        return 1;
-                    r = string.CompareOrdinal(ac, bc);
-                    if (r != 0)
-                        return r;
-                }
+              
+                if (aIsNum)
+                    return -1;
+                if (bIsNum)
+                    return 1;
+                r = string.CompareOrdinal(ac, bc);
+                if (r != 0)
+                    return r;
+                
             }
             return 0;
         }
