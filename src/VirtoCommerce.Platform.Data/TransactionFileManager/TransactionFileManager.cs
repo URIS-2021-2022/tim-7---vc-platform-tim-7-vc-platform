@@ -84,6 +84,7 @@ namespace VirtoCommerce.Platform.Data.TransactionFileManager
                         }
                         catch (IOException)
                         {
+                            //Do nothing
                         }
                     }
                     //Then try to delete main directory itself
