@@ -43,7 +43,8 @@ namespace VirtoCommerce.Platform.Web.Swagger
             var provider = services.BuildServiceProvider();
             var modules = provider.GetService<IModuleCatalog>().Modules.OfType<ManifestModuleInfo>().Where(m => m.ModuleInstance != null).ToArray();
 
-            string coreUrl = "https://virtocommerce.com";
+            var virtoSection = configuration.GetSection("VirtoCommerce").GetChildren().ToList();
+            string coreUrl = virtoSection[0].Value;
 
             services.AddSwaggerGen(c =>
             {
