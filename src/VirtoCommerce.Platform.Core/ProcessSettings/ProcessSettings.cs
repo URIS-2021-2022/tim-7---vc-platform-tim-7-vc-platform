@@ -10,7 +10,7 @@ namespace VirtoCommerce.Platform.Core.ProcessSettings
 
         }
 
-        public ProcessSettings(PlatformOptions platformOptions)
+        protected ProcessSettings(PlatformOptions platformOptions)
         {
             if (!string.IsNullOrEmpty(platformOptions.ProcessesPath))
             {

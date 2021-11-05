@@ -8,7 +8,7 @@ namespace VirtoCommerce.Platform.Core.Events
     /// </summary>
     public static class EventSuppressor
     {
-        private class DisposableActionGuard : IDisposable
+        private sealed class DisposableActionGuard : IDisposable
         {
             private readonly Action _action;
 
