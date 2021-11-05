@@ -29,6 +29,7 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
         private readonly IBlobUrlResolver _urlResolver;
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
         private readonly PlatformOptions _platformOptions;
+        private char slashDelimiter = '/';
 
         public AssetsController(IBlobStorageProvider blobProvider, IBlobUrlResolver urlResolver, IOptions<PlatformOptions> platformOptions)
         {
@@ -128,7 +129,7 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
                 if (url != null)
                 {
                     var fileName = name ?? HttpUtility.UrlDecode(Path.GetFileName(url));
-                    var fileUrl = folderUrl + "/" + fileName;
+                    var fileUrl = folderUrl + slashDelimiter + fileName;
                     using (var client = new WebClient())
                     using (var blobStream = _blobProvider.OpenWrite(fileUrl))
                     using (var remoteStream = client.OpenRead(url))

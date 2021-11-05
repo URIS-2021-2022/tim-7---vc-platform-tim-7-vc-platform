@@ -15,7 +15,6 @@ namespace VirtoCommerce.Platform.Modules
 
     public class LoadContextAssemblyResolver : IAssemblyResolver
     {
-        private readonly ILogger<LoadContextAssemblyResolver> _logger;
         private readonly Dictionary<string, Assembly> _loadedAssemblies = new Dictionary<string, Assembly>();
         private readonly bool _isDevelopmentEnvironment;
 
@@ -30,7 +29,6 @@ namespace VirtoCommerce.Platform.Modules
 
         public LoadContextAssemblyResolver(ILogger<LoadContextAssemblyResolver> logger, bool isDevelopmentEnvironment)
         {
-            _logger = logger;
             _isDevelopmentEnvironment = isDevelopmentEnvironment;
         }
 

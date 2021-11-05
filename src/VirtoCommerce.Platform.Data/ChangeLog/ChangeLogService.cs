@@ -56,12 +56,19 @@ namespace VirtoCommerce.Platform.Data.ChangeLog
             }
         }
 
-        public virtual async Task SaveChangesAsync(params OperationLog[] operationLogs)
+        public virtual Task SaveChangesAsyncOperationsLog(params OperationLog[] operationLogs)
         {
             if (operationLogs == null)
             {
                 throw new ArgumentNullException(nameof(operationLogs));
             }
+
+            return SaveChangesAsync(operationLogs);
+        }
+
+        public virtual async Task SaveChangesAsync(params OperationLog[] operationLogs)
+        {
+            
             var pkMap = new PrimaryKeyResolvingMap();
 
             using (var repository = _repositoryFactory())
