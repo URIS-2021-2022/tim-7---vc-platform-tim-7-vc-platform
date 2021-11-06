@@ -32,16 +32,6 @@ namespace VirtoCommerce.Platform.Core.Common
             }
         }
 
-        public static bool operator ==(ValueObject left, ValueObject right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(ValueObject left, ValueObject right)
-        {
-            return !Equals(left, right);
-        }
-
         public override string ToString()
         {
             return $"{{{string.Join(", ", GetProperties().Select(f => $"{f.Name}: {f.GetValue(this)}"))}}}";

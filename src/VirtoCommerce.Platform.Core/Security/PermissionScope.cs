@@ -26,27 +26,6 @@ namespace VirtoCommerce.Platform.Core.Security
         public string Scope { get; set; }
 
         ////we don't use Json serialization/deserialization due to difficult inject json options on this level
-        //public static PermissionScope TryParse(string input)
-        //{
-        //    if (input == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(input));
-        //    }
-
-        //    PermissionScope result = null;
-
-        //    const string pattern = @"{Type: (?<type>\w+), Scope: (?<scope>[\w\{\}]+), Label: (?<label>\w+)}";
-        //    var match = Regex.Match(input, pattern);
-        //    if (match.Success)
-        //    {
-        //        var type = match.Groups["type"].Value;
-        //        result = AbstractTypeFactory<PermissionScope>.TryCreateInstance(type);
-        //        result.Type = type;
-        //        result.Scope = match.Groups["scope"].Value;
-        //        result.Label = match.Groups["label"].Value;
-        //    }
-        //    return result;
-        //}
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

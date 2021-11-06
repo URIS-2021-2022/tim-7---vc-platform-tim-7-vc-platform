@@ -319,19 +319,16 @@ namespace VirtoCommerce.Platform.Core
                     DefaultValue = true
                 };
 
-                public static IEnumerable<SettingDescriptor> AllSettings
+                public static IEnumerable<SettingDescriptor> GetAllSettings()
                 {
-                    get
-                    {
-                        yield return MainMenuState;
-                        yield return Language;
-                        yield return RegionalFormat;
-                        yield return TimeZone;
-                        yield return UseTimeAgo;
-                        yield return FullDateThreshold;
-                        yield return FullDateThresholdUnit;
-                        yield return ShowMeridian;
-                    }
+                    yield return MainMenuState;
+                    yield return Language;
+                    yield return RegionalFormat;
+                    yield return TimeZone;
+                    yield return UseTimeAgo;
+                    yield return FullDateThreshold;
+                    yield return FullDateThresholdUnit;
+                    yield return ShowMeridian;
                 }
             }
 
@@ -381,7 +378,7 @@ namespace VirtoCommerce.Platform.Core
 
             public static IEnumerable<SettingDescriptor> AllSettings => InnerSecurity.AllSettings
                 .Concat(Setup.AllSettings)
-                .Concat(UserProfile.AllSettings)
+                .Concat(UserProfile.GetAllSettings())
                 .Concat(UserInterface.AllSettings)
                 .Concat(Other.AllSettings);
         }

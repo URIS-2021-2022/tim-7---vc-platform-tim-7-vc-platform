@@ -17,7 +17,7 @@ namespace VirtoCommerce.Platform.Web.Extensions
         {
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(AllSettings, "Platform");
-            settingsRegistrar.RegisterSettingsForType(UserProfile.AllSettings, typeof(UserProfile).Name);
+            settingsRegistrar.RegisterSettingsForType(UserProfile.GetAllSettings(), typeof(UserProfile).Name);
 
             var settingsManager = appBuilder.ApplicationServices.GetRequiredService<ISettingsManager>();
 
