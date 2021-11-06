@@ -43,7 +43,7 @@ namespace VirtoCommerce.Platform.Web.Tests.Controllers.Api
             // Arrange
             var expirationDate = GetExpirationDateByExpirationTime(expirationTime);
             _settingsManager
-                .Setup(x => x.GetObjectSettingAsync(PlatformConstants.Settings.Setup.TrialExpirationDate.Name, null, null))
+                .Setup(x => x.GetObjectSettingAsync(PlatformConstants.Settings.Setup.TrialExpirationDate.Name, null))
                 .ReturnsAsync(new ObjectSettingEntry
                 {
                     Value = expirationDate
@@ -64,7 +64,7 @@ namespace VirtoCommerce.Platform.Web.Tests.Controllers.Api
         {
             // Arrange
             _settingsManager
-                .Setup(x => x.GetObjectSettingAsync(PlatformConstants.Settings.Setup.TrialExpirationDate.Name, null, null))
+                .Setup(x => x.GetObjectSettingAsync(PlatformConstants.Settings.Setup.TrialExpirationDate.Name, null))
                 .ReturnsAsync(new ObjectSettingEntry
                 {
                     Value = GetExpirationDateByExpirationTime(ExpirationTime.AlreadyRegistered)
@@ -87,14 +87,14 @@ namespace VirtoCommerce.Platform.Web.Tests.Controllers.Api
             // Arrange
             var dateTime = new Fixture().Create<DateTime>();
             _settingsManager
-                .Setup(x => x.GetObjectSettingAsync(PlatformConstants.Settings.Setup.TrialExpirationDate.Name, null, null))
+                .Setup(x => x.GetObjectSettingAsync(PlatformConstants.Settings.Setup.TrialExpirationDate.Name, null))
                 .ReturnsAsync(new ObjectSettingEntry());
 
             // Act
             await _controller.ContinueTrial(new TrialProlongation { NextTime = dateTime.ToString() });
 
             // Assert
-            _settingsManager.Verify(x => x.GetObjectSettingAsync(It.Is<string>(x => x.Equals(PlatformConstants.Settings.Setup.TrialExpirationDate.Name)), null, null), Times.Once);
+            _settingsManager.Verify(x => x.GetObjectSettingAsync(It.Is<string>(x => x.Equals(PlatformConstants.Settings.Setup.TrialExpirationDate.Name)), null), Times.Once);
             _settingsManager.Verify(x => x.SaveObjectSettingsAsync(It.Is<IEnumerable<ObjectSettingEntry>>(x => x.First().Value.ToString().Equals(dateTime.ToString()))), Times.Once);
         }
 

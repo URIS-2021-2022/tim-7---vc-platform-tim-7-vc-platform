@@ -78,22 +78,22 @@ namespace VirtoCommerce.Platform.Data.Settings
 
         #region ISettingsManager Members
 
-        public virtual async Task<ObjectSettingEntry> GetObjectSettingAsync(string name, string objectType = null, string objectId = null)
+        public virtual async Task<ObjectSettingEntry> GetObjectSettingAsync(string name, TenantIdentity tenantObject = null)
         {
             if (name == null)
             {
                 throw new ArgumentNullException(nameof(name));
             }
-            return (await GetObjectSettingsAsync(new[] { name }, objectType, objectId)).FirstOrDefault();
+            return (await GetObjectSettingsAsync(new[] { name }, tenantObject)).FirstOrDefault();
         }
 
-        public virtual async Task<IEnumerable<ObjectSettingEntry>> GetObjectSettingsAsync(IEnumerable<string> names, string objectType = null, string objectId = null)
+        public virtual async Task<IEnumerable<ObjectSettingEntry>> GetObjectSettingsAsync(IEnumerable<string> names, TenantIdentity tenantObject = null)
         {
             if (names == null)
             {
                 throw new ArgumentNullException(nameof(names));
             }
-            var cacheKey = CacheKey.With(GetType(), "GetSettingByNamesAsync", string.Join(";", names), objectType, objectId);
+            var cacheKey = CacheKey.With(GetType(), "GetSettingByNamesAsync", string.Join(";", names), tenantObject.Type, tenantObject.Id);
             var result = await _memoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 var resultObjectSettings = new List<ObjectSettingEntry>();
@@ -104,7 +104,7 @@ namespace VirtoCommerce.Platform.Data.Settings
                 {
                     repository.DisableChangesTracking();
                     //try to load setting from db
-                    dbStoredSettings.AddRange(await repository.GetObjectSettingsByNamesAsync(names.ToArray(), objectType, objectId));
+                    dbStoredSettings.AddRange(await repository.GetObjectSettingsByNamesAsync(names.ToArray(), tenantObject.Type, tenantObject.Id));
                 }
 
                 foreach (var name in names)
@@ -116,8 +116,8 @@ namespace VirtoCommerce.Platform.Data.Settings
                     }
                     var objectSetting = new ObjectSettingEntry(settingDescriptor)
                     {
-                        ObjectType = objectType,
-                        ObjectId = objectId
+                        ObjectType = tenantObject.Type,
+                        ObjectId = tenantObject.Id
                     };
                     var dbSetting = dbStoredSettings.FirstOrDefault(x => x.Name.EqualsInvariant(name));
                     if (dbSetting != null)

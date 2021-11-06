@@ -18,14 +18,12 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
     public class ProfilesController : Controller
     {
         private readonly ISettingsManager _settingsManager;
-        private readonly ILocalModuleCatalog _moduleCatalog;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProfilesController(UserManager<ApplicationUser> userManager, ISettingsManager settingsManager, ILocalModuleCatalog moduleCatalog)
+        public ProfilesController(UserManager<ApplicationUser> userManager, ISettingsManager settingsManager)
         {
             _userManager = userManager;
             _settingsManager = settingsManager;
-            _moduleCatalog = moduleCatalog;
         }
 
         /// <summary>

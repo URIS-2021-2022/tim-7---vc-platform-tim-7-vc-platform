@@ -54,7 +54,7 @@ namespace VirtoCommerce.Platform.Core.Settings
                     typeSettings = typeSettings.Where(x => !x.IsHidden);
                 }
 
-                hasSettingsObject.Settings = (await manager.GetObjectSettingsAsync(typeSettings.Select(x => x.Name), hasSettingsObject.TypeName, hasSettingsObject.Id)).ToList();
+                hasSettingsObject.Settings = (await manager.GetObjectSettingsAsync(typeSettings.Select(x => x.Name), new TenantIdentity(hasSettingsObject.Id, hasSettingsObject.TypeName))).ToList();
             }
         }
 
