@@ -586,12 +586,18 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
         [HttpPost]
         [Route("validateuserpassword")]
         [Authorize(PlatformPermissions.SecurityUpdate)]
-        public async Task<ActionResult<IdentityResult>> ValidateUserPassword([FromBody] ChangePasswordRequest validatePassword)
+        public Task<ActionResult<IdentityResult>> ValidateUserPassword([FromBody] ChangePasswordRequest validatePassword)
         {
             if (validatePassword == null)
             {
                 throw new ArgumentNullException(nameof(validatePassword));
             }
+
+            return ValidateUserPasswordBody(validatePassword);
+        }
+
+        private async Task<ActionResult<IdentityResult>> ValidateUserPasswordBody([FromBody] ChangePasswordRequest validatePassword)
+        {
 
             if (validatePassword.UserName.IsNullOrEmpty() || !IsUserEditable(validatePassword.UserName))
             {
