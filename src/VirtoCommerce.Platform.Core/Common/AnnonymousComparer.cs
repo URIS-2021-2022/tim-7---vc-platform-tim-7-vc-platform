@@ -83,7 +83,7 @@ namespace VirtoCommerce.Platform.Core.Common
             return new EqualityComparer<T>(equals, getHashCode);
         }
 
-        private class EqualityComparer<T> : IEqualityComparer<T>
+        private sealed class EqualityComparer<T> : IEqualityComparer<T>
         {
             private readonly Func<T, T, bool> equals;
             private readonly Func<T, int> getHashCode;
