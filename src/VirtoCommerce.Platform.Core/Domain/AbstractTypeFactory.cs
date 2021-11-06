@@ -51,7 +51,7 @@ namespace VirtoCommerce.Platform.Core.Common
                 throw new ArgumentNullException(nameof(type));
             }
 
-            var result = _typeInfos.FirstOrDefault(x => x.AllSubclasses.Contains(type));
+            var result = _typeInfos.FirstOrDefault(x => x.getAllSubclasses().Contains(type));
 
             if (result == null)
             {
@@ -216,12 +216,11 @@ namespace VirtoCommerce.Platform.Core.Common
             return Type.GetTypeInheritanceChainTo(typeof(BaseType)).Concat(new[] { typeof(BaseType) }).Any(t => typeName.EqualsInvariant(t.Name));
         }
 
-        public IEnumerable<Type> AllSubclasses
+       
+
+        public IEnumerable<Type> getAllSubclasses()
         {
-            get
-            {
-                return Type.GetTypeInheritanceChainTo(typeof(BaseType)).ToArray();
-            }
+            return Type.GetTypeInheritanceChainTo(typeof(BaseType)).ToArray();
         }
     }
 }
