@@ -221,40 +221,52 @@ namespace VirtoCommerce.Platform.Web.Security
             {
                 if (user.Roles != null)
                 {
-                    var targetRoles = await GetRolesAsync(user);
-                    var sourceRoles = user.Roles.Select(x => x.Name);
-
-                    //Add
-                    foreach (var newRole in sourceRoles.Except(targetRoles))
-                    {
-                        await AddToRoleAsync(user, newRole);
-                    }
-
-                    //Remove
-                    foreach (var removeRole in targetRoles.Except(sourceRoles))
-                    {
-                        await RemoveFromRoleAsync(user, removeRole);
-                    }
+                    await AddRemoveRoleAsync(user);
                 }
 
                 if (user.Logins != null)
                 {
-                    var targetLogins = await GetLoginsAsync(user);
-                    var sourceLogins = user.Logins.Select(x => new UserLoginInfo(x.LoginProvider, x.ProviderKey, null));
-
-                    foreach (var item in sourceLogins.Where(x => targetLogins.All(y => x.LoginProvider + x.ProviderKey != y.LoginProvider + y.ProviderKey)))
-                    {
-                        await AddLoginAsync(user, item);
-                    }
-
-                    foreach (var item in targetLogins.Where(x => sourceLogins.All(y => x.LoginProvider + x.ProviderKey != y.LoginProvider + y.ProviderKey)))
-                    {
-                        await RemoveLoginAsync(user, item.LoginProvider, item.ProviderKey);
-                    }
+                    await AddRemoveLoginAsync(user);
                 }
             }
 
             return result;
+        }
+
+        private async Task AddRemoveLoginAsync(ApplicationUser user)
+        {
+            var targetLogins = await GetLoginsAsync(user);
+            var sourceLogins = user.Logins.Select(x => new UserLoginInfo(x.LoginProvider, x.ProviderKey, null));
+
+            foreach (var item in sourceLogins.Where(x => targetLogins.All(y => x.LoginProvider + x.ProviderKey != y.LoginProvider + y.ProviderKey)))
+            {
+                await AddLoginAsync(user, item);
+            }
+
+            foreach (var item in targetLogins.Where(x => sourceLogins.All(y => x.LoginProvider + x.ProviderKey != y.LoginProvider + y.ProviderKey)))
+            {
+                await RemoveLoginAsync(user, item.LoginProvider, item.ProviderKey);
+            }
+            return;
+        }
+
+        private async Task AddRemoveRoleAsync(ApplicationUser user)
+        {
+            var targetRoles = await GetRolesAsync(user);
+            var sourceRoles = user.Roles.Select(x => x.Name);
+
+            //Add
+            foreach (var newRole in sourceRoles.Except(targetRoles))
+            {
+                await AddToRoleAsync(user, newRole);
+            }
+
+            //Remove
+            foreach (var removeRole in targetRoles.Except(sourceRoles))
+            {
+                await RemoveFromRoleAsync(user, removeRole);
+            }
+            return;
         }
 
         public override async Task<IdentityResult> CreateAsync(ApplicationUser user)
