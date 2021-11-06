@@ -1,10 +1,12 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 {
     /// <summary>
     /// Base class for exceptions that are thrown because of a problem with modules. 
     /// </summary>
+    [Serializable]
     public class ModularityException : Exception
     {
         /// <summary>
@@ -13,6 +15,11 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
         public ModularityException()
             : this(null)
         {
+        }
+
+        protected ModularityException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+
         }
 
         /// <summary>
