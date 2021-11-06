@@ -25,8 +25,8 @@ namespace VirtoCommerce.Platform.Tests.UnitTests
         [Fact]
         public void WatchJobSetting_WithBuilder_AddReccuringJob()
         {
-            _settingsManagerMock.Setup(x => x.GetObjectSettingAsync("enablername", null, null)).ReturnsAsync(new ObjectSettingEntry());
-            _settingsManagerMock.Setup(x => x.GetObjectSettingAsync("cronname", null, null)).ReturnsAsync(new ObjectSettingEntry());
+            _settingsManagerMock.Setup(x => x.GetObjectSettingAsync("enablername", null)).ReturnsAsync(new ObjectSettingEntry());
+            _settingsManagerMock.Setup(x => x.GetObjectSettingAsync("cronname", null)).ReturnsAsync(new ObjectSettingEntry());
 
             //Act
             RecurringJobExtensions.WatchJobSettingAsync(_recurringJobManagerMock.Object,
@@ -48,8 +48,8 @@ namespace VirtoCommerce.Platform.Tests.UnitTests
         [Fact]
         public void WatchJobSetting_WithoutBuilder_AddReccuringJob()
         {
-            _settingsManagerMock.Setup(x => x.GetObjectSettingAsync("enablername", null, null)).ReturnsAsync(new ObjectSettingEntry());
-            _settingsManagerMock.Setup(x => x.GetObjectSettingAsync("cronname", null, null)).ReturnsAsync(new ObjectSettingEntry());
+            _settingsManagerMock.Setup(x => x.GetObjectSettingAsync("enablername", null)).ReturnsAsync(new ObjectSettingEntry());
+            _settingsManagerMock.Setup(x => x.GetObjectSettingAsync("cronname", null)).ReturnsAsync(new ObjectSettingEntry());
 
             //Act
             RecurringJobExtensions.WatchJobSetting<SomeJob>(

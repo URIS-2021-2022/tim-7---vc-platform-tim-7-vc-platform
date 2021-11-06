@@ -54,7 +54,7 @@ namespace VirtoCommerce.Platform.Core.Common
             if (edges.Any())
             {
                 // return error (graph has at least one cycle)
-                return null;
+                return new List<T>();
             }
             else
             {

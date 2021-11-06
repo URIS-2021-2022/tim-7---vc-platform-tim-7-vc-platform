@@ -495,7 +495,7 @@ namespace VirtoCommerce.Platform.Core.Modularity
             }
         }
 
-        private class ModuleCatalogItemCollection : Collection<IModuleCatalogItem>, INotifyCollectionChanged
+        private sealed class ModuleCatalogItemCollection : Collection<IModuleCatalogItem>, INotifyCollectionChanged
         {
             public event NotifyCollectionChangedEventHandler CollectionChanged;
 
@@ -503,14 +503,14 @@ namespace VirtoCommerce.Platform.Core.Modularity
             {
                 base.InsertItem(index, item);
 
-                this.OnNotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
+                OnNotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, index));
             }
 
-            protected void OnNotifyCollectionChanged(NotifyCollectionChangedEventArgs eventArgs)
+            private void OnNotifyCollectionChanged(NotifyCollectionChangedEventArgs eventArgs)
             {
-                if (this.CollectionChanged != null)
+                if (CollectionChanged != null)
                 {
-                    this.CollectionChanged(this, eventArgs);
+                    CollectionChanged(this, eventArgs);
                 }
             }
         }

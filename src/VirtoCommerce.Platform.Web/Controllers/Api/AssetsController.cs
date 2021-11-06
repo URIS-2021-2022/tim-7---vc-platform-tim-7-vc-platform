@@ -71,30 +71,27 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
             {
                 var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
 
-                if (hasContentDispositionHeader)
+                if (hasContentDispositionHeader && MultipartRequestHelper.HasFileContentDisposition(contentDisposition))
                 {
-                    if (MultipartRequestHelper.HasFileContentDisposition(contentDisposition))
+                    var fileName = contentDisposition.FileName.Value;
+                    var targetFilePath = Path.Combine(uploadPath, fileName);
+
+                    if (!Directory.Exists(uploadPath))
                     {
-                        var fileName = contentDisposition.FileName.Value;
-                        var targetFilePath = Path.Combine(uploadPath, fileName);
-
-                        if (!Directory.Exists(uploadPath))
-                        {
-                            Directory.CreateDirectory(uploadPath);
-                        }
-
-                        using (var targetStream = System.IO.File.Create(targetFilePath))
-                        {
-                            await section.Body.CopyToAsync(targetStream);
-                        }
-
-                        var blobInfo = AbstractTypeFactory<BlobInfo>.TryCreateInstance();
-                        blobInfo.Name = fileName;
-                        //Use only file name as Url, for further access to these files need use PlatformOptions.LocalUploadFolderPath
-                        blobInfo.Url = fileName;
-                        blobInfo.ContentType = MimeTypeResolver.ResolveContentType(fileName);
-                        result.Add(blobInfo);
+                        Directory.CreateDirectory(uploadPath);
                     }
+
+                    using (var targetStream = System.IO.File.Create(targetFilePath))
+                    {
+                        await section.Body.CopyToAsync(targetStream);
+                    }
+
+                    var blobInfo = AbstractTypeFactory<BlobInfo>.TryCreateInstance();
+                    blobInfo.Name = fileName;
+                    //Use only file name as Url, for further access to these files need use PlatformOptions.LocalUploadFolderPath
+                    blobInfo.Url = fileName;
+                    blobInfo.ContentType = MimeTypeResolver.ResolveContentType(fileName);
+                    result.Add(blobInfo);
                 }
             }
             return Ok(result.ToArray());
@@ -125,7 +122,7 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
 
             var result = new List<BlobInfo>();
             try
-            {                
+            {
                 if (url != null)
                 {
                     var fileName = name ?? HttpUtility.UrlDecode(Path.GetFileName(url));
