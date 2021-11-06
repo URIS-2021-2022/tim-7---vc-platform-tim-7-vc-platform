@@ -25,6 +25,7 @@ namespace VirtoCommerce.Platform.Web.Swagger
         public static string platformDocName { get; } = "VirtoCommerce.Platform";
         public static string platformUIDocName { get; } = "PlatformUI";
         private static string oauth2SchemeName = "oauth2";
+        private static string termsPath = "/terms";
 
         /// <summary>
         /// Register swagger documents generator
@@ -52,7 +53,7 @@ namespace VirtoCommerce.Platform.Web.Swagger
                 {
                     Title = "VirtoCommerce Solution REST API documentation",
                     Version = "v1",
-                    TermsOfService = new Uri("https://virtocommerce.com/terms"),
+                    TermsOfService = new Uri(coreUrl+termsPath),
                     Description = "For this sample, you can use the key to satisfy the authorization filters.",
                     Contact = new OpenApiContact
                     {
