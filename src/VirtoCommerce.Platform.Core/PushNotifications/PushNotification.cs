@@ -5,7 +5,7 @@ namespace VirtoCommerce.Platform.Core.PushNotifications
 {
     public abstract class PushNotification : Entity
     {
-        public PushNotification(string creator)
+        protected PushNotification(string creator)
         {
             Created = DateTime.UtcNow;
             IsNew = true;
