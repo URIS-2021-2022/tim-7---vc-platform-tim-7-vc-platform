@@ -73,7 +73,7 @@ namespace VirtoCommerce.Platform.Modules
             }
         }
 
-        public void PostInitialize(ModuleInfo moduleInfo, IApplicationBuilder appBuilder)
+        public void PostInitialize(ModuleInfo moduleInfo, IApplicationBuilder serviceProvider)
         {
             if (moduleInfo == null)
                 throw new ArgumentNullException("moduleInfo");
@@ -82,7 +82,7 @@ namespace VirtoCommerce.Platform.Modules
 
             try
             {
-                moduleInstance.PostInitialize(appBuilder);
+                moduleInstance.PostInitialize(serviceProvider);
             }
             catch (Exception ex)
             {
