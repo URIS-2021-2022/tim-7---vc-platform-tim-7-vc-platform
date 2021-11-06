@@ -9,7 +9,7 @@ namespace VirtoCommerce.Platform.Core.DynamicProperties
 {
     public static class DynamicPropertiesExtensions
     {
-        public static async Task ResolveMetaDataRecursiveAsync(this IHasDynamicProperties owner, IDynamicPropertyMetaDataResolver metaDataResolver)
+        public static Task ResolveMetaDataRecursiveAsync(this IHasDynamicProperties owner, IDynamicPropertyMetaDataResolver metaDataResolver)
         {
             if (owner == null)
             {
@@ -20,6 +20,12 @@ namespace VirtoCommerce.Platform.Core.DynamicProperties
             {
                 throw new ArgumentNullException(nameof(metaDataResolver));
             }
+
+            return GetResolveMetaDataRecursiveAsync(owner, metaDataResolver);
+
+        }
+        public static async Task GetResolveMetaDataRecursiveAsync(this IHasDynamicProperties owner, IDynamicPropertyMetaDataResolver metaDataResolver)
+        { 
 
             var hasDynProps = owner.GetFlatObjectsListWithInterface<IHasDynamicProperties>();
             foreach (var hasDynProp in hasDynProps)

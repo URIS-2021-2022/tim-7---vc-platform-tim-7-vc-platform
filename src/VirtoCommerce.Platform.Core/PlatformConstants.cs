@@ -165,15 +165,14 @@ namespace VirtoCommerce.Platform.Core
                 };
 
 
-                public static IEnumerable<SettingDescriptor> AllSettings
+                public static IEnumerable<SettingDescriptor> GetAllSettings()
                 {
-                    get
-                    {
-                        yield return SecurityAccountTypes;
-                        yield return EnablePruneExpiredTokensJob;
-                        yield return CronPruneExpiredTokensJob;
-                        yield return FileExtensionsBlackList;
-                    }
+
+                    yield return SecurityAccountTypes;
+                    yield return EnablePruneExpiredTokensJob;
+                    yield return CronPruneExpiredTokensJob;
+                    yield return FileExtensionsBlackList;
+
                 }
             }
 
@@ -376,11 +375,13 @@ namespace VirtoCommerce.Platform.Core
                 }
             }
 
-            public static IEnumerable<SettingDescriptor> AllSettings => InnerSecurity.AllSettings
+            public static IEnumerable<SettingDescriptor> AllSettings => InnerSecurity.GetAllSettings()
                 .Concat(Setup.AllSettings)
                 .Concat(UserProfile.GetAllSettings())
                 .Concat(UserInterface.AllSettings)
                 .Concat(Other.AllSettings);
+            
+            
         }
     }
 }

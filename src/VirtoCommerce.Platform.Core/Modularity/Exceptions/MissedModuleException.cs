@@ -1,12 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 {
     /// <summary>
     /// Represents the exception that is thrown when at least one dependency was missed.
     /// </summary>
+    ///
+
+    [Serializable]
     public class MissedModuleException : ModularityException
     {
         public IDictionary<string, IEnumerable<string>> MissedDependenciesMatrix { get; set; } = new Dictionary<string, IEnumerable<string>>();
@@ -14,13 +18,20 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
         /// <summary>
         /// Initializes a new instance of the <see cref="MissedModuleException"/> class.
         /// </summary>
-        public MissedModuleException() : base() { }
+        public   MissedModuleException() : base() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MissedModuleException"/> class
         /// with the specified error message.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
+        ///
+
+        protected MissedModuleException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+
+        }
+
         public MissedModuleException(string message) : base(message) { }
 
         /// <summary>
