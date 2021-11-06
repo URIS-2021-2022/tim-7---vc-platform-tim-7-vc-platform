@@ -98,7 +98,7 @@ namespace VirtoCommerce.Platform.Assets.AzureBlobStorage
             return OpenWriteAsync(blobUrl).GetAwaiter().GetResult();
         }
 
-        public virtual async Task<Stream> OpenWriteAsync(string blobUrl)
+        public virtual  Task<Stream> OpenWriteAsync(string blobUrl)
         {
             var filePath = GetFilePathFromUrl(blobUrl);
             var fileName = Path.GetFileName(filePath);
@@ -113,6 +113,13 @@ namespace VirtoCommerce.Platform.Assets.AzureBlobStorage
                 throw new PlatformException($"This extension is not allowed. Please contact administrator.");
             }
 
+            return OpenWriteAsyncBody(blobUrl, filePath,fileName);
+
+           
+        }
+
+        private async Task<Stream> OpenWriteAsyncBody(string blobUrl,string filePath,string fileName)
+        {
             var container = _blobServiceClient.GetBlobContainerClient(GetContainerNameFromUrl(blobUrl));
             await container.CreateIfNotExistsAsync(PublicAccessType.Blob);
 
@@ -136,6 +143,7 @@ namespace VirtoCommerce.Platform.Assets.AzureBlobStorage
             // https://github.com/Azure/azure-sdk-for-net/issues/20652
             return new FlushLessStream(await blob.OpenWriteAsync(true, options));
         }
+
 
         public virtual async Task RemoveAsync(string[] urls)
         {
