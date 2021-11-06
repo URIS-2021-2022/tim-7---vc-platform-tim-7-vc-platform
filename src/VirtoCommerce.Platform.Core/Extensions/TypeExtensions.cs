@@ -162,10 +162,16 @@ namespace VirtoCommerce.Platform.Core.Extensions
         }
 
         public static Type MakeNullable(this Type type, bool nullable = true)
-          => type.IsNullableType() == nullable
-              ? type
-              : nullable
+        {
+            if (nullable)
+            {
+                return type;
+            }
+           
+            return type.IsNullableType() ==  nullable
                   ? typeof(Nullable<>).MakeGenericType(type)
                   : type.UnwrapNullableType();
+        }
+          
     }
 }
