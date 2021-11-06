@@ -236,11 +236,11 @@ namespace VirtoCommerce.Platform.Assets.AzureBlobStorage
 
                 await foreach (var containerPage in resultSegment)
                 {
-                    foreach (var item in containerPage.Values)
+                    foreach (var itemName in containerPage.Values.Select(i => i.Name))
                     {
                         var folder = AbstractTypeFactory<BlobFolder>.TryCreateInstance();
-                        folder.Name = item.Name.Split(Delimiter).Last();
-                        folder.Url = EscapeUri(UrlHelperExtensions.Combine(_blobServiceClient.Uri.ToString(), item.Name));
+                        folder.Name = itemName.Split(Delimiter).Last();
+                        folder.Url = EscapeUri(UrlHelperExtensions.Combine(_blobServiceClient.Uri.ToString(), itemName));
                         result.Results.Add(folder);
                     }
                 }
