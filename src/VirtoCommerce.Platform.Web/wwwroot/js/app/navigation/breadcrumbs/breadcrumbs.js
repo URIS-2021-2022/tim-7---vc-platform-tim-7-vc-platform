@@ -86,9 +86,11 @@ angular.module('platformWebApp')
                         var wordWidth = _.reduce(word, (memo, letter) => memo + (letter === letter.toUpperCase() ? 9 : 5.8), 0);
                         const maxWidthForMenuLinkText = 123;
                         const paddingAndBorders = 32;
-                        var result = Math.min(maxWidthForMenuLinkText, wordWidth) + paddingAndBorders;
+                        return Math.min(maxWidthForMenuLinkText, wordWidth) + paddingAndBorders;
+
+                        
                         //console.log("[calc. width] " + word + "\t=> " + (result - 6));
-                        return result;
+                        
                     }
 
                     scope.expand = () => {
