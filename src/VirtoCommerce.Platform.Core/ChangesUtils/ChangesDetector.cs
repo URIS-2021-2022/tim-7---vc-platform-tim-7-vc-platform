@@ -65,7 +65,7 @@ namespace VirtoCommerce.Platform.Core.Utils.ChangeDetector
                 var newValue = info.Getter.Invoke(newObj, new object[0]);
                 var oldValue = info.Getter.Invoke(oldObj, new object[0]);
 
-                if (!object.Equals(newValue, oldValue) && (inherit || !inherit && !info.Inherited))
+                if (!object.Equals(newValue, oldValue) && (inherit || (!inherit && !info.Inherited)))
                 {
                     result.Add(info.ChangeKey, $"Changes: {info.PropertyName}: {oldValue} -> {newValue}");
                 }
