@@ -40,10 +40,10 @@
                 </div>
             </form>
             <fieldset ng-if="blade.currentEntities.length > 0">
-                <legend>{{ 'platform.blades.property-dictionary.labels.current-values' | translate }}</legend>
+                <legend id="table-caption">{{ 'platform.blades.property-dictionary.labels.current-values' | translate }}</legend>
                 <div class="table-wrapper">
                     <form name="formScope" class="form">
-                        <table class="table __indexed" ng-init="setForm(formScope)">
+                        <table class="table __indexed" aria-describedby="table-caption" ng-init="setForm(formScope)">
                             <thead>
                                 <tr>
                                     <th class="table-col">
@@ -53,7 +53,7 @@
                                         </label>
                                     </th>
                                     <th class="table-col">{{ 'platform.blades.property-dictionary.labels.name' | translate }}</th>
-                                    <th class="table-col" ng-if="blade.currentEntity.isMultilingual">{{ 'platform.blades.property-dictionary.labels.values' | translate }}</th>
+                                    <th class="table-col" scope="col" ng-if="blade.currentEntity.isMultilingual">{{ 'platform.blades.property-dictionary.labels.values' | translate }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -71,7 +71,7 @@
                                         </div>
                                         <ul role="menu" class="menu __context" id="pd_menu_{{$index}}">
                                             <li class="menu-item" ng-click='delete($index)'>
-                                                <i class="menu-ico fas fa-trash-alt"></i> {{ 'platform.commands.delete' | translate }}
+                                                <em class="menu-ico fas fa-trash-alt"></em> {{ 'platform.commands.delete' | translate }}
                                             </li>
                                         </ul>
                                     </td>
