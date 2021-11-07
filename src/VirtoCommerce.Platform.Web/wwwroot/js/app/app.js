@@ -223,7 +223,9 @@ angular.module('platformWebApp', AppDependencies).controller('platformWebApp.app
             img.onerror = function () {
                 delay += 1000;
                 // If the server is down, do that.
-                return $timeout(function () { }, delay).then(function () {
+                return $timeout(function () {
+                    //Timeout for minimum 1000ms, this is intentional
+                }, delay).then(function () {
                     return waitForRestart(delay);
                 });
             }

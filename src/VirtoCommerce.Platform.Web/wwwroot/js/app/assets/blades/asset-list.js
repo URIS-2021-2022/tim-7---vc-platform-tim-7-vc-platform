@@ -1,6 +1,6 @@
 angular.module('platformWebApp')
     .controller('platformWebApp.assets.assetListController', ['$scope', '$translate', 'platformWebApp.assets.api', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', '$sessionStorage', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper',
-        function ($scope, $translate, assets, bladeNavigationService, dialogService, $storage, bladeUtils, uiGridHelper) {
+        function ($scope, $translate, assets, bladeNavigationService, dialogService, bladeUtils, uiGridHelper) {
             var blade = $scope.blade;
             blade.title = 'platform.blades.asset-list.title';
             if (!blade.currentEntity) {

@@ -8,7 +8,10 @@ angular.module('platformWebApp')
 
         function sortByPriority(a, b) {
             if (angular.isDefined(a.priority) && angular.isDefined(b.priority)) {
-                return a.priority < b.priority ? -1 : a.priority > b.priority ? 1 : 0;
+                if (a.priority < b.priority) {
+                    return -1;
+                }
+                return a.priority > b.priority ? 1 : 0;
             }
             return -1;
         }
@@ -25,7 +28,7 @@ angular.module('platformWebApp')
                         pathParts.pop();
                         groupPath = pathParts.join('/');
                     }
-                    var group = _.find(menuItems, function (menuItem) { return menuItem.path === groupPath });
+                    var group = _.find(menuItems, function (mItem) { return mItem.path === groupPath });
                     if (angular.isDefined(group)) {
                         menuItem.group = group;
                     }
@@ -67,14 +70,13 @@ angular.module('platformWebApp')
             return _.find(menuItems, function (menuItem) { return menuItem.path === path });
         }
 
-        var retVal = {
+        return {
             menuItems: menuItems,
             addMenuItem: addMenuItem,
             removeMenuItem: removeMenuItem,
             resetMenuItemDefaults: resetMenuItemDefaults,
             findByPath: findByPath
         };
-        return retVal;
     }])
     .directive('vaMainMenu', ["$document",
         function ($document) {
@@ -109,24 +111,10 @@ angular.module('platformWebApp')
                         }
                     };
 
-                    function handleKeyUpEvent(event) {
-                        if (scope.showSubMenu && event.keyCode === 27) {
-                            scope.$apply(function () {
-                                scope.showSubMenu = false;
-                            });
-                        }
-                    }
+                    handleKeyUpEvent(scope, event);
 
-                    function handleClickEvent(event) {
-                        var dropdownElement = $document.find('.nav-bar .dropdown');
-                        var hadDropdownElement = $document.find('.__has-dropdown');
-                        if (scope.showSubMenu && !(dropdownElement.is(event.target) || dropdownElement.has(event.target).length > 0 ||
-                            hadDropdownElement.is(event.target) || hadDropdownElement.has(event.target).length > 0)) {
-                            scope.$apply(function () {
-                                scope.showSubMenu = false;
-                            });
-                        }
-                    }
+                    handleClickEvent(scope, event);
+
 
                     $document.bind('keyup', handleKeyUpEvent);
                     $document.bind('click', handleClickEvent);
