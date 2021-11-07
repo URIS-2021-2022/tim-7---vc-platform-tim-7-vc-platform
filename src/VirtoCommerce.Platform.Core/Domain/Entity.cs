@@ -40,15 +40,6 @@ namespace VirtoCommerce.Platform.Core.Common
 #pragma warning restore S3249 // Classes directly extending "object" should not call "base" in "GetHashCode" or "Equals"
             }
         }
-        public static bool operator ==(Entity left, Entity right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(Entity left, Entity right)
-        {
-            return !Equals(left, right);
-        }
 
         #endregion
 
