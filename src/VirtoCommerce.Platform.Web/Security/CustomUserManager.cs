@@ -266,7 +266,7 @@ namespace VirtoCommerce.Platform.Web.Security
             {
                 await RemoveFromRoleAsync(user, removeRole);
             }
-            return;
+           
         }
 
         public override async Task<IdentityResult> CreateAsync(ApplicationUser user)
