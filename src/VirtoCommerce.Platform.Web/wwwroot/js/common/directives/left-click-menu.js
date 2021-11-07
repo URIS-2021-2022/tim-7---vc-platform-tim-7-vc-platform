@@ -12,12 +12,13 @@ angular
             link: function ($scope, $element, $attrs) {
                 var opened = false;
 
+               
                 function open(event, menuElement) {
                     menuElement.addClass('open');
 
                     var doc = $document[0].documentElement;
-                    var docLeft = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
-                    var docTop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+                    var docLeft = (window.scrollX || doc.scrollLeft) - (doc.clientLeft || 0);
+                    var docTop = (window.scrollY || doc.scrollTop) - (doc.clientTop || 0);
                     var elementWidth = menuElement[0].scrollWidth;
                     var elementHeight = menuElement[0].scrollHeight;
 
