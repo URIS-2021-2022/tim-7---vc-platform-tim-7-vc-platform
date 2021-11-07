@@ -15,7 +15,7 @@ namespace VirtoCommerce.Platform.Data.TransactionFileManager.Operations
         // tracks whether Dispose has been called
         private bool disposed;
 
-        public SingleFileOperation(string path)
+        protected SingleFileOperation(string path)
         {
             this.path = path;
         }
