@@ -29,7 +29,7 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
         private readonly IBlobUrlResolver _urlResolver;
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
         private readonly PlatformOptions _platformOptions;
-        private char slashDelimiter = '/';
+        private readonly char slashDelimiter = '/';
 
         public AssetsController(IBlobStorageProvider blobProvider, IBlobUrlResolver urlResolver, IOptions<PlatformOptions> platformOptions)
         {
@@ -152,7 +152,7 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
                         if (hasContentDispositionHeader && MultipartRequestHelper.HasFileContentDisposition(contentDisposition))
                         {
                             var fileName = contentDisposition.FileName.Value;
-                            var targetFilePath = folderUrl + "/" + fileName;
+                            var targetFilePath = folderUrl + slashDelimiter + fileName;
 
                             using (var targetStream = _blobProvider.OpenWrite(targetFilePath))
                             {
