@@ -76,12 +76,9 @@ namespace VirtoCommerce.Platform.Core.Common
         /// <returns>true if the dictionary contains the value in any list; otherwise, false.</returns>
         public bool ContainsValue(TValue value)
         {
-            foreach (KeyValuePair<TKey, IList<TValue>> pair in innerValues)
+            foreach (KeyValuePair<TKey, IList<TValue>> pair in innerValues.Where(p => p.Value.Contains(value)))
             {
-                if (pair.Value.Contains(value))
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;
