@@ -3,7 +3,7 @@ using VirtoCommerce.Platform.Core.Security;
 
 namespace VirtoCommerce.Platform.Security.Services
 {
-    public class DefaultUserPasswordHasher : PasswordHasher<ApplicationUser>, IUserPasswordHasher
+    public class DefaultUserPasswordHasher : PasswordHasher<ApplicationUser>, IPasswordHasher<ApplicationUser>
     {
     }
 }
