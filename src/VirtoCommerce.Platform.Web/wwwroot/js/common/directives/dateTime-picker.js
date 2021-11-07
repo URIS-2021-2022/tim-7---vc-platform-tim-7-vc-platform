@@ -575,8 +575,8 @@ angular.module('platformWebApp')
                 function parseDateString(viewValue) {
                     var date = uibDateParser.parse(viewValue, dateFormat, scope.date);
                     if (isNaN(date)) {
-                        for (var i = 0; i < altInputFormats.length; i++) {
-                            date = uibDateParser.parse(viewValue, altInputFormats[i], scope.date);
+                        for (let altInputFormat of altInputFormats) {
+                            date = uibDateParser.parse(viewValue, altInputFormat, scope.date);
                             if (!isNaN(date)) {
                                 return date;
                             }

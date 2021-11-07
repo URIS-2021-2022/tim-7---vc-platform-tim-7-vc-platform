@@ -13,7 +13,8 @@ angular.module('platformWebApp')
                     // extend saved columns with custom columnDef information (e.g. cellTemplate, displayName)
                     var foundDef;
                     _.each(savedState.columns, function (x) {
-                        if (foundDef = _.findWhere(initOptions.columnDefs, { name: x.name })) {
+                        foundDef = _.findWhere(initOptions.columnDefs, { name: x.name });
+                        if (foundDef) {
                             foundDef.sort = x.sort;
                             foundDef.width = x.width || foundDef.width;
                             foundDef.visible = x.visible;
