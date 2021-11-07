@@ -3,6 +3,7 @@
         <div class="inner-block">
             <form class="form ng-pristine ng-valid" ng-if="!blade.notification">
                 <fieldset>
+                    <legend>{{ 'platform.blades.export-main.labels.platform-entries' | translate }}</legend>
                     <div class="sub-t" id="table-title">{{ 'platform.blades.export-main.labels.platform-entries' | translate }}</div>
                     <div class="table-wrapper">
                         <table class="table" aria-describedby="table-title">
@@ -42,6 +43,7 @@
                     <div class="sub-t">{{ 'platform.blades.export-main.labels.choose-modules' | translate }}</div>
                     <div class="table-wrapper">
                         <table class="table">
+                            <caption>Table description</caption>
                             <tbody>
                                 <tr class="table-item" ng-repeat="data in exportRequest.exportManifest.modules" ng-click="data.isChecked = !data.isChecked; updateModuleSelection()">
                                     <td class="table-col">

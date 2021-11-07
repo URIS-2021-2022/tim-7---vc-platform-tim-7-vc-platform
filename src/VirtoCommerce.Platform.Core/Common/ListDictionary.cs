@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VirtoCommerce.Platform.Core.Common
 {
@@ -107,15 +108,13 @@ namespace VirtoCommerce.Platform.Core.Common
         /// <returns>The elements that have a key that matches the condition defined by the specified predicate.</returns>
         public IEnumerable<TValue> FindAllValuesByKey(Predicate<TKey> keyFilter)
         {
-            foreach (KeyValuePair<TKey, IList<TValue>> pair in this)
+            foreach (KeyValuePair<TKey, IList<TValue>> pair in this.Where(p => keyFilter(p.Key)))
             {
-                if (keyFilter(pair.Key))
+                foreach (TValue value in pair.Value)
                 {
-                    foreach (TValue value in pair.Value)
-                    {
-                        yield return value;
-                    }
+                    yield return value;
                 }
+                
             }
         }
 

@@ -7,7 +7,7 @@ body
 }
 .swagger-section .swagger-ui-wrap,
 .swagger-ui .wrapper {
-    font-family: 'Exo 2';
+    font-family: 'Exo 2', sans-serif;
     line-height: 1;
     max-width: 960px;
     margin-left: auto;
@@ -91,7 +91,6 @@ body
     color: #4c4c4c;
 }
 
-.swagger-section .swagger-ui-wrap ul#resources,
 .swagger-ui .opblock-tag,
 .swagger-ui .opblock-tag small
 .swagger-ui .opblock .opblock-summary-operation-id,

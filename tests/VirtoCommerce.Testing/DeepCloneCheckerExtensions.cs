@@ -37,7 +37,7 @@ namespace VirtoCommerce.Testing
         /// <param name="expected"></param>
         public static void AssertNoSharedRefsWith(this object original, object expected)
         {
-            if (expected == null) throw new ArgumentNullException("Expected object should not be null.");
+            if (expected == null) throw new ArgumentException("Expected object should not be null.");
 
             var originalEnumerator = original.TraverseObjectGraph().GetEnumerator();
             var expectedEnumerator = expected.TraverseObjectGraph().GetEnumerator();
