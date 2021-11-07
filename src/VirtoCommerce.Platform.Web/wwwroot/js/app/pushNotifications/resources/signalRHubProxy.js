@@ -36,7 +36,7 @@ angular.module('platformWebApp').factory('platformWebApp.signalRHubProxy', ['$ro
             }
         }
 
-        connection.onclose(async () => await start());
+        connection.onclose(async () =>  start());
 
         return {
             on: function (eventName, callback) {
