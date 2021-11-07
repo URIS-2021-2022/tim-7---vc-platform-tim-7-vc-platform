@@ -3,18 +3,18 @@
         <div class="inner-block">
             <form class="form ng-pristine ng-valid" ng-if="!blade.notification">
                 <fieldset>
-                    <div class="sub-t">{{ 'platform.blades.export-main.labels.platform-entries' | translate }}</div>
+                    <div class="sub-t" id="table-title">{{ 'platform.blades.export-main.labels.platform-entries' | translate }}</div>
                     <div class="table-wrapper">
-                        <table class="table">
+                        <table class="table" aria-describedby="table-title">
                             <tbody>
                                 <tr class="table-item" ng-click="exportRequest.handleSecurity = !exportRequest.handleSecurity">
-                                    <td class="table-col">
+                                    <th class="table-col">
                                         <div class="ui-grid-selection-row-header-buttons ui-grid-icon-ok" ng-class="{'ui-grid-row-selected': exportRequest.handleSecurity}">&nbsp;</div>
-                                    </td>
-                                    <td class="table-col">
+                                    </th>
+                                    <th class="table-col">
                                         <span class="table-t">{{ 'platform.blades.export-main.menu.security.title' | translate }}</span>
                                         <span class="table-descr">{{ 'platform.blades.export-main.menu.security.description' | translate }}</span>
-                                    </td>
+                                    </th>
                                 </tr>
                                 <tr class="table-item" ng-click="exportRequest.handleBinaryData = !exportRequest.handleBinaryData">
                                     <td class="table-col">
