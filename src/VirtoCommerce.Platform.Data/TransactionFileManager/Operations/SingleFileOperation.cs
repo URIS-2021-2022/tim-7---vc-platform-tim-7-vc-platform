@@ -25,7 +25,7 @@ namespace VirtoCommerce.Platform.Data.TransactionFileManager.Operations
         /// </summary>
         ~SingleFileOperation()
         {
-            InnerDispose();
+            Dispose(false);
         }
 
         public abstract void Execute();
@@ -55,14 +55,14 @@ namespace VirtoCommerce.Platform.Data.TransactionFileManager.Operations
         /// </summary>
         public void Dispose()
         {
-            InnerDispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         /// <summary>
         /// Disposes the resources of this class.
         /// </summary>
-        private void InnerDispose()
+        protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
             {
