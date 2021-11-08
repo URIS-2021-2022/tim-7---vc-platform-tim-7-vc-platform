@@ -342,12 +342,11 @@ namespace VirtoCommerce.Platform.Core
                                                "}"
                 };
 
-                public static IEnumerable<SettingDescriptor> AllSettings
+                public static IEnumerable<SettingDescriptor> GetAllSettings()
                 {
-                    get
-                    {
+                    
                         yield return Customization;
-                    }
+                    
                 }
             }
 
@@ -375,7 +374,7 @@ namespace VirtoCommerce.Platform.Core
             public static IEnumerable<SettingDescriptor> AllSettings => InnerSecurity.GetAllSettings()
                 .Concat(Setup.GetAllSettings())
                 .Concat(UserProfile.GetAllSettings())
-                .Concat(UserInterface.AllSettings)
+                .Concat(UserInterface.GetAllSettings())
                 .Concat(Other.AllSettings);
             
             

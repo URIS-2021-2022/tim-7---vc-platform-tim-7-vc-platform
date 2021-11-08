@@ -14,7 +14,7 @@ namespace VirtoCommerce.Platform.Data.Model
         {
             DisplayNames = new NullCollection<DynamicPropertyNameEntity>();
             DictionaryItems = new NullCollection<DynamicPropertyDictionaryItemEntity>();
-            //ObjectValues = new NullCollection<DynamicPropertyObjectValueEntity>();
+            
         }
 
         [StringLength(256)]
