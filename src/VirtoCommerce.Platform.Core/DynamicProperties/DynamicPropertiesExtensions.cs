@@ -36,15 +36,8 @@ namespace VirtoCommerce.Platform.Core.DynamicProperties
 
         public static async Task ResolveMetaDataAsync(this IHasDynamicProperties owner, IDynamicPropertyMetaDataResolver metaDataResolver)
         {
-            if (owner == null)
-            {
-                throw new ArgumentNullException(nameof(owner));
-            }
-
-            if (metaDataResolver == null)
-            {
-                throw new ArgumentNullException(nameof(metaDataResolver));
-            }
+            CheckIfArgumentNull(owner);
+            CheckIfArgumentNull(metaDataResolver);
 
             foreach (var propertyValue in owner.DynamicProperties ?? Array.Empty<DynamicObjectProperty>())
             {
@@ -56,6 +49,22 @@ namespace VirtoCommerce.Platform.Core.DynamicProperties
                         propertyValue.SetMetaData(metadata);
                     }
                 }
+            }
+        }
+
+        private static void CheckIfArgumentNull(IDynamicPropertyMetaDataResolver obj)
+        {
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+        }
+
+        private static void CheckIfArgumentNull(IHasDynamicProperties obj)
+        {
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj));
             }
         }
 

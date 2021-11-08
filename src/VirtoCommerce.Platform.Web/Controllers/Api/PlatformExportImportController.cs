@@ -252,7 +252,7 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
                     if (!Uri.IsWellFormedUriString(sampleDataInfo.Url, UriKind.Absolute))
                     {
                         var uri = new Uri(sampleDataUrl);
-                        sampleDataInfo.Url = new Uri(uri, uri.AbsolutePath + "/" + sampleDataInfo.Url).ToString();
+                        sampleDataInfo.Url = new Uri(uri, uri.AbsolutePath + Path.AltDirectorySeparatorChar + sampleDataInfo.Url).ToString();
                     }
                 }
 

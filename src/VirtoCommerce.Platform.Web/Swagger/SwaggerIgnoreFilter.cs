@@ -13,11 +13,13 @@ namespace VirtoCommerce.Platform.Web.Swagger
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
             var type = context.Type;
-            foreach (var prop in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
-                                     .Where(p => p.GetCustomAttributes(typeof(SwaggerIgnoreAttribute), true)?.Any() == true ||
-                                     p.GetCustomAttributes(typeof(Newtonsoft.Json.JsonIgnoreAttribute), true)?.Any() == true))
+            foreach (var name in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                                     .Where(
+                                        prop => prop.GetCustomAttributes(typeof(SwaggerIgnoreAttribute), true)?.Any() == true ||
+                                        prop.GetCustomAttributes(typeof(Newtonsoft.Json.JsonIgnoreAttribute), true)?.Any() == true)
+                                      .Select(p => p.Name))
             {
-                var propName = prop.Name[0].ToString().ToLower() + prop.Name.Substring(1);
+                var propName = name[0].ToString().ToLower() + name.Substring(1);
                 if (schema?.Properties?.ContainsKey(propName) == true)
                     schema?.Properties?.Remove(propName);
             }

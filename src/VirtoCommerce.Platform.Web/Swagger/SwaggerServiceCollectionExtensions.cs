@@ -26,6 +26,7 @@ namespace VirtoCommerce.Platform.Web.Swagger
         public static string platformUIDocName { get; } = "PlatformUI";
         private static string oauth2SchemeName = "oauth2";
         private static string termsPath = "/terms";
+        private static string openApiLicensePath = "/open-source-license";
 
         /// <summary>
         /// Register swagger documents generator
@@ -64,7 +65,7 @@ namespace VirtoCommerce.Platform.Web.Swagger
                     License = new OpenApiLicense
                     {
                         Name = "Virto Commerce Open Software License 3.0",
-                        Url = new Uri("http://virtocommerce.com/open-source-license")
+                        Url = new Uri(coreUrl + openApiLicensePath)
                     }
                 };
 
