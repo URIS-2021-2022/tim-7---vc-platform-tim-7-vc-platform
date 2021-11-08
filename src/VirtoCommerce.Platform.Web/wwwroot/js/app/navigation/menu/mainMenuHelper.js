@@ -1,4 +1,4 @@
-function handleKeyUpEvent(scope, event) {
+function handleKeyUpEvent(scope) {
     if (scope.showSubMenu && event.keyCode === 27) {
         scope.$apply(function () {
             scope.showSubMenu = false;
