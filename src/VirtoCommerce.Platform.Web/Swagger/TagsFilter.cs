@@ -11,12 +11,11 @@ namespace VirtoCommerce.Platform.Web.Swagger
     public class TagsFilter : IOperationFilter
     {
         private readonly IModuleCatalog _moduleCatalog;
-        private readonly ISettingsManager _settingManager;
+        
 
-        public TagsFilter(IModuleCatalog moduleCatalog, ISettingsManager settingManager)
+        public TagsFilter(IModuleCatalog moduleCatalog)
         {
-            _moduleCatalog = moduleCatalog;
-            _settingManager = settingManager;
+            _moduleCatalog = moduleCatalog;          
         }
 
         public void Apply(OpenApiOperation operation, OperationFilterContext context)

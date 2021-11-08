@@ -14,6 +14,7 @@ namespace VirtoCommerce.Platform.Web.Infrastructure
     /// </summary>
     public class CustomAuthenticationSchemeProvider : AuthenticationSchemeProvider
     {
+        private const string message = "The HTTP request cannot be retrieved.";
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CustomAuthenticationSchemeProvider(IHttpContextAccessor httpContextAccessor, IOptions<AuthenticationOptions> options)
@@ -22,13 +23,13 @@ namespace VirtoCommerce.Platform.Web.Infrastructure
             _httpContextAccessor = httpContextAccessor;
         }
 
-        private async Task<AuthenticationScheme> GetRequestSchemeAsync()
+        private async Task<AuthenticationScheme> GetRequestSchemeAsync(string message)
         {
             var request = _httpContextAccessor.HttpContext?.Request;
 
             if (request == null)
             {
-                throw new ArgumentNullException("The HTTP request cannot be retrieved.");
+                throw new ArgumentNullException(message);
             }
 
             if (request.Headers.ContainsKey("Authorization"))
@@ -40,23 +41,23 @@ namespace VirtoCommerce.Platform.Web.Infrastructure
         }
 
         public override async Task<AuthenticationScheme> GetDefaultAuthenticateSchemeAsync() =>
-                    await GetRequestSchemeAsync() ??
+                    await GetRequestSchemeAsync(message) ??
                     await base.GetDefaultAuthenticateSchemeAsync();
 
         public override async Task<AuthenticationScheme> GetDefaultChallengeSchemeAsync() =>
-            await GetRequestSchemeAsync() ??
+            await GetRequestSchemeAsync(message) ??
             await base.GetDefaultChallengeSchemeAsync();
 
         public override async Task<AuthenticationScheme> GetDefaultForbidSchemeAsync() =>
-            await GetRequestSchemeAsync() ??
+            await GetRequestSchemeAsync(message) ??
             await base.GetDefaultForbidSchemeAsync();
 
         public override async Task<AuthenticationScheme> GetDefaultSignInSchemeAsync() =>
-            await GetRequestSchemeAsync() ??
+            await GetRequestSchemeAsync(message) ??
             await base.GetDefaultSignInSchemeAsync();
 
         public override async Task<AuthenticationScheme> GetDefaultSignOutSchemeAsync() =>
-            await GetRequestSchemeAsync() ??
+            await GetRequestSchemeAsync(message) ??
             await base.GetDefaultSignOutSchemeAsync();
     }
 }

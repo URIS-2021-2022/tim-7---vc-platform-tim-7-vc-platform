@@ -21,6 +21,7 @@ namespace VirtoCommerce.Platform.Web.Helpers
 
         public void OnResourceExecuted(ResourceExecutedContext context)
         {
+            throw new NotSupportedException();
         }
     }
 }
