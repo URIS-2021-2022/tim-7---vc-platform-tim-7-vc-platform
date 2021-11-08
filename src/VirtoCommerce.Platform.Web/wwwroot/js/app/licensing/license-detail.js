@@ -21,9 +21,9 @@ angular.module('platformWebApp')
                     $scope.activationError = 'Activation failed. This license has expired.';
                 }
             } else {
-                activationErrorText = ['Activation failed. Check the license file.', 'Activation failed. Check the activation code.']
+                let activationErrorText = ['Activation failed. Check the license file.', 'Activation failed. Check the activation code.']
                 $scope.activationError = activationErrorText[ isActivationByCode | 0];
-            }
+            } 
         }
 
         $scope.activateLicense = function () {
