@@ -83,7 +83,7 @@ angular.module('platformWebApp')
             // zip only
             uploader.filters.push({
                 name: 'zipFilter',
-                fn: function (i /*{File|FileLikeObject}*/, options) {
+                fn: function (i, options) {
                     return i.name.toLowerCase().endsWith('.zip');
                 }
             });
