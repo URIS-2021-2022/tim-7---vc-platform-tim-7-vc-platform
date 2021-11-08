@@ -43,7 +43,7 @@ namespace VirtoCommerce.Platform.Core.Tests.Common
             var oldObj = new Child();
             var newObj = new Child() { Prop1 = "11", Prop2 = "22", Prop3 = "33", Prop4 = "44" };
 
-            var changes = ChangesDetector.Gather(newObj, oldObj, typeof(Parent));
+            var changes = ChangesDetector.Gather(newObj, oldObj, typeof(Parent),true);
             changes.Values.Count.Should().Be(2);
             changes.Values.Contains("Changes: Prop1: 1 -> 11").Should().BeTrue();
             changes.Values.Contains("Changes: Prop2: 2 -> 22").Should().BeTrue();
