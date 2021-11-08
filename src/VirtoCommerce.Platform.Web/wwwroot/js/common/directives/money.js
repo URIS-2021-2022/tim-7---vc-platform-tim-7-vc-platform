@@ -54,9 +54,11 @@ angular.module('platformWebApp')
 
             var empty = ngModelCtrl.$isEmpty(value);
             if (empty || NUMBER_REGEXP.test(value)) {
-                lastValidValue = (value === '')
-                  ? null
-                  : (empty ? value : parseFloat(value));
+                if (value === '') {
+                    lastValidValue = null;
+                } else {
+                    lastValidValue = empty ? value : parseFloat(value)
+                }
             } else {
                 // Render the last valid input in the field
                 ngModelCtrl.$setViewValue(formatViewValue(lastValidValue));
