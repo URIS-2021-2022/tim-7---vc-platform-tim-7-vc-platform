@@ -11,7 +11,7 @@ namespace VirtoCommerce.Platform.Core.Exceptions
     [Serializable]
     public class PlatformException : Exception
     {
-        protected PlatformException(SerializationInfo info, StreamingContext context)
+        protected PlatformException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
 
         }
@@ -24,6 +24,12 @@ namespace VirtoCommerce.Platform.Core.Exceptions
         public PlatformException(string message, Exception innerException)
             : base(message, innerException)
         {
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+           
         }
     }
 

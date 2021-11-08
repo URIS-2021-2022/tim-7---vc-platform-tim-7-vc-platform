@@ -33,7 +33,7 @@ namespace VirtoCommerce.Platform.Core.Utils.ChangeDetector
                 throw new PlatformException($@"Can't compare objects of different types (new: {newObjType.Name}, old: {oldObjType.Name}).");
 
             }
-            return Gather(newObj, oldObj, newObjType);
+            return Gather(newObj, oldObj, newObjType,true);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace VirtoCommerce.Platform.Core.Utils.ChangeDetector
         /// <param name="oldObj">An object compare to</param>
         /// <param name="objType">Type which properties should be used to compare</param>
         /// <returns></returns>
-        public static ListDictionary<string, string> Gather(object newObj, object oldObj, Type objType, bool inherit = true)
+        public static ListDictionary<string, string> Gather(object newObj, object oldObj, Type objType, bool inherit)
         {
             var result = new ListDictionary<string, string>();
 
