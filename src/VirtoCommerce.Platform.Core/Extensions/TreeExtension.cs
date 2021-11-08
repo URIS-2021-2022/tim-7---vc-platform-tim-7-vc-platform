@@ -26,6 +26,11 @@ namespace VirtoCommerce.Platform.Core.Common
             {
                 throw new ArgumentNullException(nameof(getParentFunc));
             }
+            return GetAncestorsIterator<TItem>(item, getParentFunc);
+        }
+
+        private static IEnumerable<TItem> GetAncestorsIterator<TItem>(TItem item, Func<TItem, TItem> getParentFunc)
+        {
             if (ReferenceEquals(item, null)) yield break;
             for (TItem curItem = getParentFunc(item); !ReferenceEquals(curItem, null); curItem = getParentFunc(curItem))
             {
