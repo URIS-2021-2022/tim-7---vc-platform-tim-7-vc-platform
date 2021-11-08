@@ -99,7 +99,7 @@ namespace VirtoCommerce.Platform.Core.Security
             target.TwoFactorEnabled = TwoFactorEnabled;
             target.LockoutEnabled = LockoutEnabled;
             target.LockoutEnd = LockoutEnd;
-            target.UserState = UserState;
+            target.EmailConfirmed = EmailConfirmed;
             target.AccessFailedCount = AccessFailedCount;
 
             target.MemberId = MemberId;

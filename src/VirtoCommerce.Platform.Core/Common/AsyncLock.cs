@@ -41,16 +41,7 @@ namespace VirtoCommerce.Platform.Core.Common
             return new AsyncLock(key);
         }
 
-        // TODO: Rename to LockAsync after resolving problem with backward compatibility
-        // in the modules (look on this ticket https://virtocommerce.atlassian.net/browse/PT-3548)
         public async Task<IDisposable> GetReleaserAsync()
-        {
-            await GetOrCreate(_key).WaitAsync().ConfigureAwait(false);
-            return new Releaser(_key);
-        }
-
-        [Obsolete("Left for backward compatibility. Use GetReleaserAsync")]
-        public async Task<Releaser> LockAsync()
         {
             await GetOrCreate(_key).WaitAsync().ConfigureAwait(false);
             return new Releaser(_key);

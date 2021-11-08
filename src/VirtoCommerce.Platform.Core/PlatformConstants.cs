@@ -229,17 +229,14 @@ namespace VirtoCommerce.Platform.Core
                     IsHidden = true,
                 };
 
-                public static IEnumerable<SettingDescriptor> AllSettings
+                public static IEnumerable<SettingDescriptor> GetAllSettings()
                 {
-                    get
-                    {
-                        yield return SetupStep;
-                        yield return SampleDataState;
-                        yield return ModulesAutoInstallState;
-                        yield return ModulesAutoInstalled;
-                        yield return SendDiagnosticData;
-                        yield return TrialExpirationDate;
-                    }
+                    yield return SetupStep;
+                    yield return SampleDataState;
+                    yield return ModulesAutoInstallState;
+                    yield return ModulesAutoInstalled;
+                    yield return SendDiagnosticData;
+                    yield return TrialExpirationDate;
                 }
             }
 
@@ -376,7 +373,7 @@ namespace VirtoCommerce.Platform.Core
             }
 
             public static IEnumerable<SettingDescriptor> AllSettings => InnerSecurity.GetAllSettings()
-                .Concat(Setup.AllSettings)
+                .Concat(Setup.GetAllSettings())
                 .Concat(UserProfile.GetAllSettings())
                 .Concat(UserInterface.AllSettings)
                 .Concat(Other.AllSettings);

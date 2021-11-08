@@ -247,7 +247,6 @@ namespace VirtoCommerce.Platform.Web.Security
             {
                 await RemoveLoginAsync(user, item.LoginProvider, item.ProviderKey);
             }
-            return;
         }
 
         private async Task AddRemoveRoleAsync(ApplicationUser user)

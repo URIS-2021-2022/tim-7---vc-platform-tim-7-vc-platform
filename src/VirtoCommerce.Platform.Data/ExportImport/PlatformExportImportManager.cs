@@ -295,9 +295,6 @@ namespace VirtoCommerce.Platform.Data.ExportImport
 
         private async Task ExportPlatformEntriesInternalAsync(ZipArchive zipArchive, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
         {
-            var progressInfo = new ExportImportProgressInfo();
-
-            var serializer = GetJsonSerializer();
             //Create part for platform entries
             var platformEntiriesPart = zipArchive.CreateEntry(PlatformZipEntryName, CompressionLevel.Optimal);
             using (var partStream = platformEntiriesPart.Open())
@@ -307,111 +304,17 @@ namespace VirtoCommerce.Platform.Data.ExportImport
                 {
                     await writer.WriteStartObjectAsync();
 
+                    var progressInfo = new ExportImportProgressInfo();
+                    var serializer = GetJsonSerializer();
+
                     if (manifest.HandleSecurity)
                     {
-                        #region Roles
-
-                        progressInfo.Description = "Roles exporting...";
-                        progressCallback(progressInfo);
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        await writer.WritePropertyNameAsync("Roles");
-                        await writer.WriteStartArrayAsync();
-
-                        var roles = _roleManager.Roles.ToList();
-                        if (_roleManager.SupportsRoleClaims)
-                        {
-                            foreach (var role in roles)
-                            {
-                                var fullyLoadedRole = await _roleManager.FindByIdAsync(role.Id);
-                                serializer.Serialize(writer, fullyLoadedRole);
-                            }
-
-                            writer.Flush();
-                            progressInfo.Description = $"{ roles.Count } roles exported";
-                            progressCallback(progressInfo);
-                        }
-
-                        await writer.WriteEndArrayAsync();
-
-                        #endregion Roles
-
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        #region Users
-
-                        await writer.WritePropertyNameAsync("Users");
-                        await writer.WriteStartArrayAsync();
-                        var usersResult = _userManager.Users.ToArray();
-                        progressInfo.Description = $"Security: {usersResult.Length} users exporting...";
-                        progressCallback(progressInfo);
-                        var userExported = 0;
-
-                        foreach (var user in usersResult)
-                        {
-                            var userExt = await _userManager.FindByIdAsync(user.Id);
-                            if (userExt != null)
-                            {
-                                serializer.Serialize(writer, userExt);
-                                userExported++;
-                            }
-                        }
-
-                        await writer.FlushAsync();
-                        progressInfo.Description = $"{ userExported } of { usersResult.Length } users exported";
-                        progressCallback(progressInfo);
-
-                        await writer.WriteEndArrayAsync();
-
-                        #endregion Users
-
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        #region UserApiKeys
-
-                        await writer.WritePropertyNameAsync("UserApiKeys");
-                        await writer.WriteStartArrayAsync();
-
-                        progressInfo.Description = "User Api keys: load keys...";
-                        progressCallback(progressInfo);
-
-                        var apiKeys = (await _userApiKeySearchService.SearchUserApiKeysAsync(new UserApiKeySearchCriteria { Take = int.MaxValue })).Results;
-                        foreach (var apiKey in apiKeys)
-                        {
-                            serializer.Serialize(writer, apiKey);
-                        }
-
-                        progressInfo.Description = $"User Api keys have been exported";
-                        progressCallback(progressInfo);
-                        await writer.WriteEndArrayAsync();
-
-                        #endregion UserApiKeys
+                        HandleSecurity(progressInfo, progressCallback, cancellationToken, writer, serializer);
                     }
 
                     if (manifest.HandleSettings)
                     {
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        await writer.WritePropertyNameAsync("Settings");
-                        await writer.WriteStartArrayAsync();
-
-                        progressInfo.Description = "Settings: selected modules settings exporting...";
-                        progressCallback(progressInfo);
-                        foreach (var module in manifest.Modules)
-                        {
-                            var moduleSettings = await _settingsManager.GetObjectSettingsAsync(_settingsManager.AllRegisteredSettings.Where(x => x.ModuleId == module.Id).Select(x => x.Name));
-                            //Export only settings with set values
-                            foreach (var setting in moduleSettings.Where(x => x.ItHasValues))
-                            {
-                                serializer.Serialize(writer, setting);
-                            }
-
-                            await writer.FlushAsync();
-                        }
-
-                        progressInfo.Description = $"Settings of modules exported";
-                        progressCallback(progressInfo);
-                        await writer.WriteEndArrayAsync();
+                        HandleSettings(progressInfo, progressCallback, cancellationToken, writer, serializer, manifest);
                     }
 
                     cancellationToken.ThrowIfCancellationRequested();
@@ -454,6 +357,113 @@ namespace VirtoCommerce.Platform.Data.ExportImport
                     await writer.FlushAsync();
                 }
             }
+        }
+
+        private async void HandleSettings(ExportImportProgressInfo progressInfo, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken, JsonTextWriter writer, JsonSerializer serializer, PlatformExportManifest manifest)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await writer.WritePropertyNameAsync("Settings");
+            await writer.WriteStartArrayAsync();
+
+            progressInfo.Description = "Settings: selected modules settings exporting...";
+            progressCallback(progressInfo);
+            foreach (var module in manifest.Modules)
+            {
+                var moduleSettings = await _settingsManager.GetObjectSettingsAsync(_settingsManager.AllRegisteredSettings.Where(x => x.ModuleId == module.Id).Select(x => x.Name));
+                //Export only settings with set values
+                foreach (var setting in moduleSettings.Where(x => x.ItHasValues))
+                {
+                    serializer.Serialize(writer, setting);
+                }
+
+                await writer.FlushAsync();
+            }
+
+            progressInfo.Description = $"Settings of modules exported";
+            progressCallback(progressInfo);
+            await writer.WriteEndArrayAsync();
+        }
+
+        private async void HandleSecurity(ExportImportProgressInfo progressInfo, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken, JsonTextWriter writer, JsonSerializer serializer)
+        {
+            #region Roles
+
+            progressInfo.Description = "Roles exporting...";
+            progressCallback(progressInfo);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await writer.WritePropertyNameAsync("Roles");
+            await writer.WriteStartArrayAsync();
+
+            var roles = _roleManager.Roles.ToList();
+            if (_roleManager.SupportsRoleClaims)
+            {
+                foreach (var role in roles)
+                {
+                    var fullyLoadedRole = await _roleManager.FindByIdAsync(role.Id);
+                    serializer.Serialize(writer, fullyLoadedRole);
+                }
+
+                writer.Flush();
+                progressInfo.Description = $"{ roles.Count } roles exported";
+                progressCallback(progressInfo);
+            }
+
+            await writer.WriteEndArrayAsync();
+
+            #endregion Roles
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            #region Users
+
+            await writer.WritePropertyNameAsync("Users");
+            await writer.WriteStartArrayAsync();
+            var usersResult = _userManager.Users.ToArray();
+            progressInfo.Description = $"Security: {usersResult.Length} users exporting...";
+            progressCallback(progressInfo);
+            var userExported = 0;
+
+            foreach (var user in usersResult)
+            {
+                var userExt = await _userManager.FindByIdAsync(user.Id);
+                if (userExt != null)
+                {
+                    serializer.Serialize(writer, userExt);
+                    userExported++;
+                }
+            }
+
+            await writer.FlushAsync();
+            progressInfo.Description = $"{ userExported } of { usersResult.Length } users exported";
+            progressCallback(progressInfo);
+
+            await writer.WriteEndArrayAsync();
+
+            #endregion Users
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            #region UserApiKeys
+
+            await writer.WritePropertyNameAsync("UserApiKeys");
+            await writer.WriteStartArrayAsync();
+
+            progressInfo.Description = "User Api keys: load keys...";
+            progressCallback(progressInfo);
+
+            var apiKeys = (await _userApiKeySearchService.SearchUserApiKeysAsync(new UserApiKeySearchCriteria { Take = int.MaxValue })).Results;
+            foreach (var apiKey in apiKeys)
+            {
+                serializer.Serialize(writer, apiKey);
+            }
+
+            progressInfo.Description = $"User Api keys have been exported";
+            progressCallback(progressInfo);
+            await writer.WriteEndArrayAsync();
+
+            #endregion UserApiKeys
         }
 
         private async Task ImportModulesInternalAsync(ZipArchive zipArchive, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)

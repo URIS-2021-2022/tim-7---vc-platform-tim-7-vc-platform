@@ -154,7 +154,7 @@ angular.module('platformWebApp')
             // Column with type number will use numberFilter to correct display of values
             // Column with type date will use predefined template with am-time-ago directive to display date in human-readable format
             function autoFormatColumns(grid) {
-                var gridOptions = grid.options;
+              
                 grid.buildColumns();
                 var columnDefs = angular.copy(gridOptions.columnDefs);
                 for (var i = 0; i < columnDefs.length; i++) {
