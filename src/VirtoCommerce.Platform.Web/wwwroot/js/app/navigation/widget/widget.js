@@ -1,7 +1,7 @@
-﻿angular.module('platformWebApp')
+angular.module('platformWebApp')
 .factory('platformWebApp.widgetService', function () {
 
-    var retVal = {
+   return {
         widgetsMap: [],
         registerWidget: function (widget, containerName) {
             if (!this.widgetsMap[containerName]) {
@@ -11,7 +11,6 @@
         }
 
     };
-    return retVal;
 })
 .directive('vaWidgetContainer', ['$compile', '$localStorage', 'platformWebApp.widgetService', function ($compile, $localStorage, widgetService) {
     return {
