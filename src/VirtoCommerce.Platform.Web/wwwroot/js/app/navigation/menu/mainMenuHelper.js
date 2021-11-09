@@ -1,4 +1,4 @@
-function handleKeyUpEvent(scope) {
+function handleKeyUpEvent(scope, event) {
     if (scope.showSubMenu && event.keyCode === 27) {
         scope.$apply(function () {
             scope.showSubMenu = false;
@@ -6,7 +6,7 @@ function handleKeyUpEvent(scope) {
     }
 }
 
-function handleClickEvent(scope) {
+function handleClickEvent(scope, event) {
     var dropdownElement = $document.find('.nav-bar .dropdown');
     var hadDropdownElement = $document.find('.__has-dropdown');
     if (scope.showSubMenu && !(dropdownElement.is(event.target) || dropdownElement.has(event.target).length > 0 ||

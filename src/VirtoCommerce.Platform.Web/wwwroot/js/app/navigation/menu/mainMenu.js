@@ -111,9 +111,9 @@ angular.module('platformWebApp')
                         }
                     };
 
-                    handleKeyUpEvent(scope);
+                    handleKeyUpEvent(scope, event);
 
-                    handleClickEvent(scope);
+                    handleClickEvent(scope, event);
 
 
                     $document.bind('keyup', handleKeyUpEvent);
