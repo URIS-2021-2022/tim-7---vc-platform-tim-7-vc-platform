@@ -63,7 +63,6 @@ import 'angular-ui-scroll';
 import 'angular-ui-scrollpoint';
 import 'angular-ui-event';
 import 'angular-ui-mask';
-import 'angular-ui-validate';
 import 'angular-ui-indeterminate';
 import 'angular-ui-uploader';
 

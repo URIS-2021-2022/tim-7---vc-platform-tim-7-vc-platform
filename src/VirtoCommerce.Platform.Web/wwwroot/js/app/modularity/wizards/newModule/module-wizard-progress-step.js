@@ -1,4 +1,4 @@
-﻿angular.module('platformWebApp').controller('platformWebApp.moduleInstallProgressController', ['$scope', '$window', 'platformWebApp.bladeNavigationService', 'platformWebApp.modules', 'platformWebApp.WaitForRestart', 'platformWebApp.dialogService', '$timeout', function ($scope, $window, bladeNavigationService, modules, waitForRestart, dialogService, $timeout) {
+angular.module('platformWebApp').controller('platformWebApp.moduleInstallProgressController', ['$scope', '$window', 'platformWebApp.bladeNavigationService', 'platformWebApp.modules', 'platformWebApp.WaitForRestart', 'platformWebApp.dialogService', '$timeout', function ($scope, $window, bladeNavigationService, modules, waitForRestart, dialogService, $timeout) {
     var blade = $scope.blade;
     blade.subtitle = 'Installation progress';
 
@@ -32,7 +32,10 @@
                     }
                     finally {
                         // delay initial start for 3 seconds
-                        $timeout(function () { }, 3000).then(function () {
+                        $timeout(function () {
+
+                            // to do some functionality
+                        }, 3000).then(function () {
                             return waitForRestart(1000);
                         });
                     }

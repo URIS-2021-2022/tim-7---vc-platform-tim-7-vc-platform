@@ -69,7 +69,7 @@ angular.module('platformWebApp').factory('platformWebApp.signalRHubProxy', ['$ro
             },
             connection: connection
         }
-    };
+    }
 
     return signalRHubProxyFactory;
 }]);
