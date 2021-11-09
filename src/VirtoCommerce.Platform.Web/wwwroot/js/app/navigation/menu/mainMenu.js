@@ -113,7 +113,7 @@ angular.module('platformWebApp')
 
                     handleKeyUpEvent(scope);
 
-                    handleClickEvent(scope, event);
+                    handleClickEvent(scope);
 
 
                     $document.bind('keyup', handleKeyUpEvent);

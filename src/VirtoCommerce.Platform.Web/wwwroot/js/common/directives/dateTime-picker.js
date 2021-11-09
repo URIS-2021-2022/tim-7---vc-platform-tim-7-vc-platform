@@ -972,7 +972,16 @@ angular.module('platformWebApp')
             }
             if ($scope.meridian === _24Hour) {
                 $scope.showMeridian = true;
-                addMinutes(selected.getHours() <= 12 ? 0 : 12 * 60 * ((selected.getHours() >= 12) ? 1 : -1));
+                var sat;
+                if (selected.getHours() >= 12) {
+                    sat = 1;
+                }
+                else {
+                    sat = -1;
+                }
+                
+                
+                addMinutes(selected.getHours() <= 12 ? 0 : 12 * 60 * sat);
                 return true;
             }
         };
