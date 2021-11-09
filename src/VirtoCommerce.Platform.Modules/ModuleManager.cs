@@ -314,12 +314,9 @@ namespace VirtoCommerce.Platform.Modules
 
         private IModuleTypeLoader GetTypeLoaderForModule(ModuleInfo moduleInfo)
         {
-            foreach (IModuleTypeLoader typeLoader in this.ModuleTypeLoaders)
-            {
-                if (typeLoader.CanLoadModuleType(moduleInfo))
-                {
+            foreach (IModuleTypeLoader typeLoader in this.ModuleTypeLoaders.Where(tl => tl.CanLoadModuleType(moduleInfo)))
+            {                
                     return typeLoader;
-                }
             }
         
 
