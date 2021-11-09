@@ -321,6 +321,7 @@ namespace VirtoCommerce.Platform.Modules
                     return typeLoader;
                 }
             }
+        
 
             throw new ModuleTypeLoaderNotFoundException(moduleInfo.ModuleName, "There is currently no moduleTypeLoader in the ModuleManager that can retrieve the specified module.", null);
         }
