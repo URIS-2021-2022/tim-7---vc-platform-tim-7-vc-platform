@@ -18,30 +18,34 @@ namespace VirtoCommerce.Platform.Security.Services
             _repositoryFactory = repositoryFactory;
         }
 
-        public async Task<UserApiKeySearchResult> SearchUserApiKeysAsync(UserApiKeySearchCriteria criteria)
+        public Task<UserApiKeySearchResult> SearchUserApiKeysAsync(UserApiKeySearchCriteria criteria)
         {
-            using (var repository = _repositoryFactory())
+            if (criteria == null)
             {
-                if (criteria == null)
-                {
-                    throw new ArgumentNullException(nameof(criteria));
-                }
-
-                var result = AbstractTypeFactory<UserApiKeySearchResult>.TryCreateInstance();
-
-                var query = repository.UserApiKeys.AsNoTracking();
-                result.TotalCount = await query.CountAsync();
-
-                var sortInfos = criteria.SortInfos;
-                if (sortInfos.IsNullOrEmpty())
-                {
-                    sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<UserApiKey>(x => x.ApiKey), SortDirection = SortDirection.Ascending } };
-                }
-                var apiKeysEntities = await query.OrderBySortInfos(sortInfos).Skip(criteria.Skip).Take(criteria.Take).ToArrayAsync();
-                result.Results = apiKeysEntities.Select(x => x.ToModel(AbstractTypeFactory<UserApiKey>.TryCreateInstance())).ToArray();
-
-                return result;
+                throw new ArgumentNullException(nameof(criteria));
             }
+
+            return SearchUserApiKeysInternalAsync(criteria);
+        }
+
+        public async Task<UserApiKeySearchResult> SearchUserApiKeysInternalAsync(UserApiKeySearchCriteria criteria)
+        {
+            using var repository = _repositoryFactory();
+
+            var result = AbstractTypeFactory<UserApiKeySearchResult>.TryCreateInstance();
+
+            var query = repository.UserApiKeys.AsNoTracking();
+            result.TotalCount = await query.CountAsync();
+
+            var sortInfos = criteria.SortInfos;
+            if (sortInfos.IsNullOrEmpty())
+            {
+                sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<UserApiKey>(x => x.ApiKey), SortDirection = SortDirection.Ascending } };
+            }
+            var apiKeysEntities = await query.OrderBySortInfos(sortInfos).Skip(criteria.Skip).Take(criteria.Take).ToArrayAsync();
+            result.Results = apiKeysEntities.Select(x => x.ToModel(AbstractTypeFactory<UserApiKey>.TryCreateInstance())).ToArray();
+
+            return result;
         }
     }
 }

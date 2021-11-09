@@ -8,11 +8,11 @@ angular.module('platformWebApp')
         {
             var attributes = ["tooltip-placement", "tooltip-animation", "tooltip-popup-delay", "tooltip-trigger", "tooltip-enable", "tooltip-append-to-body", "tooltip-class"];
             for (let value of attributes) {
-                var attribute = attributes[i];
-                if (!tElem.attr[attribute]) {
-                    tElem.attr(attribute, '{{' + tAttrs.$normalize(attribute) + '}}');
+                var value = attributes[i];
+                if (!tElem.attr[value]) {
+                    tElem.attr(value, '{{' + tAttrs.$normalize(value) + '}}');
                 }
-            }
+            
         }
     };
 }]);
