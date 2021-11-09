@@ -362,12 +362,9 @@ namespace VirtoCommerce.Platform.Core
                     AllowedValues = new[] { "New", "Approved", "Rejected", "Deleted" }
                 };
 
-                public static IEnumerable<SettingDescriptor> AllSettings
+                public static IEnumerable<SettingDescriptor> GetAllSettings()
                 {
-                    get
-                    {
-                        yield return AccountStatuses;
-                    }
+                    yield return AccountStatuses;
                 }
             }
 
@@ -375,9 +372,7 @@ namespace VirtoCommerce.Platform.Core
                 .Concat(Setup.GetAllSettings())
                 .Concat(UserProfile.GetAllSettings())
                 .Concat(UserInterface.GetAllSettings())
-                .Concat(Other.AllSettings);
-            
-            
+                .Concat(Other.GetAllSettings());   
         }
     }
 }

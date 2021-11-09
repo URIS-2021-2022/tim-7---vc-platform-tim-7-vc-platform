@@ -123,15 +123,9 @@ namespace VirtoCommerce.Platform.Core.Common
         /// <returns>The elements that match the condition defined by the specified predicate.</returns>
         public IEnumerable<TValue> FindAllValues(Predicate<TValue> valueFilter)
         {
-            foreach (KeyValuePair<TKey, IList<TValue>> pair in this)
+            foreach (TValue value in this.SelectMany(pair => pair.Value).Where(v => valueFilter(v)))
             {
-                foreach (TValue value in pair.Value)
-                {
-                    if (valueFilter(value))
-                    {
-                        yield return value;
-                    }
-                }
+                yield return value;
             }
         }
 

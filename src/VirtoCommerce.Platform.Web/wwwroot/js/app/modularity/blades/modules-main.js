@@ -1,3 +1,5 @@
+import { val } from "@uirouter/angularjs";
+
 angular.module('platformWebApp')
     .controller('platformWebApp.modulesMainController', ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.modules', 'platformWebApp.moduleHelper', function ($scope, bladeNavigationService, modules, moduleHelper) {
         var blade = $scope.blade;
@@ -122,9 +124,9 @@ angular.module('platformWebApp')
         blade.headIcon = 'fa fa-cubes';
 
         blade.currentEntities = [
-            nodeUpdate = { name: 'platform.blades.modules-main.labels.updates', mode: 'update' },
-            nodeAvailable = { name: 'platform.blades.modules-main.labels.available', mode: 'available' },
-            nodeInstalled = { name: 'platform.blades.modules-main.labels.installed', mode: 'installed' },
+            { name: 'platform.blades.modules-main.labels.updates', mode: 'update' },
+            { name: 'platform.blades.modules-main.labels.available', mode: 'available' },
+            { name: 'platform.blades.modules-main.labels.installed', mode: 'installed' },
             { name: 'platform.blades.modules-main.labels.advanced', mode: 'advanced' }
         ];
 

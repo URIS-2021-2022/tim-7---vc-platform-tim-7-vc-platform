@@ -1,4 +1,4 @@
-﻿angular.module('platformWebApp')
+angular.module('platformWebApp')
 // Service provide functions for currency convertion and validation with localization support
 .factory('platformWebApp.currencyFormat', ['platformWebApp.numberFormat', '$filter', '$locale', function (numberFormat, $filter, $locale) {
     // Remove currency symbol from validation regular expression: we want only value in input
@@ -60,8 +60,11 @@
         getVariables: function (pattern, minExclusive, min, maxExclusive, max, fraction) {
             var result = {};
 
-            result.isNegativeAllowed = angular.isDefined(minExclusive) ? minExclusive <= 0 : angular.isDefined(min) ? min < 0 : true;
-            result.isPositiveAllowed = angular.isDefined(maxExclusive) ? maxExclusive >= 0 : angular.isDefined(max) ? max > 0 : true;
+            const isDefinedMin = angular.isDefined(min) ? min < 0 : true;
+            const isDefinedMax = angular.isDefined(max) ? max > 0 : true;
+
+            result.isNegativeAllowed = angular.isDefined(minExclusive) ? minExclusive <= 0 : isDefinedMin;
+            result.isPositiveAllowed = angular.isDefined(maxExclusive) ? maxExclusive >= 0 : isDefinedMax;
 
             // Negative (like "-") and positive (like "+") prefixies
             result.negativePrefix = pattern.negPre;

@@ -72,10 +72,6 @@ angular.module('platformWebApp')
     $scope.confirmActionInDialog = function (action) {
         blade.isLoading = true;
 
-        //var clone = {
-        //    id: blade.currentEntity.id,
-        //    version: blade.currentEntity.version,
-        //};
         var selection = [blade.currentEntity];
         var modulesApiMethod = action === 'uninstall' ? modules.getDependents : modules.getDependencies;
         modulesApiMethod(selection, function (data) {
@@ -104,11 +100,11 @@ angular.module('platformWebApp')
                             modulesApiMethod = modules.uninstall;
                             break;
                     }
-                    modulesApiMethod(data, function (data) {
+                    modulesApiMethod(data, function (currentEntityData) {
                         // show module (un)installation progress
                         var newBlade = {
                             id: 'moduleInstallProgress',
-                            currentEntity: data,
+                            currentEntity: currentEntityData,
                             controller: 'platformWebApp.moduleInstallProgressController',
                             template: '$(Platform)/Scripts/app/modularity/wizards/newModule/module-wizard-progress-step.tpl.html'
                         };
@@ -149,7 +145,7 @@ angular.module('platformWebApp')
         // ADD FILTERS: packages only
         uploader.filters.push({
             name: 'packageFilter',
-            fn: function (i /*{File|FileLikeObject}*/, options) {
+            fn: function (i /* File | FileLikeObject */, options) {
                 return i.name.endsWith('.zip');
             }
         });

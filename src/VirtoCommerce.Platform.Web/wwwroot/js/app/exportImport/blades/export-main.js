@@ -49,8 +49,7 @@ angular.module('platformWebApp')
                 return blade.notification && !blade.notification.finished;
             },
             executeMethod: function () {
-                exportImportResourse.taskCancel({ jobId: blade.notification.jobId }, null, function (data) {
-                });
+                exportImportResourse.taskCancel({ jobId: blade.notification.jobId }, null, null);
             }
         };
 
