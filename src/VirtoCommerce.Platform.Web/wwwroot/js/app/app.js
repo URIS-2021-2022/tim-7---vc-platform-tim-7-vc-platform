@@ -210,8 +210,11 @@ angular.module('platformWebApp', AppDependencies).controller('platformWebApp.app
             {
                 $window.location.reload();
             }
+            const crypto = window.crypto || window.msCrypto;
+            var array = new Uint32Array(1);
+            crypto.getRandomValues(array);
 
-            var url = "images/logo.png?now=" + Math.random();
+            var url = "images/logo.png?now=" + array[0];
             var img = new Image();
             img.src = url;
 
@@ -483,8 +486,8 @@ angular.module('platformWebApp', AppDependencies).controller('platformWebApp.app
 
             //register metaproperties templates
             $templateRequest('$(Platform)/Scripts/common/directives/genericValueInput.tpl.html').then(function (response) {
-                var template = angular.element(response);
-                $compile(template);
+                var templateElement = angular.element(response);
+                $compile(templateElement);
             });
 
             // register login-on-behalf command in platform account blade
