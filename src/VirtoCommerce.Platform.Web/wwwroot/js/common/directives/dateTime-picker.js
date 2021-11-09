@@ -104,9 +104,11 @@ angular.module('platformWebApp')
                         : uiDatetimePickerConfig.enableTime;
 
                     // determine default picker
-                    scope.initialPicker = angular.isDefined(attrs.initialPicker)
-                        ? attrs.initialPicker
-                        : (scope.enableDate ? uiDatetimePickerConfig.initialPicker : 'time');
+                    if (angular.isDefined(attrs.initialPicker)) {
+                        scope.initialPicker = attrs.initialPicker;
+                    } else {
+                        scope.initialPicker = scope.enableDate ? uiDatetimePickerConfig.initialPicker : 'time';
+                    }
 
                     // determine the picker to open when control is re-opened
                     scope.reOpenDefault = angular.isDefined(attrs.reOpenDefault)

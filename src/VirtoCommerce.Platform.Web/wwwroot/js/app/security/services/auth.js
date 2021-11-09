@@ -109,9 +109,7 @@ angular.module('platformWebApp')
                     //Check permissions in scope
                     hasPermission = _.some(securityScopes, function (x) {
                         var permissionWithScope = permission + ":" + x;
-                        var retVal = $.inArray(permissionWithScope, authContext.permissions) > -1;
-                        //console.log(permissionWithScope + "=" + retVal);
-                        return retVal;
+                        return $.inArray(permissionWithScope, authContext.permissions) > -1;
                     });
                 }
             }

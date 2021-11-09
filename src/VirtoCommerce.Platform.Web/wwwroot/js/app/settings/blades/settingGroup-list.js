@@ -182,7 +182,10 @@ angular.module('platformWebApp')
                             }
                             finally {
                                 // delay initial start for 3 seconds
-                                $timeout(function () { }, 3000).then(function () {
+                                $timeout(function () {
+
+                                    // do something
+                                }, 3000).then(function () {
                                     return waitForRestart(1000);
                                 });
                             }
