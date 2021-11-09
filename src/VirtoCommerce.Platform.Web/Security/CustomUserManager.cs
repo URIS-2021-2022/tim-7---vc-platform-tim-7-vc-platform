@@ -22,7 +22,7 @@ namespace VirtoCommerce.Platform.Web.Security
         private readonly IPlatformMemoryCache _memoryCache;
         private readonly RoleManager<Role> _roleManager;
         private readonly IEventPublisher _eventPublisher;
-        private readonly IUserPasswordHasher _userPasswordHasher;
+        private readonly IPasswordHasher<ApplicationUser> _userPasswordHasher;
         private readonly UserOptionsExtended _userOptionsExtended;
         private readonly Func<ISecurityRepository> _repositoryFactory;
         private readonly PasswordOptionsExtended _passwordOptionsExtended;
