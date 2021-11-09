@@ -80,9 +80,7 @@ angular.module('platformWebApp')
                 window.open(data.url, '_blank');
             };
 
-            //$scope.rename = function (listItem) {
-            //    rename(listItem);
-            //};
+         
 
             //function rename(listItem) {
             //    var result = prompt("Enter new name", listItem.name);
