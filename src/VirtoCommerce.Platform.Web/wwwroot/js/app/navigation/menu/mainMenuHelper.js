@@ -6,7 +6,7 @@ function handleKeyUpEvent(scope, event) {
     }
 }
 
-function handleClickEvent(scope, event) {
+function handleClickEvent(scope) {
     var dropdownElement = $document.find('.nav-bar .dropdown');
     var hadDropdownElement = $document.find('.__has-dropdown');
     if (scope.showSubMenu && !(dropdownElement.is(event.target) || dropdownElement.has(event.target).length > 0 ||

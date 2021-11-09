@@ -34,7 +34,9 @@ angular.module('platformWebApp')
 
                     // pre-calculate $alternativeVersion: set latest OR installed version here
                     var foundInstalledModule;
-                    if (foundInstalledModule = _.findWhere(vals, { isInstalled: true })) {
+                    foundInstalledModule = _.findWhere(vals, { isInstalled: true });
+                    if (foundInstalledModule) {
+               
                         _.each(vals, function (m) {
                             if (m === foundInstalledModule) {
                                 if (m !== latest)
