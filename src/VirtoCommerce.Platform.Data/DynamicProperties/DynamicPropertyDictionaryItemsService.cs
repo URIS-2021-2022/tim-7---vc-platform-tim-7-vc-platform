@@ -69,12 +69,18 @@ namespace VirtoCommerce.Platform.Data.DynamicProperties
 
         }
 
-        public virtual async Task DeleteDictionaryItemsAsync(string[] itemIds)
+        public virtual Task DeleteDictionaryItemsAsyncItemIds(string[] itemIds)
         {
             if (itemIds == null)
             {
                 throw new ArgumentNullException(nameof(itemIds));
             }
+
+            return DeleteDictionaryItemsAsync(itemIds);
+        }
+
+        public virtual async Task DeleteDictionaryItemsAsync(string[] itemIds)
+        {
 
             using (var repository = _repositoryFactory())
             {

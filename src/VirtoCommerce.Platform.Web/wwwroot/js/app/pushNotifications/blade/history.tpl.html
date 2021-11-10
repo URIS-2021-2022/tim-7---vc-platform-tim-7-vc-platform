@@ -5,7 +5,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th class="table-col" ng-repeat="column in columns" ng-click="setOrder(column)" ng-class="(column.checked) ? '__sorted' : ''">
+                            <th scope="col" class="table-col" ng-repeat="column in columns" ng-click="setOrder(column)" ng-class="(column.checked) ? '__sorted' : ''">
                                 {{column.title | translate}}
                                 <i class="table-ico sort fa" ng-class="column.checked ? (column.reverse ? 'fa-sort-up' : 'fa-sort-down') : ''"></i>
                             </th>

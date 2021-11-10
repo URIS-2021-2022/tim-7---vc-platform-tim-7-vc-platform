@@ -36,6 +36,7 @@
             <div class="sub-t" ng-if="blade.error && !blade.notification">{{ 'platform.blades.import-main.labels.upload-failed' | translate }}</div>
             <div class="table-wrapper" ng-if="blade.error && !blade.notification">
                 <table class="table __items">
+                    <caption>import export tpl caption</caption>
                     <tbody>
                         <tr class="table-item" ng-mouseup="export()" ng-class="{'__selected': 'export' === selectedNodeId}">
                             <td class="table-col">
