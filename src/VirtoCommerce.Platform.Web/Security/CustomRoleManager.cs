@@ -88,12 +88,19 @@ namespace VirtoCommerce.Platform.Web.Security
             return result;
         }
 
-        public override async Task<IdentityResult> UpdateAsync(Role updateRole)
+        public Task<IdentityResult> UpdateAsyncRoles(Role updateRole)
         {
             if (updateRole == null)
             {
                 throw new ArgumentNullException(nameof(updateRole));
             }
+
+            return UpdateAsync(updateRole);
+        }
+
+        public override async Task<IdentityResult> UpdateAsync(Role updateRole)
+        {
+            
             Role existRole = null;
             if (!string.IsNullOrEmpty(updateRole.Id))
             {
