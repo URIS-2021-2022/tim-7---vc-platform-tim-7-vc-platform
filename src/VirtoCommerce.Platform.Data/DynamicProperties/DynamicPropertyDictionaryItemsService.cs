@@ -39,13 +39,19 @@ namespace VirtoCommerce.Platform.Data.DynamicProperties
             });
         }
 
-        public virtual async Task SaveDictionaryItemsAsync(DynamicPropertyDictionaryItem[] items)
-        {
+        public virtual Task SaveDictionaryItemsAsync(DynamicPropertyDictionaryItem[] items) {
             if (items == null)
             {
                 throw new ArgumentNullException(nameof(items));
             }
+            return SaveDictionaryItemsInternalAsync(items);
 
+        }
+
+
+        public virtual async Task SaveDictionaryItemsInternalAsync(DynamicPropertyDictionaryItem[] items)
+        {
+ 
             using (var repository = _repositoryFactory())
             {
                 var dbExistItems = await repository.GetDynamicPropertyDictionaryItemByIdsAsync(items.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
