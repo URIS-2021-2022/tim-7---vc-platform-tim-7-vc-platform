@@ -7,6 +7,7 @@ angular.module('platformWebApp')
                 blade.currentEntity = {};
             }
 
+
             blade.refresh = function () {
                 blade.isLoading = true;
                 assets.search(
