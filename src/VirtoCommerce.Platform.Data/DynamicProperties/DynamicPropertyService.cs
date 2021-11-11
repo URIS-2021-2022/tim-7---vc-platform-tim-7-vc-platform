@@ -61,12 +61,19 @@ namespace VirtoCommerce.Platform.Data.DynamicProperties
             });
         }
 
-        public virtual async Task<DynamicProperty[]> SaveDynamicPropertiesAsync(DynamicProperty[] properties)
+        public virtual Task<DynamicProperty[]> SaveDynamicProperties(DynamicProperty[] properties)
         {
             if (properties == null)
             {
                 throw new ArgumentNullException(nameof(properties));
             }
+
+            return SaveDynamicPropertiesAsync(properties);
+        }
+
+        public virtual async Task<DynamicProperty[]> SaveDynamicPropertiesAsync(DynamicProperty[] properties)
+        {
+            
             var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = _repositoryFactory())
             {
@@ -92,12 +99,20 @@ namespace VirtoCommerce.Platform.Data.DynamicProperties
             return properties;
         }
 
-        public virtual async Task DeleteDynamicPropertiesAsync(string[] propertyIds)
+
+        public virtual  Task DeleteDynamicProperties(string[] propertyIds)
         {
             if (propertyIds == null)
             {
                 throw new ArgumentNullException(nameof(propertyIds));
             }
+
+            return DeleteDynamicPropertiesAsync(propertyIds);
+        }
+
+        public virtual async Task DeleteDynamicPropertiesAsync(string[] propertyIds)
+        {
+            
 
             using (var repository = _repositoryFactory())
             {

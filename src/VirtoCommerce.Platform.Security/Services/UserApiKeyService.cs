@@ -79,12 +79,20 @@ namespace VirtoCommerce.Platform.Security.Services
             });
         }
 
-        public async Task<UserApiKey[]> SaveApiKeysAsync(UserApiKey[] apiKeys)
+
+        public  Task<UserApiKey[]> SaveApiKeys(UserApiKey[] apiKeys)
         {
             if (apiKeys == null)
             {
                 throw new ArgumentNullException(nameof(apiKeys));
             }
+
+            return SaveApiKeysAsync(apiKeys);
+        }
+
+        public async Task<UserApiKey[]> SaveApiKeysAsync(UserApiKey[] apiKeys)
+        {
+           
 
             var pkMap = new PrimaryKeyResolvingMap();
             using (var repository = _repositoryFactory())
@@ -112,12 +120,21 @@ namespace VirtoCommerce.Platform.Security.Services
             return apiKeys;
         }
 
-        public async Task DeleteApiKeysAsync(string[] ids)
+
+        public Task DeleteApiKeys(string[] ids)
         {
             if (ids == null)
             {
                 throw new ArgumentNullException(nameof(ids));
             }
+
+            return DeleteApiKeysAsync(ids);
+        }
+
+
+        public async Task DeleteApiKeysAsync(string[] ids)
+        {
+           
 
             using (var repository = _repositoryFactory())
             {
