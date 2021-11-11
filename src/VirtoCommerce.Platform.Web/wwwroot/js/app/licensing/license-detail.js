@@ -48,7 +48,7 @@ angular.module('platformWebApp')
             // lic only
             uploader.filters.push({
                 name: 'licFilter',
-                fn: function (i /*{File|FileLikeObject}*/, options) {
+                fn: function (i , options) {
                     return i.name.toLowerCase().endsWith('.lic');
                 }
             });

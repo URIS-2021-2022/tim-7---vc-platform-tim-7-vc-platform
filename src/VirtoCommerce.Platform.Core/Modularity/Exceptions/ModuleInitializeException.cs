@@ -6,6 +6,8 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
     /// Exception thrown by <see cref="IModuleInitializer"/> implementations whenever
     /// a module fails to load.
     /// </summary>
+    ///
+    [System.SerializableAttribute]
     public partial class ModuleInitializeException : ModularityException
     {
         /// <summary>
