@@ -1,10 +1,13 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 {
     /// <summary>
     /// Exception thrown when a requested <see cref="InitializationMode.OnDemand"/> <see cref="IModule"/> was not found.
     /// </summary>
+    ///
+    [Serializable]
     public partial class ModuleNotFoundException : ModularityException
     {
         /// <summary>
@@ -12,6 +15,11 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
         /// </summary>
         public ModuleNotFoundException()
         {
+        }
+
+        protected ModuleNotFoundException(SerializationInfo info, StreamingContext context): base(info,context)
+        {
+
         }
 
         /// <summary>
@@ -56,6 +64,12 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
         public ModuleNotFoundException(string moduleName, string message, Exception innerException)
             : base(moduleName, message, innerException)
         {
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            
         }
     }
 }
