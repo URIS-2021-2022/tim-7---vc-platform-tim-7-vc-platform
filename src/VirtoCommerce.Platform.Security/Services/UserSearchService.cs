@@ -20,7 +20,7 @@ namespace VirtoCommerce.Platform.Security.Services
             _roleManagerFactory = roleManagerFactory;
         }
 
-        public async Task<UserSearchResult> SearchUsersAsync(UserSearchCriteria criteria)
+        public Task<UserSearchResult> SearchUsersAsync(UserSearchCriteria criteria)
         {
             using (var userManager = _userManagerFactory())
             {
@@ -32,6 +32,15 @@ namespace VirtoCommerce.Platform.Security.Services
                 {
                     throw new NotSupportedException();
                 }
+
+                return SearchUsersAsyncBody(criteria,userManager);
+            }
+        }
+
+
+        public async Task<UserSearchResult> SearchUsersAsyncBody(UserSearchCriteria criteria,UserManager<ApplicationUser> userManager)
+        {
+            
 
                 var result = AbstractTypeFactory<UserSearchResult>.TryCreateInstance();
                 var query = userManager.Users;
@@ -78,7 +87,7 @@ namespace VirtoCommerce.Platform.Security.Services
                 result.Results = await query.OrderBySortInfos(sortInfos).Skip(criteria.Skip).Take(criteria.Take).ToArrayAsync();
 
                 return result;
-            }
+            
         }
     }
 }
