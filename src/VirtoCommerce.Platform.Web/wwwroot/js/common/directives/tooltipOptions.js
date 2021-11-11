@@ -1,4 +1,4 @@
-﻿angular.module('platformWebApp')
+angular.module('platformWebApp')
 .directive('vaTooltipOptions', [function () {
     return {
         restrict: 'A',
@@ -14,7 +14,7 @@
                         });
                     }
                 };
-                for (var i = 0; i < options.length; i++) {
+                for (let value of options) {
                     applyOption(options[i]);
                 }
             };
