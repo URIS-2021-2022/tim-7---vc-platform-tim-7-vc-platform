@@ -147,13 +147,18 @@ namespace VirtoCommerce.Platform.Web.Security
             return result;
         }
 
-        protected virtual async Task LoadRolePermissionsAsync(Role role)
+        protected virtual Task LoadRolePermissionsAsyncRoles(Role role)
         {
             if (role == null)
             {
                 throw new ArgumentNullException(nameof(role));
             }
 
+            return LoadRolePermissionsAsync(role);
+        }
+
+        protected virtual async Task LoadRolePermissionsAsync(Role role)
+        {
             if (SupportsRoleClaims)
             {
                 role.Permissions = new List<Permission>();

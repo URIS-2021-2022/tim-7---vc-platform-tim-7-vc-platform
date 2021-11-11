@@ -21,7 +21,7 @@ angular.module('platformWebApp')
                         var translated = $translate.instant(translateKey);
                         data[i].displayName = translated === translateKey ? data[i].name : translated;
                     }
-                });;
+                });
             },
             queryRegions: (countryCode) => {
                 var results = $resource('api/platform/common/countries/:countryCode/regions', { countryCode: countryCode }).query((data) => {
