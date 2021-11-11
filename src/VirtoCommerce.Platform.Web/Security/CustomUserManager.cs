@@ -341,13 +341,18 @@ namespace VirtoCommerce.Platform.Web.Security
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        protected virtual async Task LoadUserDetailsAsync(ApplicationUser user)
+
+        public virtual Task LoadUserDetailsAsync(ApplicationUser user)
         {
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
             }
-
+            return LoadUserDetailsInternalAsync(user);
+        }
+        protected virtual async Task LoadUserDetailsInternalAsync(ApplicationUser user)
+        {
+ 
             // check password expiry policy and mark password as expired, if needed
             var lastPasswordChangeDate = user.LastPasswordChangedDate ?? user.CreatedDate;
             if (!user.PasswordExpired &&
