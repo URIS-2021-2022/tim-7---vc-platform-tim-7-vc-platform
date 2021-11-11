@@ -4,8 +4,6 @@ angular.module('platformWebApp')
     // TODO: Replace with tested localized version (see below)
     .directive('smartFloat', ['$filter', '$compile', function ($filter, $compile) {
         var INTEGER_REGEXP = /^\-?\d+$/; //Integer number
-        var INTEGER_MAX_VALUE = 2147483647;
-        var INTEGER_MIN_VALUE = -2147483648;
         var FLOAT_REGEXP_1 = /^[-+]?\$?\d+.(\d{3})*(,\d*)$/; //Numbers like: 1.123,56
         var FLOAT_REGEXP_2 = /^[-+]?\$?\d+,(\d{3})*(.\d*)$/; //Numbers like: 1,123.56
         var FLOAT_REGEXP_3 = /^[-+]?\$?\d+(.\d*)?$/; //Numbers like: 1123.56
@@ -50,17 +48,26 @@ angular.module('platformWebApp')
                 }
                 else {
                     ctrl.$parsers.unshift(function (viewValue) {
-                        if (INTEGER_REGEXP.test(viewValue) && viewValue >= INTEGER_MIN_VALUE && viewValue <= INTEGER_MAX_VALUE) {
-                            ctrl.$setValidity('integer', true);
-                            return viewValue;
-                        }
-                        else {
-                            //Allow to use empty values
-                            ctrl.$setValidity('integer', !viewValue);
-                            return viewValue;
-                        }
+                        integerTest(viewValue);
                     });
                 }
             }
         };
     }]);
+
+
+function integerTest(viewValue) {
+    var INTEGER_REGEXP = /^\-?\d+$/; //Integer number
+    var INTEGER_MAX_VALUE = 2147483647;
+    var INTEGER_MIN_VALUE = -2147483648;
+
+    if (INTEGER_REGEXP.test(viewValue) && viewValue >= INTEGER_MIN_VALUE && viewValue <= INTEGER_MAX_VALUE) {
+        ctrl.$setValidity('integer', true);
+        return viewValue;
+    }
+    else {
+        //Allow to use empty values
+        ctrl.$setValidity('integer', !viewValue);
+        return viewValue;
+    }
+}

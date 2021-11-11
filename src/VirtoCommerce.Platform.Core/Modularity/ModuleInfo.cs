@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace VirtoCommerce.Platform.Core.Modularity
 {
@@ -38,6 +39,13 @@ namespace VirtoCommerce.Platform.Core.Modularity
                     DependsOn.Add(dependency);
                 }
             }
+        }
+
+        /// <summary>
+        /// Special protected constructor used during deserialization
+        /// </summary>
+        protected ModuleInfo(SerializationInfo info, StreamingContext context)
+        {
         }
 
         /// <summary>
