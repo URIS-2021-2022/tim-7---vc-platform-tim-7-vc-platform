@@ -27,15 +27,16 @@
                 <div class="table-wrapper">
                     <form name="formScope" class="form">
                         <table class="table __indexed" ng-init="setForm(formScope)">
+                            <caption>Caption</caption>
                             <thead>
                                 <tr>
-                                    <th class="table-col">
+                                    <th class="table-col" scope="col">
                                         <label class="form-control __checkbox">
                                             <input type="checkbox" ng-model="blade.selectedAll" ng-change="toggleAll()" />
                                             <span class="check"></span>
                                         </label>
                                     </th>
-                                    <th class="table-col">{{ 'platform.blades.edit-array.labels.values' | translate }}</th>
+                                    <th scope="col" class="table-col">{{ 'platform.blades.edit-array.labels.values' | translate }}</th>
                                 </tr>
                             </thead>
                             <tbody>
