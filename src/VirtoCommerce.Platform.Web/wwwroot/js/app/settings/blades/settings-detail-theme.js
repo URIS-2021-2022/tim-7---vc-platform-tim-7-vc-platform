@@ -73,8 +73,8 @@ angular.module('platformWebApp')
                     var value = uiCustomizationSetting.value || uiCustomizationSetting.defaultValue;
                     if (value) {
                         var uiCustomization = angular.fromJson(value);
-                        uiCustomization.background = uiCustomization.background ? uiCustomization.background : blade.defaultUiCustomization.background;
-                        uiCustomization.pattern = uiCustomization.pattern ? uiCustomization.pattern : blade.defaultUiCustomization.pattern;
+                        uiCustomization.background = uiCustomizationBackground(uiCustomization, blade);
+                        uiCustomization.pattern = uiCustomizationPattern(uiCustomization, blade);
 
                         blade.currentEntity = angular.copy(uiCustomization);
                         blade.origEntity = uiCustomization;
@@ -143,3 +143,12 @@ angular.module('platformWebApp')
             // actions on load
             blade.refresh();
         }]);
+
+
+function uiCustomizationBackground(uiCustomization, blade) {
+    return uiCustomization.background ? uiCustomization.background : blade.defaultUiCustomization.background;
+}
+
+function uiCustomizationPattern(uiCustomization, blade) {
+    return uiCustomization.pattern ? uiCustomization.pattern : blade.defaultUiCustomization.pattern;
+}
