@@ -27,29 +27,19 @@ namespace VirtoCommerce.Platform.Data.Model
 
         public object GetValue()
         {
-            // Todo update to switch from C# 9.0 with or feature
-            switch (EnumUtility.SafeParse(ValueType, SettingValueType.LongText))
+            object valueType = EnumUtility.SafeParse(ValueType, SettingValueType.LongText) switch
             {
-                case SettingValueType.Boolean:
-                    return BooleanValue;
+                SettingValueType.Boolean => BooleanValue,
+                SettingValueType.DateTime => DateTimeValue,
+                SettingValueType.Decimal => DecimalValue,
+                SettingValueType.Integer => IntegerValue,
+                SettingValueType.PositiveInteger => IntegerValue,
+                SettingValueType.ShortText => ShortTextValue,
+                SettingValueType.SecureString => ShortTextValue,
+                _ => LongTextValue,
+            };
 
-                case SettingValueType.DateTime:
-                    return DateTimeValue;
-
-                case SettingValueType.Decimal:
-                    return DecimalValue;
-
-                case SettingValueType.Integer:
-                case SettingValueType.PositiveInteger:
-                    return IntegerValue;
-
-                case SettingValueType.ShortText:
-                case SettingValueType.SecureString:
-                    return ShortTextValue;
-
-                default:
-                    return LongTextValue;
-            }
+            return valueType;
         }
 
         public SettingValueEntity SetValue(SettingValueType valueType, object value)
