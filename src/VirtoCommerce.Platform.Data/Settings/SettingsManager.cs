@@ -78,12 +78,17 @@ namespace VirtoCommerce.Platform.Data.Settings
 
         #region ISettingsManager Members
 
-        public virtual async Task<ObjectSettingEntry> GetObjectSettingAsync(string name, TenantIdentity tenantObject = null)
+        public virtual Task<ObjectSettingEntry> GetObjectSettingAsync(string name, TenantIdentity tenantObject = null)
         {
             if (name == null)
             {
                 throw new ArgumentNullException(nameof(name));
             }
+            return GetObjectSettingInternalAsync(name, tenantObject);
+        }
+
+        public virtual async Task<ObjectSettingEntry> GetObjectSettingInternalAsync(string name, TenantIdentity tenantObject)
+        {
             return (await GetObjectSettingsAsync(new[] { name }, tenantObject)).FirstOrDefault();
         }
 

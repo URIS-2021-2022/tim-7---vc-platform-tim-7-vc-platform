@@ -629,6 +629,13 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
                 return Ok(IdentityResult.Failed(new IdentityError { Description = "It is forbidden to edit this user." }).ToSecurityResult());
             }
 
+            var result = UpdateUserAsync(user);
+
+            return Ok(result);
+        }
+
+        public async Task<ActionResult<IdentityResult>> UpdateUserAsync(ApplicationUser user)
+        {
             var applicationUser = await UserManager.FindByIdAsync(user.Id);
             if (applicationUser.EmailConfirmed != user.EmailConfirmed
                 && !Request.HttpContext.User.HasGlobalPermission(PlatformPermissions.SecurityVerifyEmail))
@@ -654,8 +661,10 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
 
             var result = await UserManager.UpdateAsync(user);
 
-            return Ok(result.ToSecurityResult());
+            return result;
         }
+
+
 
         /// <summary>
         /// Delete users by name
@@ -676,6 +685,11 @@ namespace VirtoCommerce.Platform.Web.Controllers.Api
                 return BadRequest(new IdentityError() { Description = "It is forbidden to edit these users." });
             }
 
+            return await checkForNameAndDoAction(names);
+        }
+
+        public async Task<ActionResult> checkForNameAndDoAction(string[] names)
+        {
             foreach (var userName in names)
             {
                 var user = await UserManager.FindByNameAsync(userName);

@@ -23,7 +23,7 @@ namespace VirtoCommerce.Platform.Web.Infrastructure
             _httpContextAccessor = httpContextAccessor;
         }
 
-        private async Task<AuthenticationScheme> GetRequestSchemeAsync(string message)
+        private Task<AuthenticationScheme> GetRequestSchemeAsync(string message)
         {
             var request = _httpContextAccessor.HttpContext?.Request;
 
@@ -34,10 +34,15 @@ namespace VirtoCommerce.Platform.Web.Infrastructure
 
             if (request.Headers.ContainsKey("Authorization"))
             {
-                return await GetSchemeAsync(JwtBearerDefaults.AuthenticationScheme);
+                return getSchemaSeparatedAsync(JwtBearerDefaults.AuthenticationScheme);
             }
 
             return null;
+        }
+
+        public async Task<AuthenticationScheme> getSchemaSeparatedAsync(string AuthenticationScheme)
+        {
+            return await GetSchemeAsync(AuthenticationScheme);
         }
 
         public override async Task<AuthenticationScheme> GetDefaultAuthenticateSchemeAsync() =>
