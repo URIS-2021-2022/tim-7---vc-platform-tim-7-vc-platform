@@ -49,7 +49,13 @@ angular.module('platformWebApp')
                                     return -1;
                                 }
 
-                                return a.value > b.value ? 1 : 0;
+                                if (a.value > b.value) {
+                                    return 1;
+                                }
+                                else {
+                                    return 0
+                                }
+                                
                             }
 
                             return -1

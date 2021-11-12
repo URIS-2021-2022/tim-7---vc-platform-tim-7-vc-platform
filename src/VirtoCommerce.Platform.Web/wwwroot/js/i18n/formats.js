@@ -106,7 +106,7 @@ angular.module('platformWebApp')
             result2.regexpFraction = "(" + result2.escapedDecimalSeparator + "\\d{1," + result2.maximumFraction + "}" + ")?";
 
             // Select suffixies, like [-+]. This required because, for example, in some locales negative numbers may be defined as (111) instead of -111
-            result2.regexpSuffix = (result2.isSuffixExists ? "[" + (result2.isNegativeAllowed ? result2.escapedNegativeSuffix : "") + (result2.isPositiveAllowed ? result2.escapedPositiveSuffix : "") + "]?" : "");
+            result2.regexpSuffix = regexpSuffix(result2);
 
             result2.regexpFloat = formatRegExp(result2.regexpPrefix + result2.regexpValue + result2.regexpFraction + result2.regexpSuffix);
             result2.regexpInteger = formatRegExp(result2.regexpPrefix + result2.regexpValue + result2.regexpSuffix);
@@ -228,11 +228,11 @@ angular.module('platformWebApp')
             }));
         },
         isInvalidMixed: function (originalFormat) {
-            var result = _.every([this.additionalTimeFormats, this.additionalDateFormats, this.invalid].forEach(function (formats) {
+           
                 return _.every(formats, function (format) {
                     return originalFormat.indexOf(format) < 0;
                 });
-            }));
+            ));
             if (result) {
                 result |= !_.some(this.additionalMixedFormas, function (mixedFormat) {
                     return originalFormat.indexOf(mixedFormat) >= 0;
@@ -285,3 +285,7 @@ angular.module('platformWebApp')
     };
     return result;
 }]);
+
+function regexpSuffix(result2) {
+    return (result2.isSuffixExists ? "[" + (result2.isNegativeAllowed ? result2.escapedNegativeSuffix : "") + (result2.isPositiveAllowed ? result2.escapedPositiveSuffix : "") + "]?" : "");
+}

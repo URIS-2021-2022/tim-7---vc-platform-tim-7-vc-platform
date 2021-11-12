@@ -100,9 +100,9 @@
                     </div>
                 </fieldset>
                 <fieldset>
-                    <div class="sub-t">{{ 'platform.blades.import-main.labels.choose-modules' | translate }}</div>
+                    <div class="sub-t" id="table-title">{{ 'platform.blades.import-main.labels.choose-modules' | translate }}</div>
                     <div class="table-wrapper">
-                        <table class="table">
+                        <table class="table" aria-describedby="table-title">
                             <tbody>
                                 <tr class="table-item"
                                     ng-repeat="data in importRequest.exportManifest.modules"

@@ -27,7 +27,7 @@ angular.module('platformWebApp')
                 document.body.appendChild(textarea);
                 textarea.value = infoText;
                 textarea.select();                
-                document.execCommand("copy");
+                document.execCommand();
                 document.body.removeChild(textarea);
             };          
 
