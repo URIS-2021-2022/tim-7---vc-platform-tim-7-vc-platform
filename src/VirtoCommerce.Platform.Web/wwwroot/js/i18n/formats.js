@@ -194,7 +194,7 @@ angular.module('platformWebApp')
 }])
 // Service provide variables and functions for angular to moment convertion and validation
 .factory('platformWebApp.angularToMomentFormatConverter', ['$locale', '$log', function ($locale, $log) {
-    var result = {
+    return var result = {
         pairs: [
             { 'yyyy': 'YYYY' }, { 'yy': 'YY' }, { 'y': 'Y' },
             { 'dd': 'DD' }, { 'd': 'D' },
@@ -283,5 +283,4 @@ angular.module('platformWebApp')
             return formatParts.join('');
         }
     };
-    return result;
 }]);

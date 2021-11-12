@@ -4,7 +4,7 @@ angular.module('platformWebApp')
         .state('setupWizard', {
             url: '/setupWizard',
             templateUrl: '$(Platform)/Scripts/app/setup/templates/setupWizard.tpl.html',
-            controller: ['$scope', '$state', '$stateParams', 'platformWebApp.setupWizard', function ($scope, $state, $stateParams, setupWizard) {}]
+            controller: ['$scope', '$state', '$stateParams', 'platformWebApp.setupWizard']
         });
 }])
 .factory('platformWebApp.setupWizard', ['$state', 'platformWebApp.settings', function ($state, settings) {	

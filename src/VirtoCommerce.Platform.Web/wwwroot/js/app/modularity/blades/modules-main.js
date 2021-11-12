@@ -51,7 +51,7 @@ angular.module('platformWebApp')
                     if (!latest.isInstalled && !latest.$alternativeVersion) {
                         if (_.any(latest.groups)) {
                             _.each(latest.groups, function (x, index) {
-                                var clone = angular.copy(latest);
+                                clone = angular.copy(latest);
                                 clone.$group = x;
                                 moduleHelper.moduleBundles.push(clone);
                             });
