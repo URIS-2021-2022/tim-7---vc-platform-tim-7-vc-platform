@@ -78,14 +78,6 @@ angular.module("platformWebApp")
             //    }
             //});
 
-            //selectedSettings = _.where(settings, { valueType: 'Decimal' });
-            //_.forEach(selectedSettings, function (setting) {
-            //    setting.value = parseFloat(setting.value);
-            //    if (setting.allowedValues) {
-            //        setting.allowedValues = _.map(setting.allowedValues, function (value) { return parseFloat(value); });
-            //    }
-            //});
-
             //selectedSettings = _.where(settings, { valueType: 'Boolean' });
             //_.forEach(selectedSettings, function (setting) {
             //    setting.value = setting.value && setting.value.toLowerCase() === 'true';
