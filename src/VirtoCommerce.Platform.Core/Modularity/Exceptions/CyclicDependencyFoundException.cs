@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 {
@@ -13,6 +14,8 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
         /// <summary>
         /// Initializes a new instance of the <see cref="CyclicDependencyFoundException"/> class.
         /// </summary>
+
+        protected CyclicDependencyFoundException(SerializationInfo info, StreamingContext context) : base() { }
         public CyclicDependencyFoundException() : base() { }
 
         /// <summary>
