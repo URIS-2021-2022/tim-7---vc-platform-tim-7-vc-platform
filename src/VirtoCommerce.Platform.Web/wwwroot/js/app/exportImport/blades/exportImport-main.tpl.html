@@ -1,4 +1,4 @@
-﻿<div class="blade-content">
+<div class="blade-content">
     <div class="blade-inner">
         <div class="inner-block">
             <div class="table-wrapper">
@@ -6,7 +6,7 @@
                     <tbody>
                         <tr class="table-item" ng-mouseup="export()" ng-class="{'__selected': 'export' === selectedNodeId}">
                             <td class="table-col">
-                                <i class="table-ico fa fa-upload"></i>
+                                <em class="table-ico fa fa-upload"></em>
                             </td>
                             <td class="table-col" ng-click='exportRequest.handleSecurity = !exportRequest.handleSecurity'>
                                 <span class="table-t">{{ 'platform.blades.exportImport-main.menu.export.title' | translate }}</span>
@@ -15,7 +15,7 @@
                         </tr>
                         <tr class="table-item" ng-mouseup="import()" ng-class="{'__selected': 'import' === selectedNodeId}">
                             <td class="table-col">
-                                <i class="table-ico fa fa-download"></i>
+                                <em class="table-ico fa fa-download"></em>
                             </td>
                             <td class="table-col" ng-click='exportRequest.handleSettings = !exportRequest.handleSettings'>
                                 <span class="table-t">{{ 'platform.blades.exportImport-main.menu.import.title' | translate }}</span>

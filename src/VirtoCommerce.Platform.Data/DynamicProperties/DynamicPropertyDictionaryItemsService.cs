@@ -39,13 +39,19 @@ namespace VirtoCommerce.Platform.Data.DynamicProperties
             });
         }
 
-        public virtual async Task SaveDictionaryItemsAsync(DynamicPropertyDictionaryItem[] items)
-        {
+        public virtual Task SaveDictionaryItemsAsync(DynamicPropertyDictionaryItem[] items) {
             if (items == null)
             {
                 throw new ArgumentNullException(nameof(items));
             }
+            return SaveDictionaryItemsInternalAsync(items);
 
+        }
+
+
+        public virtual async Task SaveDictionaryItemsInternalAsync(DynamicPropertyDictionaryItem[] items)
+        {
+ 
             using (var repository = _repositoryFactory())
             {
                 var dbExistItems = await repository.GetDynamicPropertyDictionaryItemByIdsAsync(items.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
@@ -69,12 +75,18 @@ namespace VirtoCommerce.Platform.Data.DynamicProperties
 
         }
 
-        public virtual async Task DeleteDictionaryItemsAsync(string[] itemIds)
+        public virtual Task DeleteDictionaryItemsAsyncItemIds(string[] itemIds)
         {
             if (itemIds == null)
             {
                 throw new ArgumentNullException(nameof(itemIds));
             }
+
+            return DeleteDictionaryItemsAsync(itemIds);
+        }
+
+        public virtual async Task DeleteDictionaryItemsAsync(string[] itemIds)
+        {
 
             using (var repository = _repositoryFactory())
             {

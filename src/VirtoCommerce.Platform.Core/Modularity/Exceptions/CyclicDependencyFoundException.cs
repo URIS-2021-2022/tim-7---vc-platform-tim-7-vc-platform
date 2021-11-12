@@ -6,6 +6,8 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
     /// Represents the exception that is thrown when there is a circular dependency
     /// between modules during the module loading process.
     /// </summary>
+    ///
+    [System.SerializableAttribute]
     public class CyclicDependencyFoundException : ModularityException
     {
         /// <summary>

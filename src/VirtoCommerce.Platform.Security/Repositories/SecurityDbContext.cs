@@ -50,11 +50,10 @@ namespace VirtoCommerce.Platform.Security.Repositories
 
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
             builder.Entity<Role>().Ignore(x => x.Permissions);
             builder.Entity<ApplicationUser>().Ignore(x => x.Password);
             builder.Entity<ApplicationUser>().Ignore(x => x.Roles);
-            builder.Entity<ApplicationUser>().Ignore(x => x.LockoutEndDateUtc);
+            builder.Entity<ApplicationUser>().Ignore(x => x.LockoutEnd);
             builder.Entity<ApplicationUser>().Ignore(x => x.Permissions);
             builder.Entity<ApplicationUser>().Ignore(x => x.Logins);
             builder.Entity<ApplicationUser>().Ignore(x => x.UserState);

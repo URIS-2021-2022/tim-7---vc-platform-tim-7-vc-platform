@@ -82,7 +82,7 @@ namespace VirtoCommerce.Platform.Data.GenericCrud
                         {
                             needExecuteCount = true;
                         }
-                        result.Results = (await _crudService.GetByIdsAsync(ids, criteria.ResponseGroup)).OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
+                        result.Results = (await _crudService.GetAsync(ids.ToList(), criteria.ResponseGroup)).OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
                     }
 
                     if (needExecuteCount)

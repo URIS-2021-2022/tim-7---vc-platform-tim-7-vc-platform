@@ -13,7 +13,7 @@ angular.module('platformWebApp')
                 var errorHandler = function() {
 
                     // fallbackSrc may have changed since the link function ran, so try to grab it again.
-                    var newSrc = attr.fallbackSrc ? imageService.setMissing(attr.fallbackSrc) : imageService.getMissing();
+                    newSrc = attr.fallbackSrc ? imageService.setMissing(attr.fallbackSrc) : imageService.getMissing();
 
                     // Add check for encoded URL to avoid possible recursion - as element[0].src is encoded
                     if (element[0].src !== newSrc && element[0].src !== encodeURI(newSrc)) {

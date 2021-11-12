@@ -6,8 +6,15 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
     /// Exception that's thrown when there is no <see cref="IModuleTypeLoader"/> registered in 
     /// ModuleManager.ModuleTypeLoaders that can handle this particular type of module. 
     /// </summary>
+    ///
+
+    [System.SerializableAttribute]
+
     public partial class ModuleTypeLoaderNotFoundException : ModularityException
     {
+      
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleTypeLoaderNotFoundException"/> class.
         /// </summary>

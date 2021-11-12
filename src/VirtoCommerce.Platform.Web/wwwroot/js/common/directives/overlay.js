@@ -127,13 +127,13 @@ angular.module('platformWebApp')
                     if (document.defaultView && document.defaultView.getComputedStyle) {
                         func = document.defaultView.getComputedStyle;
                     } else if (typeof (document.body.currentStyle) !== "undefined") {
-                        func = function (element, anything) {
-                            return element["currentStyle"];
+                        func = function (newElement, anything) {
+                            return newElement["currentStyle"];
                         };
                     }
 
-                    return function (element, style) {
-                        return func(element, null)[style];
+                    return function (newElement2, style) {
+                        return func(newElement2, null)[style];
                     }
                 }();
             }

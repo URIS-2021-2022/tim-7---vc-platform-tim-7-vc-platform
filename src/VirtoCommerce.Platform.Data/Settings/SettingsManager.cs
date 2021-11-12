@@ -87,12 +87,18 @@ namespace VirtoCommerce.Platform.Data.Settings
             return (await GetObjectSettingsAsync(new[] { name }, tenantObject)).FirstOrDefault();
         }
 
-        public virtual async Task<IEnumerable<ObjectSettingEntry>> GetObjectSettingsAsync(IEnumerable<string> names, TenantIdentity tenantObject = null)
+        public virtual Task<IEnumerable<ObjectSettingEntry>> GetObjectSettingsAsync(IEnumerable<string> names, TenantIdentity tenantObject = null)
         {
             if (names == null)
             {
                 throw new ArgumentNullException(nameof(names));
             }
+            
+            return GetObjectSettingsInternalAsync(names, tenantObject);
+        }
+
+        public virtual async Task<IEnumerable<ObjectSettingEntry>> GetObjectSettingsInternalAsync(IEnumerable<string> names, TenantIdentity tenantObject = null)
+        {
             var cacheKey = CacheKey.With(GetType(), "GetSettingByNamesAsync", string.Join(";", names), tenantObject.Type, tenantObject.Id);
             var result = await _memoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
@@ -134,12 +140,17 @@ namespace VirtoCommerce.Platform.Data.Settings
             return result;
         }
 
-        public virtual async Task RemoveObjectSettingsAsync(IEnumerable<ObjectSettingEntry> objectSettings)
+        public virtual Task RemoveObjectSettingsAsync(IEnumerable<ObjectSettingEntry> objectSettings)
         {
             if (objectSettings == null)
             {
                 throw new ArgumentNullException(nameof(objectSettings));
             }
+            return RemoveObjectSettingsInternalAsync(objectSettings);
+        }
+
+        public virtual async Task RemoveObjectSettingsInternalAsync(IEnumerable<ObjectSettingEntry> objectSettings)
+        {
             using (var repository = _repositoryFactory())
             {
                 foreach (var objectSetting in objectSettings)

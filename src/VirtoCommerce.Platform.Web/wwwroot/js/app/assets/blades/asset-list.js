@@ -7,6 +7,7 @@ angular.module('platformWebApp')
                 blade.currentEntity = {};
             }
 
+
             blade.refresh = function () {
                 blade.isLoading = true;
                 assets.search(
@@ -80,9 +81,7 @@ angular.module('platformWebApp')
                 window.open(data.url, '_blank');
             };
 
-            //$scope.rename = function (listItem) {
-            //    rename(listItem);
-            //};
+         
 
             //function rename(listItem) {
             //    var result = prompt("Enter new name", listItem.name);

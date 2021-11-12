@@ -65,13 +65,18 @@ namespace VirtoCommerce.Platform.Core.Settings
         /// <summary>
         /// Deep save entity and all nested objects settings values
         /// </summary>
-        public static async Task DeepSaveSettingsAsync(this ISettingsManager manager, IEnumerable<IHasSettings> entries)
+        public static Task DeepSaveSettingsAsync(this ISettingsManager manager, IEnumerable<IHasSettings> entries)
         {
             if (entries == null)
             {
                 throw new ArgumentNullException(nameof(entries));
             }
 
+            return DeepSaveSettings(manager, entries);
+        }
+
+        public static async Task DeepSaveSettings(this ISettingsManager manager, IEnumerable<IHasSettings> entries)
+        {
             var forSaveSettings = new List<ObjectSettingEntry>();
             foreach (var entry in entries)
             {
@@ -105,18 +110,25 @@ namespace VirtoCommerce.Platform.Core.Settings
         /// <summary>
         /// Deep remove entity and all nested objects settings values
         /// </summary>
-        public static async Task DeepRemoveSettingsAsync(this ISettingsManager manager, IEnumerable<IHasSettings> entries)
+        public static Task DeepRemoveSettingsAsync(this ISettingsManager manager, IEnumerable<IHasSettings> entries)
         {
             if (entries == null)
             {
                 throw new ArgumentNullException(nameof(entries));
             }
+
+            return DeepRemoveSettings(manager, entries);
+        }
+
+        public static async Task DeepRemoveSettings(this ISettingsManager manager, IEnumerable<IHasSettings> entries)
+        {
             var foDeleteSettings = new List<ObjectSettingEntry>();
             foreach (var entry in entries)
             {
                 var haveSettingsObjects = entry.GetFlatObjectsListWithInterface<IHasSettings>();
                 foDeleteSettings.AddRange(haveSettingsObjects.SelectMany(x => x.Settings).Distinct());
             }
+
             await manager.RemoveObjectSettingsAsync(foDeleteSettings);
         }
 

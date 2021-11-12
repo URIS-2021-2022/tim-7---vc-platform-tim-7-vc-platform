@@ -104,9 +104,11 @@ angular.module('platformWebApp')
                         : uiDatetimePickerConfig.enableTime;
 
                     // determine default picker
-                    scope.initialPicker = angular.isDefined(attrs.initialPicker)
-                        ? attrs.initialPicker
-                        : (scope.enableDate ? uiDatetimePickerConfig.initialPicker : 'time');
+                    if (angular.isDefined(attrs.initialPicker)) {
+                        scope.initialPicker = attrs.initialPicker;
+                    } else {
+                        scope.initialPicker = scope.enableDate ? uiDatetimePickerConfig.initialPicker : 'time';
+                    }
 
                     // determine the picker to open when control is re-opened
                     scope.reOpenDefault = angular.isDefined(attrs.reOpenDefault)
@@ -972,7 +974,16 @@ angular.module('platformWebApp')
             }
             if ($scope.meridian === _24Hour) {
                 $scope.showMeridian = true;
-                addMinutes(selected.getHours() <= 12 ? 0 : 12 * 60 * ((selected.getHours() >= 12) ? 1 : -1));
+                var sat;
+                if (selected.getHours() >= 12) {
+                    sat = 1;
+                }
+                else {
+                    sat = -1;
+                }
+                
+                
+                addMinutes(selected.getHours() <= 12 ? 0 : 12 * 60 * sat);
                 return true;
             }
         };

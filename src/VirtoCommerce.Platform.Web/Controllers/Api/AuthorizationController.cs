@@ -63,112 +63,15 @@ namespace Mvc.Server
 
             if (openIdConnectRequest.IsPasswordGrantType())
             {
-                var user = await _userManager.FindByNameAsync(openIdConnectRequest.Username);
-
-                if (user == null)
-                {
-                    return BadRequest(new OpenIddictResponse
-                    {
-                        Error = Errors.InvalidGrant,
-                        ErrorDescription = "The username/password couple is invalid."
-                    });
-                }
-
-                // Validate the username/password parameters and ensure the account is not locked out.
-                var result = await _signInManager.CheckPasswordSignInAsync(user, openIdConnectRequest.Password, lockoutOnFailure: true);
-                if (!result.Succeeded)
-                {
-                    return BadRequest(new OpenIddictResponse
-                    {
-                        Error = Errors.InvalidGrant,
-                        ErrorDescription = "The username/password couple is invalid."
-                    });
-                }
-
-                // Create a new authentication ticket.
-                var ticket = await CreateTicketAsync(openIdConnectRequest, user);
-                var claimsPrincipal = await _userClaimsPrincipalFactory.CreateAsync(user);
-
-                var limitedPermissions = _authorizationOptions.LimitedCookiePermissions?.Split(PlatformConstants.Security.Claims.PermissionClaimTypeDelimiter, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
-
-                if (!user.IsAdministrator)
-                {
-                    limitedPermissions = claimsPrincipal
-                        .Claims
-                        .Where(c => c.Type == PlatformConstants.Security.Claims.PermissionClaimType)
-                        .Select(c => c.Value)
-                        .Intersect(limitedPermissions, StringComparer.OrdinalIgnoreCase)
-                        .ToArray();
-                }
-
-                if (limitedPermissions.Any())
-                {
-                    // Set limited permissions and authenticate user with combined mode Cookies + Bearer.
-                    //
-                    // LimitedPermissions claims that will be granted to the user by cookies when bearer token authentication is enabled.
-                    // This can help to authorize the user for direct(non - AJAX) GET requests to the VC platform API and / or to use some 3rd - party web applications for the VC platform(like Hangfire dashboard).
-                    //
-                    // If the user identity has claim named "limited_permissions", this attribute should authorize only permissions listed in that claim. Any permissions that are required by this attribute but
-                    // not listed in the claim should cause this method to return false. However, if permission limits of user identity are not defined ("limited_permissions" claim is missing),
-                    // then no limitations should be applied to the permissions.
-                    ((ClaimsIdentity)claimsPrincipal.Identity).AddClaim(new Claim(PlatformConstants.Security.Claims.LimitedPermissionsClaimType, string.Join(PlatformConstants.Security.Claims.PermissionClaimTypeDelimiter, limitedPermissions)));
-                    await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, claimsPrincipal);
-                }
-
-                await _eventPublisher.Publish(new UserLoginEvent(user));
-                return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+                return await HandlePasswordGrantType(openIdConnectRequest);
             }
             else if (openIdConnectRequest.IsRefreshTokenGrantType())
             {
-                // Retrieve the claims principal stored in the authorization code/refresh token.
-                var info = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-
-                // Retrieve the user profile corresponding to the authorization code/refresh token.
-                // Note: if you want to automatically invalidate the authorization code/refresh token
-                // when the user password/roles change, use the following line instead:
-               
-                var user = await _userManager.GetUserAsync(info.Principal);
-                if (user == null)
-                {
-                    return BadRequest(new OpenIddictResponse
-                    {
-                        Error = Errors.InvalidGrant,
-                        ErrorDescription = "The token is no longer valid."
-                    });
-                }
-
-                // Ensure the user is still allowed to sign in.
-                if (!await _signInManager.CanSignInAsync(user))
-                {
-                    return BadRequest(new OpenIddictResponse
-                    {
-                        Error = Errors.InvalidGrant,
-                        ErrorDescription = "The user is no longer allowed to sign in."
-                    });
-                }
-
-                // Create a new authentication ticket, but reuse the properties stored in the
-                // authorization code/refresh token, including the scopes originally granted.
-                var ticket = await CreateTicketAsync(openIdConnectRequest, user, info.Properties);
-                return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+                return await HandleRefreshTokenGrantType(openIdConnectRequest);
             }
             else if (openIdConnectRequest.IsClientCredentialsGrantType())
             {
-                // Note: the client credentials are automatically validated by OpenIddict:
-                // if client_id or client_secret are invalid, this action won't be invoked.
-                var application = await _applicationManager.FindByClientIdAsync(openIdConnectRequest.ClientId, HttpContext.RequestAborted);
-                if (application == null)
-                {
-                    return BadRequest(new OpenIddictResponse
-                    {
-                        Error = Errors.InvalidClient,
-                        ErrorDescription = "The client application was not found in the database."
-                    });
-                }
-
-                // Create a new authentication ticket.
-                var ticket = CreateTicket(application);
-                return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+                return await HandleClientCredentialsGrantType(openIdConnectRequest);
             }
 
             return BadRequest(new OpenIddictResponse
@@ -176,6 +79,118 @@ namespace Mvc.Server
                 Error = Errors.UnsupportedGrantType,
                 ErrorDescription = "The specified grant type is not supported."
             });
+        }
+
+        private async Task<ActionResult> HandleClientCredentialsGrantType(OpenIddictRequest openIdConnectRequest)
+        {
+            // Note: the client credentials are automatically validated by OpenIddict:
+            // if client_id or client_secret are invalid, this action won't be invoked.
+            var application = await _applicationManager.FindByClientIdAsync(openIdConnectRequest.ClientId, HttpContext.RequestAborted);
+            if (application == null)
+            {
+                return BadRequest(new OpenIddictResponse
+                {
+                    Error = Errors.InvalidClient,
+                    ErrorDescription = "The client application was not found in the database."
+                });
+            }
+
+            // Create a new authentication ticket.
+            var ticket = CreateTicket(application);
+            return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+        }
+
+        private async Task<ActionResult> HandleRefreshTokenGrantType(OpenIddictRequest openIdConnectRequest)
+        {
+            // Retrieve the claims principal stored in the authorization code/refresh token.
+            var info = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+
+            // Retrieve the user profile corresponding to the authorization code/refresh token.
+            // Note: if you want to automatically invalidate the authorization code/refresh token
+            // when the user password/roles change, use the following line instead:
+
+            var user = await _userManager.GetUserAsync(info.Principal);
+            if (user == null)
+            {
+                return BadRequest(new OpenIddictResponse
+                {
+                    Error = Errors.InvalidGrant,
+                    ErrorDescription = "The token is no longer valid."
+                });
+            }
+
+            // Ensure the user is still allowed to sign in.
+            if (!await _signInManager.CanSignInAsync(user))
+            {
+                return BadRequest(new OpenIddictResponse
+                {
+                    Error = Errors.InvalidGrant,
+                    ErrorDescription = "The user is no longer allowed to sign in."
+                });
+            }
+
+            // Create a new authentication ticket, but reuse the properties stored in the
+            // authorization code/refresh token, including the scopes originally granted.
+            var ticket = await CreateTicketAsync(openIdConnectRequest, user, info.Properties);
+            return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+        }
+
+        private async Task<ActionResult> HandlePasswordGrantType(OpenIddictRequest openIdConnectRequest)
+        {
+            var user = await _userManager.FindByNameAsync(openIdConnectRequest.Username);
+
+            if (user == null)
+            {
+                return BadRequest(new OpenIddictResponse
+                {
+                    Error = Errors.InvalidGrant,
+                    ErrorDescription = "The username/password couple is invalid."
+                });
+            }
+
+            // Validate the username/password parameters and ensure the account is not locked out.
+            var result = await _signInManager.CheckPasswordSignInAsync(user, openIdConnectRequest.Password, lockoutOnFailure: true);
+            if (!result.Succeeded)
+            {
+                return BadRequest(new OpenIddictResponse
+                {
+                    Error = Errors.InvalidGrant,
+                    ErrorDescription = "The username/password couple is invalid."
+                });
+            }
+
+            // Create a new authentication ticket.
+            var ticket = await CreateTicketAsync(openIdConnectRequest, user);
+            var claimsPrincipal = await _userClaimsPrincipalFactory.CreateAsync(user);
+
+            var limitedPermissions = _authorizationOptions.LimitedCookiePermissions?.Split(PlatformConstants.Security.Claims.PermissionClaimTypeDelimiter, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+
+            if (!user.IsAdministrator)
+            {
+                limitedPermissions = claimsPrincipal
+                    .Claims
+                    .Where(c => c.Type == PlatformConstants.Security.Claims.PermissionClaimType)
+                    .Select(c => c.Value)
+                    .Intersect(limitedPermissions, StringComparer.OrdinalIgnoreCase)
+                    .ToArray();
+            }
+
+            if (limitedPermissions.Any())
+            {
+                // Set limited permissions and authenticate user with combined mode Cookies + Bearer.
+                //
+                // LimitedPermissions claims that will be granted to the user by cookies when bearer token authentication is enabled.
+                // This can help to authorize the user for direct(non - AJAX) GET requests to the VC platform API and / or to use some 3rd - party web applications for the VC platform(like Hangfire dashboard).
+                //
+                // If the user identity has claim named "limited_permissions", this attribute should authorize only permissions listed in that claim. Any permissions that are required by this attribute but
+                // not listed in the claim should cause this method to return false. However, if permission limits of user identity are not defined ("limited_permissions" claim is missing),
+                // then no limitations should be applied to the permissions.
+                ((ClaimsIdentity)claimsPrincipal.Identity).AddClaim(new Claim(PlatformConstants.Security.Claims.LimitedPermissionsClaimType, string.Join(PlatformConstants.Security.Claims.PermissionClaimTypeDelimiter, limitedPermissions)));
+                await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, claimsPrincipal);
+            }
+
+            await _eventPublisher.Publish(new UserLoginEvent(user));
+            return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
         }
         #endregion
 

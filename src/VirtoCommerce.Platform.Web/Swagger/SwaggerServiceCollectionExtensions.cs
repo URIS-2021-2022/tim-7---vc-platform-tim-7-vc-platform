@@ -149,8 +149,7 @@ namespace VirtoCommerce.Platform.Web.Swagger
                 c.RouteTemplate = "docs/{documentName}/swagger.json";
                 c.PreSerializeFilters.Add((swagger, httpReq) =>
                 {
-                    //TODO
-                    //swagger.BasePath = $"{httpReq.Scheme}://{httpReq.Host.Value}";
+
                 });
 
             });
@@ -162,9 +161,9 @@ namespace VirtoCommerce.Platform.Web.Swagger
             {
                 c.SwaggerEndpoint($"./{platformUIDocName}/swagger.json", platformUIDocName);
                 c.SwaggerEndpoint($"./{platformDocName}/swagger.json", platformDocName);
-                foreach (var module in modules)
+                foreach (var moduleID in modules.Select(m =>m.Id))
                 {
-                    c.SwaggerEndpoint($"./{module.Id}/swagger.json", module.Id);
+                    c.SwaggerEndpoint($"./{moduleID}/swagger.json", moduleID);
                 }
                 c.RoutePrefix = "docs";
                 c.EnableValidator();

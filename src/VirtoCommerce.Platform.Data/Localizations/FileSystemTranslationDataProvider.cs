@@ -35,16 +35,15 @@ namespace VirtoCommerce.Platform.Data.Localizations
 
         protected virtual IEnumerable<string> GetAllTranslationFiles(string pattern = null)
         {
-            foreach (var discoveryFolder in DiscoveryFolders ?? Array.Empty<string>())
+            foreach (var discoveryFolder in (DiscoveryFolders ?? Array.Empty<string>()).Where(dFolder => Directory.Exists(dFolder)))
             {
                 //Return resource files for platform project
-                if (Directory.Exists(discoveryFolder))
-                {
+               
                     foreach (var file in Directory.EnumerateFiles(discoveryFolder, pattern, SearchOption.AllDirectories))
                     {
                         yield return file;
                     }
-                }
+                
             }
         }
 

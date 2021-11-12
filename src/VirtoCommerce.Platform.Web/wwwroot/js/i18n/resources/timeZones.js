@@ -1,4 +1,4 @@
-﻿// Full list of time zones defined in tz database
+// Full list of time zones defined in tz database
 // see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 angular.module('platformWebApp')
 .factory('platformWebApp.common.timeZones', ['moment', function(moment) {

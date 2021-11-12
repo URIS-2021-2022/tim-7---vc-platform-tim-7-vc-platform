@@ -90,7 +90,6 @@ body
     color: #4c4c4c;
 }
 
-.swagger-ui .opblock-tag,
 .swagger-ui .opblock-tag small
 .swagger-ui .opblock .opblock-summary-operation-id,
 .swagger-ui .opblock .opblock-summary-path,
@@ -115,16 +114,16 @@ body
 .swagger-ui .info p,
 .swagger-ui .info a
 {
-    font-family: 'Exo 2';
+    font-family: 'Exo 2', sans-serif;
 }
 
 .swagger-ui .wrapper{
     padding: 0;
 }
 
-.swagger-ui .opblock-tag
-{
+.swagger-ui .opblock-tag {
     /* display: block; */
+    font-family: 'Exo 2', sans-serif;
     clear: none;
     float: left;
     font-weight: bold;

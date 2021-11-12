@@ -76,7 +76,8 @@ namespace VirtoCommerce.Platform.Core.Common
         /// <returns>true if the dictionary contains the value in any list; otherwise, false.</returns>
         public bool ContainsValue(TValue value)
         {
-            foreach (KeyValuePair<TKey, IList<TValue>> pair in innerValues.Where(p => p.Value.Contains(value)))
+            
+            if (innerValues.ContainsValue((IList<TValue>)value))
             {
                 return true;
             }
@@ -122,15 +123,9 @@ namespace VirtoCommerce.Platform.Core.Common
         /// <returns>The elements that match the condition defined by the specified predicate.</returns>
         public IEnumerable<TValue> FindAllValues(Predicate<TValue> valueFilter)
         {
-            foreach (KeyValuePair<TKey, IList<TValue>> pair in this)
+            foreach (TValue value in this.SelectMany(pair => pair.Value).Where(v => valueFilter(v)))
             {
-                foreach (TValue value in pair.Value)
-                {
-                    if (valueFilter(value))
-                    {
-                        yield return value;
-                    }
-                }
+                yield return value;
             }
         }
 

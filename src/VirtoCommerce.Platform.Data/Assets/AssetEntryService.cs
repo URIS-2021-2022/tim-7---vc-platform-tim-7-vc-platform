@@ -130,23 +130,32 @@ namespace VirtoCommerce.Platform.Data.Assets
         public async Task DeleteAsync(IEnumerable<string> ids)
         {
             if (ids == null)
+            {
                 throw new ArgumentNullException(nameof(ids));
+            }
+            await DeleteInternalAsync(ids);
 
+        }
+
+        private async Task DeleteInternalAsync(IEnumerable<string> ids)
+        {
             using (var repository = _platformRepository())
             {
                 var items = await repository.AssetEntries
                     .Where(p => ids.Contains(p.Id))
                     .ToListAsync();
 
-                foreach (var item in items)
+                  foreach (var item in items)
                 {
                     repository.Remove(item);
                 }
-
                 await repository.UnitOfWork.CommitAsync();
-
                 AssetCacheRegion.ExpireRegion();
             }
         }
+
+            
+           
+        
     }
 }

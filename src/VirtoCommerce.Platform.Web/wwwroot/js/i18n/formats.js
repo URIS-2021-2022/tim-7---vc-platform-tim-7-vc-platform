@@ -1,4 +1,4 @@
-﻿angular.module('platformWebApp')
+angular.module('platformWebApp')
 // Service provide functions for currency convertion and validation with localization support
 .factory('platformWebApp.currencyFormat', ['platformWebApp.numberFormat', '$filter', '$locale', function (numberFormat, $filter, $locale) {
     // Remove currency symbol from validation regular expression: we want only value in input
@@ -58,60 +58,63 @@
     var result = {
         // based on https://github.com/angular/angular.js/blob/e812b9fa9ec7086ab8d64a32d86f6e991f84bc55/src/ng/filter/filters.js#L289
         getVariables: function (pattern, minExclusive, min, maxExclusive, max, fraction) {
-            var result = {};
+            var result2 = {};
 
-            result.isNegativeAllowed = angular.isDefined(minExclusive) ? minExclusive <= 0 : angular.isDefined(min) ? min < 0 : true;
-            result.isPositiveAllowed = angular.isDefined(maxExclusive) ? maxExclusive >= 0 : angular.isDefined(max) ? max > 0 : true;
+            const isDefinedMin = angular.isDefined(min) ? min < 0 : true;
+            const isDefinedMax = angular.isDefined(max) ? max > 0 : true;
+
+            result2.isNegativeAllowed = angular.isDefined(minExclusive) ? minExclusive <= 0 : isDefinedMin;
+            result2.isPositiveAllowed = angular.isDefined(maxExclusive) ? maxExclusive >= 0 : isDefinedMax;
 
             // Negative (like "-") and positive (like "+") prefixies
-            result.negativePrefix = pattern.negPre;
-            result.positivePrefix = pattern.posPre;
-            result.isPrefixExists = result.negativePrefix == result.positivePrefix == "";
-            result.escapedNegativePrefix = escape(result.negativePrefix);
-            result.escapedPositivePrefix = escape(result.positivePrefix);
+            result2.negativePrefix = pattern.negPre;
+            result2.positivePrefix = pattern.posPre;
+            result2.isPrefixExists = result2.negativePrefix == result2.positivePrefix == "";
+            result2.escapedNegativePrefix = escape(result2.negativePrefix);
+            result2.escapedPositivePrefix = escape(result2.positivePrefix);
 
             // Group separator, i.e. 111,111 or 111 111
-            result.escapedGroupSeparator = escape($locale.NUMBER_FORMATS.GROUP_SEP);
-            result.groupSize = pattern.gSize;
-            result.lastGroupSize = pattern.lgSize;
+            result2.escapedGroupSeparator = escape($locale.NUMBER_FORMATS.GROUP_SEP);
+            result2.groupSize = pattern.gSize;
+            result2.lastGroupSize = pattern.lgSize;
 
             // Decimal separator, i.e. 111.00 or 111,00
-            result.decimalSeparator = $locale.NUMBER_FORMATS.DECIMAL_SEP;
-            result.escapedDecimalSeparator = escape(result.decimalSeparator);
-            result.minimalFraction = fraction || pattern.minFrac;
-            result.maximumFraction = fraction || pattern.maxFrac || 21; // ECMA 262
+            result2.decimalSeparator = $locale.NUMBER_FORMATS.DECIMAL_SEP;
+            result2.escapedDecimalSeparator = escape(result2.decimalSeparator);
+            result2.minimalFraction = fraction || pattern.minFrac;
+            result2.maximumFraction = fraction || pattern.maxFrac || 21; // ECMA 262
 
             // Negative (like "-") and positive (like "+") suffixies
-            result.negativeSuffix = pattern.negSuf;
-            result.positiveSuffix = pattern.posSuf;
-            result.isSuffixExists = result.negativeSuffix == result.positiveSuffix == "";
-            result.escapedNegativeSuffix = escape(result.negativeSuffix);
-            result.escapedPositiveSuffix = escape(result.positiveSuffix);
+            result2.negativeSuffix = pattern.negSuf;
+            result2.positiveSuffix = pattern.posSuf;
+            result2.isSuffixExists = result2.negativeSuffix == result2.positiveSuffix == "";
+            result2.escapedNegativeSuffix = escape(result2.negativeSuffix);
+            result2.escapedPositiveSuffix = escape(result2.positiveSuffix);
 
             // Select prefexies, like [-+]
-            result.regexpPrefix = (result.isPrefixExists ? "(" + (result.isNegativeAllowed ? result.escapedNegativePrefix : "") + "|" + (result.isPositiveAllowed ? result.escapedPositivePrefix : "") + ")" : "");
+            result2.regexpPrefix = (result2.isPrefixExists ? "(" + (result2.isNegativeAllowed ? result2.escapedNegativePrefix : "") + "|" + (result2.isPositiveAllowed ? result2.escapedPositivePrefix : "") + ")" : "");
 
             // Select value. There is three groups: start (without leading zeroes), middle (size of both defined in groupSize) and end (size defined in lastGroupSize)
-            var startGroup = "([1-9][0-9]{0," + (result.groupSize > 0 ? result.groupSize - 1 : 0) + "}" + ")";
-            var middleGroup = "(" + result.escapedGroupSeparator + "\\d{" + result.groupSize + "}" + ")";
-            var endGroup = "(" + result.escapedGroupSeparator + "\\d{" + result.lastGroupSize + "})";
+            var startGroup = "([1-9][0-9]{0," + (result2.groupSize > 0 ? result2.groupSize - 1 : 0) + "}" + ")";
+            var middleGroup = "(" + result2.escapedGroupSeparator + "\\d{" + result2.groupSize + "}" + ")";
+            var endGroup = "(" + result2.escapedGroupSeparator + "\\d{" + result2.lastGroupSize + "})";
             // Number may have or start group (sss), start group + last group (sss,lll) or start group, multiple middle groups and end group (sss,mmm,mmm,lll)
-            result.regexpValue = "((" + startGroup + ("(" + middleGroup + endGroup + "|" + endGroup + ")?") + "|[1-9][0-9]*)|0)";
+            result2.regexpValue = "((" + startGroup + ("(" + middleGroup + endGroup + "|" + endGroup + ")?") + "|[1-9][0-9]*)|0)";
 
             // Select fraction. May not exists and have maximum size defined by maximumFraction.
             // Minimum size ignored - we want to allow use type just 111 instead of 111.000
-            result.regexpFraction = "(" + result.escapedDecimalSeparator + "\\d{1," + result.maximumFraction + "}" + ")?";
+            result2.regexpFraction = "(" + result2.escapedDecimalSeparator + "\\d{1," + result2.maximumFraction + "}" + ")?";
 
             // Select suffixies, like [-+]. This required because, for example, in some locales negative numbers may be defined as (111) instead of -111
-            result.regexpSuffix = (result.isSuffixExists ? "[" + (result.isNegativeAllowed ? result.escapedNegativeSuffix : "") + (result.isPositiveAllowed ? result.escapedPositiveSuffix : "") + "]?" : "");
+            result2.regexpSuffix = (result2.isSuffixExists ? "[" + (result2.isNegativeAllowed ? result2.escapedNegativeSuffix : "") + (result2.isPositiveAllowed ? result2.escapedPositiveSuffix : "") + "]?" : "");
 
-            result.regexpFloat = formatRegExp(result.regexpPrefix + result.regexpValue + result.regexpFraction + result.regexpSuffix);
-            result.regexpInteger = formatRegExp(result.regexpPrefix + result.regexpValue + result.regexpSuffix);
+            result2.regexpFloat = formatRegExp(result2.regexpPrefix + result2.regexpValue + result2.regexpFraction + result2.regexpSuffix);
+            result2.regexpInteger = formatRegExp(result2.regexpPrefix + result2.regexpValue + result2.regexpSuffix);
 
             // Check is value a negative. Be careful! This regular expression does not check value for validity (see above), only for negativity
-            result.negativeRegExp = new RegExp("^(" + result.escapedNegativePrefix + ")[^" + result.escapedNegativePrefix + result.escapedNegativeSuffix + "](" + result.escapedNegativeSuffix + ")$");
+            result2.negativeRegExp = new RegExp("^(" + result2.escapedNegativePrefix + ")[^" + result2.escapedNegativePrefix + result2.escapedNegativeSuffix + "](" + result2.escapedNegativeSuffix + ")$");
 
-            return result;
+            return result2;
         },
         // Check if number in specified range
         inRange: function (value, minExclusive, min, maxExclusive, max, setValidity) {

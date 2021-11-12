@@ -22,7 +22,7 @@ namespace VirtoCommerce.Platform.Data.DynamicProperties
             _memoryCache = memoryCache;
         }
 
-        public async virtual Task<DynamicProperty> GetByNameAsync(string objectType, string propertyName)
+        public virtual Task<DynamicProperty> GetByName(string objectType, string propertyName)
         {
             if (objectType == null)
             {
@@ -33,6 +33,11 @@ namespace VirtoCommerce.Platform.Data.DynamicProperties
                 throw new ArgumentNullException(nameof(propertyName));
             }
 
+            return GetByNameAsync(objectType, propertyName);
+        }
+
+        public async virtual Task<DynamicProperty> GetByNameAsync(string objectType, string propertyName)
+        {
             var cacheKey = CacheKey.With(GetType(), nameof(GetByNameAsync));
             var dict = await _memoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
            {

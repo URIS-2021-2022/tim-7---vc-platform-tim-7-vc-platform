@@ -309,12 +309,12 @@ namespace VirtoCommerce.Platform.Data.ExportImport
 
                     if (manifest.HandleSecurity)
                     {
-                        HandleSecurity(progressInfo, progressCallback, cancellationToken, writer, serializer);
+                        await HandleSecurity(progressInfo, progressCallback, cancellationToken, writer, serializer);
                     }
 
                     if (manifest.HandleSettings)
                     {
-                        HandleSettings(progressInfo, progressCallback, cancellationToken, writer, serializer, manifest);
+                        await HandleSettings(progressInfo, progressCallback, cancellationToken, writer, serializer, manifest);
                     }
 
                     cancellationToken.ThrowIfCancellationRequested();
@@ -359,7 +359,7 @@ namespace VirtoCommerce.Platform.Data.ExportImport
             }
         }
 
-        private async void HandleSettings(ExportImportProgressInfo progressInfo, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken, JsonTextWriter writer, JsonSerializer serializer, PlatformExportManifest manifest)
+        private async Task HandleSettings(ExportImportProgressInfo progressInfo, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken, JsonTextWriter writer, JsonSerializer serializer, PlatformExportManifest manifest)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -385,7 +385,7 @@ namespace VirtoCommerce.Platform.Data.ExportImport
             await writer.WriteEndArrayAsync();
         }
 
-        private async void HandleSecurity(ExportImportProgressInfo progressInfo, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken, JsonTextWriter writer, JsonSerializer serializer)
+        private async Task HandleSecurity(ExportImportProgressInfo progressInfo, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken, JsonTextWriter writer, JsonSerializer serializer)
         {
             #region Roles
 

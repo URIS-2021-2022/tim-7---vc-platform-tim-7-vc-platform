@@ -284,68 +284,7 @@ namespace VirtoCommerce.Platform.Web
                         .UseDbContext<SecurityDbContext>();
                 }).AddServer(options =>
                 {
-                    // Register the ASP.NET Core MVC binder used by OpenIddict.
-                    // Note: if you don't call this method, you won't be able to
-                    // bind OpenIdConnectRequest or OpenIdConnectResponse parameters.
-                    var builder = options.UseAspNetCore().
-                        EnableTokenEndpointPassthrough().
-                        EnableAuthorizationEndpointPassthrough();
-
-                    // Enable the authorization, logout, token and userinfo endpoints.
-                    options.SetTokenEndpointUris("/connect/token");
-                    options.SetUserinfoEndpointUris("/api/security/userinfo");
-
-                    // Note: the Mvc.Client sample only uses the code flow and the password flow, but you
-                    // can enable the other flows if you need to support implicit or client credentials.
-                    options.AllowPasswordFlow()
-                        .AllowRefreshTokenFlow()
-                        .AllowClientCredentialsFlow();
-
-                    options.SetRefreshTokenLifetime(authorizationOptions?.RefreshTokenLifeTime);
-                    options.SetAccessTokenLifetime(authorizationOptions?.AccessTokenLifeTime);
-
-                    options.AcceptAnonymousClients();
-
-                    // Configure Openiddict to issues new refresh token for each token refresh request.
-                    // Enabled by default, to disable use options.DisableRollingRefreshTokens()
-
-                    // Make the "client_id" parameter mandatory when sending a token request.
-                    //options.RequireClientIdentification()
-
-                    // When request caching is enabled, authorization and logout requests
-                    // are stored in the distributed cache by OpenIddict and the user agent
-                    // is redirected to the same page with a single parameter (request_id).
-                    // This allows flowing large OpenID Connect requests even when using
-                    // an external authentication provider like Google, Facebook or Twitter.
-                    builder.EnableAuthorizationRequestCaching();
-                    builder.EnableLogoutRequestCaching();
-
-                    options.DisableScopeValidation();
-
-                    // During development or when you explicitly run the platform in production mode without https, need to disable the HTTPS requirement.
-                    if (WebHostEnvironment.IsDevelopment() || platformOptions.AllowInsecureHttp || !Configuration.IsHttpsServerUrlSet())
-                    {
-                        builder.DisableTransportSecurityRequirement();
-                    }
-
-                    // Note: to use JWT access tokens instead of the default
-                    // encrypted format, the following lines are required:
-                    options.DisableAccessTokenEncryption();
-
-                    var bytes = File.ReadAllBytes(Configuration["Auth:PrivateKeyPath"]);
-                    X509Certificate2 privateKey;
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                    {
-                        // https://github.com/dotnet/corefx/blob/release/2.2/Documentation/architecture/cross-platform-cryptography.md
-                        // macOS cannot load certificate private keys without a keychain object, which requires writing to disk. Keychains are created automatically for PFX loading, and are deleted when no longer in use. Since the X509KeyStorageFlags.EphemeralKeySet option means that the private key should not be written to disk, asserting that flag on macOS results in a PlatformNotSupportedException.
-                        privateKey = new X509Certificate2(bytes, Configuration["Auth:PrivateKeyPassword"], X509KeyStorageFlags.MachineKeySet);
-                    }
-                    else
-                    {
-                        privateKey = new X509Certificate2(bytes, Configuration["Auth:PrivateKeyPassword"], X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.EphemeralKeySet);
-                    }
-                    options.AddSigningCertificate(privateKey);
-                    options.AddEncryptionCertificate(privateKey);
+                    AddServerBody(options, authorizationOptions, platformOptions);
                 });
 
 
@@ -435,6 +374,72 @@ namespace VirtoCommerce.Platform.Web
             // Add login page UI options
             var loginPageUIOptions = Configuration.GetSection("LoginPageUI");
             services.AddOptions<LoginPageUIOptions>().Bind(loginPageUIOptions);
+        }
+
+        private void AddServerBody(OpenIddictServerBuilder options, Core.Security.AuthorizationOptions authorizationOptions,PlatformOptions platformOptions)
+        {
+            // Register the ASP.NET Core MVC binder used by OpenIddict.
+            // Note: if you don't call this method, you won't be able to
+            // bind OpenIdConnectRequest or OpenIdConnectResponse parameters.
+            var builder = options.UseAspNetCore().
+                EnableTokenEndpointPassthrough().
+                EnableAuthorizationEndpointPassthrough();
+
+            // Enable the authorization, logout, token and userinfo endpoints.
+            options.SetTokenEndpointUris("/connect/token");
+            options.SetUserinfoEndpointUris("/api/security/userinfo");
+
+            // Note: the Mvc.Client sample only uses the code flow and the password flow, but you
+            // can enable the other flows if you need to support implicit or client credentials.
+            options.AllowPasswordFlow()
+                .AllowRefreshTokenFlow()
+                .AllowClientCredentialsFlow();
+
+            options.SetRefreshTokenLifetime(authorizationOptions?.RefreshTokenLifeTime);
+            options.SetAccessTokenLifetime(authorizationOptions?.AccessTokenLifeTime);
+
+            options.AcceptAnonymousClients();
+
+            // Configure Openiddict to issues new refresh token for each token refresh request.
+            // Enabled by default, to disable use options.DisableRollingRefreshTokens()
+
+            // Make the "client_id" parameter mandatory when sending a token request.
+            //options.RequireClientIdentification()
+
+            // When request caching is enabled, authorization and logout requests
+            // are stored in the distributed cache by OpenIddict and the user agent
+            // is redirected to the same page with a single parameter (request_id).
+            // This allows flowing large OpenID Connect requests even when using
+            // an external authentication provider like Google, Facebook or Twitter.
+            builder.EnableAuthorizationRequestCaching();
+            builder.EnableLogoutRequestCaching();
+
+            options.DisableScopeValidation();
+
+            // During development or when you explicitly run the platform in production mode without https, need to disable the HTTPS requirement.
+            if (WebHostEnvironment.IsDevelopment() || platformOptions.AllowInsecureHttp || !Configuration.IsHttpsServerUrlSet())
+            {
+                builder.DisableTransportSecurityRequirement();
+            }
+
+            // Note: to use JWT access tokens instead of the default
+            // encrypted format, the following lines are required:
+            options.DisableAccessTokenEncryption();
+
+            var bytes = File.ReadAllBytes(Configuration["Auth:PrivateKeyPath"]);
+            X509Certificate2 privateKey;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                // https://github.com/dotnet/corefx/blob/release/2.2/Documentation/architecture/cross-platform-cryptography.md
+                // macOS cannot load certificate private keys without a keychain object, which requires writing to disk. Keychains are created automatically for PFX loading, and are deleted when no longer in use. Since the X509KeyStorageFlags.EphemeralKeySet option means that the private key should not be written to disk, asserting that flag on macOS results in a PlatformNotSupportedException.
+                privateKey = new X509Certificate2(bytes, Configuration["Auth:PrivateKeyPassword"], X509KeyStorageFlags.MachineKeySet);
+            }
+            else
+            {
+                privateKey = new X509Certificate2(bytes, Configuration["Auth:PrivateKeyPassword"], X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.EphemeralKeySet);
+            }
+            options.AddSigningCertificate(privateKey);
+            options.AddEncryptionCertificate(privateKey);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

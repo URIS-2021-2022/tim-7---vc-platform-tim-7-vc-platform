@@ -1,4 +1,4 @@
-﻿angular.module('platformWebApp')
+angular.module('platformWebApp')
 .factory('platformWebApp.permissionScopeResolver', [ function () {
 	var scopes = [];
 	//type - permission scope type
@@ -11,11 +11,10 @@
 
 	function resolve(type) {
 	    return angular.copy(_.find(scopes, function (x) { return x.type.toUpperCase() == type.toUpperCase(); }));
-	}
+    }
 
-	var retVal = {
-		register: register,
-		resolve: resolve
-	};
-	return retVal;
+    return {
+        register: register,
+        resolve: resolve
+    };
 }]);

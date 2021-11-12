@@ -314,12 +314,11 @@ namespace VirtoCommerce.Platform.Modules
 
         private IModuleTypeLoader GetTypeLoaderForModule(ModuleInfo moduleInfo)
         {
-            foreach (IModuleTypeLoader typeLoader in this.ModuleTypeLoaders)
+            var typeLoader = ModuleTypeLoaders.Where(tl => tl.CanLoadModuleType(moduleInfo));
+
+            if (typeLoader != null)
             {
-                if (typeLoader.CanLoadModuleType(moduleInfo))
-                {
-                    return typeLoader;
-                }
+                return typeLoader.FirstOrDefault();
             }
 
             throw new ModuleTypeLoaderNotFoundException(moduleInfo.ModuleName, "There is currently no moduleTypeLoader in the ModuleManager that can retrieve the specified module.", null);

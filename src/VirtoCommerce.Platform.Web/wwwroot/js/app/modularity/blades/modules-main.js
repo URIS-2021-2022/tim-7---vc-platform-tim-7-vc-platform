@@ -34,7 +34,9 @@ angular.module('platformWebApp')
 
                     // pre-calculate $alternativeVersion: set latest OR installed version here
                     var foundInstalledModule;
-                    if (foundInstalledModule = _.findWhere(vals, { isInstalled: true })) {
+                    foundInstalledModule = _.findWhere(vals, { isInstalled: true });
+                    if (foundInstalledModule) {
+               
                         _.each(vals, function (m) {
                             if (m === foundInstalledModule) {
                                 if (m !== latest)
@@ -120,9 +122,9 @@ angular.module('platformWebApp')
         blade.headIcon = 'fa fa-cubes';
 
         blade.currentEntities = [
-            nodeUpdate = { name: 'platform.blades.modules-main.labels.updates', mode: 'update' },
-            nodeAvailable = { name: 'platform.blades.modules-main.labels.available', mode: 'available' },
-            nodeInstalled = { name: 'platform.blades.modules-main.labels.installed', mode: 'installed' },
+            { name: 'platform.blades.modules-main.labels.updates', mode: 'update' },
+            { name: 'platform.blades.modules-main.labels.available', mode: 'available' },
+            { name: 'platform.blades.modules-main.labels.installed', mode: 'installed' },
             { name: 'platform.blades.modules-main.labels.advanced', mode: 'advanced' }
         ];
 

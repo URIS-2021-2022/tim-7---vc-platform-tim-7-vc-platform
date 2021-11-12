@@ -198,10 +198,10 @@ angular.module('platformWebApp')
         }
 
         function allPropertiesEmpty(propertyValues) {
-            var result = _.all(propertyValues, function (value) {
+            return _.all(propertyValues, function (value) {
                 return !value.value || value.value === '';
             });
-            return result;
+            
         }
 
         function showEmptyProperties() {

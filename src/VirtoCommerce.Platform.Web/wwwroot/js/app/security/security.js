@@ -83,7 +83,6 @@ angular.module('platformWebApp')
                         if (!$scope.formattedCountdown) {
                             $scope.nextRequestAt = undefined;
                         }
-                        return;
                     }, 1000);
 
                     function getCountdown(date) {

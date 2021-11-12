@@ -16,7 +16,8 @@ namespace VirtoCommerce.Platform.Security.Services
         {
             _roleManager = roleManager;
         }
-        public async Task<RoleSearchResult> SearchRolesAsync(RoleSearchCriteria criteria)
+
+        public Task<RoleSearchResult> SearchRoles(RoleSearchCriteria criteria)
         {
             if (criteria == null)
             {
@@ -26,6 +27,12 @@ namespace VirtoCommerce.Platform.Security.Services
             {
                 throw new NotSupportedException();
             }
+
+            return SearchRolesAsync(criteria);
+        }
+        public async Task<RoleSearchResult> SearchRolesAsync(RoleSearchCriteria criteria)
+        {
+            
             var result = AbstractTypeFactory<RoleSearchResult>.TryCreateInstance();
             var query = _roleManager.Roles;
             if (criteria.Keyword != null)
