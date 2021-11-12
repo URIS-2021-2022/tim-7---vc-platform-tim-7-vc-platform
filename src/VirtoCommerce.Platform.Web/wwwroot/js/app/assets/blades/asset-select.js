@@ -45,10 +45,11 @@ angular.module('platformWebApp')
                         breadcrumbs.push(breadCrumb);
                     }
                     blade.breadcrumbs = breadcrumbs;
-                } else {
-                    var name = blade.folder || "platform.blades.asset-list.bread-crumb-top";
-                    blade.breadcrumbs = [generateBreadcrumb(blade.currentEntity.url, name)];
-                }
+                    return;
+                } 
+                var name = blade.folder || "platform.blades.asset-list.bread-crumb-top";
+                blade.breadcrumbs = [generateBreadcrumb(blade.currentEntity.url, name)];
+                
             }
 
             function generateBreadcrumb(id, name) {

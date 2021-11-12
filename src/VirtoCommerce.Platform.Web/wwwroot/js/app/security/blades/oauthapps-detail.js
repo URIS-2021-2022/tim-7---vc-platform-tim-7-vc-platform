@@ -103,11 +103,11 @@ angular.module('platformWebApp').controller('platformWebApp.oAuthAppsController'
         });
     }
 
-    $scope.copyToClipboard = function (elementId) {
+    $scope.copyToClipboard = async function (elementId) {
         var text = document.getElementById(elementId);
         text.focus();
         text.select();
-        document.execCommand('copy');
+        await navigator.clipboard.writeText(text);
     };
 
     $scope.editRedirectUris = function () {

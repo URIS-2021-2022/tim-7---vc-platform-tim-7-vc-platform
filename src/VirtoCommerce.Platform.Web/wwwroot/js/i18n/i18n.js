@@ -1,4 +1,4 @@
-﻿angular.module('platformWebApp')
+angular.module('platformWebApp')
 .constant("platformWebApp.fallbackLanguage", "en")
 .constant("platformWebApp.fallbackRegionalFormat", "en")
 .constant("platformWebApp.fallbackTimeZone", "Etc/Utc")
@@ -75,7 +75,13 @@
                 // Never use time ago:           threshold unit = null, threshold value = positive number (1 by default) | x milliseconds
                 // Use time ago after threshold: threshold unit = y,    threshold value = x                              | x of y
                 result.useTimeAgo = !(timeAgoConfig.fullDateThresholdUnit == null && timeAgoConfig.fullDateThreshold != null);
-                result.thresholdUnit = timeAgoConfig.fullDateThresholdUnit ? timeAgoConfig.fullDateThresholdUnit.capitalize() : (result.useTimeAgo ? 'Never' : null);
+
+                if (timeAgoConfig.fullDateThresholdUnit) {
+                    result.thresholdUnit = timeAgoConfig.fullDateThresholdUnit.capitalize()
+                } else {
+                    result.thresholdUnit = result.useTimeAgo ? 'Never' : null
+                }
+               
                 result.threshold = result.useTimeAgo && result.thresholdUnit !== 'Never' ? timeAgoConfig.fullDateThreshold : null;
                 return result;
             },

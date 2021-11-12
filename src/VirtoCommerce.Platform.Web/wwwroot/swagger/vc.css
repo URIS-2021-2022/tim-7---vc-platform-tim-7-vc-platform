@@ -90,10 +90,8 @@ body
     color: #4c4c4c;
 }
 
-.swagger-ui .opblock-tag,
 .swagger-ui .opblock-tag small
 .swagger-ui .opblock .opblock-summary-operation-id,
-.swagger-ui .opblock .opblock-summary-path,
 .swagger-ui .opblock .opblock-summary-path__deprecated,
 .swagger-ui .opblock .opblock-section-header h4,
 .swagger-ui table thead tr td, .swagger-ui table thead tr th
@@ -122,9 +120,9 @@ body
     padding: 0;
 }
 
-.swagger-ui .opblock-tag
-{
+.swagger-ui .opblock-tag {
     /* display: block; */
+    font-family: 'Exo 2', sans-serif;
     clear: none;
     float: left;
     font-weight: bold;
@@ -142,7 +140,7 @@ body
 .swagger-ui .opblock .opblock-summary-path__deprecated,
 .swagger-ui .opblock .opblock-summary-method 
 {
-    font-family: 'Exo 2';
+    font-family: 'Exo 2', sans-serif;
     font-weight: bold;
     font-size: 0.9em;
 }

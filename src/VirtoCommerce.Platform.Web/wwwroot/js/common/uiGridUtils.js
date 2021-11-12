@@ -159,8 +159,8 @@ angular.module('platformWebApp')
                 var columnDefs = angular.copy(gridOptions.columnDefs);
                 for (var i = 0; i < columnDefs.length; i++) {
                     var columnDef = columnDefs[i];
-                    for (var j = 0; j < grid.rows.length; j++) {
-                        var value = grid.getCellValue(grid.rows[j], grid.getColumn(columnDef.name));
+                    for (let row of grid.rows) {
+                        var value = grid.getCellValue(row, grid.getColumn(columnDef.name));
                         if (angular.isDefined(value)) {
                             if (angular.isNumber(value)) {
                                 columnDef.cellFilter = columnDef.cellFilter || 'number';
@@ -178,10 +178,10 @@ angular.module('platformWebApp')
                 grid.api.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
             }
 
-            function updateColumnsVisibility(gridOptions, isCollapsed) {
+            function updateColumnsVisibility(_gridOptions, isCollapsed) {
                 var blade = bladeNavigationService.currentBlade;
                 var $scope = blade.$scope;
-                _.each(gridOptions.columnDefs, function (x) {
+                _.each(_gridOptions.columnDefs, function (x) {
                     // normal: visible, if column was predefined
                     // collapsed: visible only if we must display column always
                     if (isCollapsed) {
