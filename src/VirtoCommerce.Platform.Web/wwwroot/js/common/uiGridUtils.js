@@ -178,10 +178,10 @@ angular.module('platformWebApp')
                 grid.api.core.notifyDataChange(uiGridConstants.dataChange.COLUMN);
             }
 
-            function updateColumnsVisibility(gridOptions, isCollapsed) {
+            function updateColumnsVisibility(_gridOptions, isCollapsed) {
                 var blade = bladeNavigationService.currentBlade;
                 var $scope = blade.$scope;
-                _.each(gridOptions.columnDefs, function (x) {
+                _.each(_gridOptions.columnDefs, function (x) {
                     // normal: visible, if column was predefined
                     // collapsed: visible only if we must display column always
                     if (isCollapsed) {
