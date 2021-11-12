@@ -5,8 +5,8 @@ angular.module('platformWebApp')
             templateUrl: '$(Platform)/Scripts/app/security/directives/password-input.tpl.html',
             scope: {
                 runPasswordValidation: '&',
-                passwordPlaceholder: '@passwordPlaceholder',
-                passwordTooWeakMessage: '@',
+                passwordPlaceholder: '',
+                passwordTooWeakMessage: '',
                 newPassword: '='
             },
             link: function (scope) {

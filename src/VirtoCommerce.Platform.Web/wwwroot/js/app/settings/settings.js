@@ -86,13 +86,7 @@ angular.module("platformWebApp")
             //    }
             //});
 
-            //selectedSettings = _.where(settings, { valueType: 'Boolean' });
-            //_.forEach(selectedSettings, function (setting) {
-            //    setting.value = setting.value && setting.value.toLowerCase() === 'true';
-            //    if (setting.allowedValues) {
-            //        setting.allowedValues = _.map(setting.allowedValues, function (value) { return value.toLowerCase() === 'true'; });
-            //    }
-            //});  
+            
         };
 
         retVal.toApiFormat = function (settings) {

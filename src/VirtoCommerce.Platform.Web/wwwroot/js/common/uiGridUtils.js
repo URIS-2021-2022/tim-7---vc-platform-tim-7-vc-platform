@@ -27,7 +27,7 @@ angular.module('platformWebApp')
                             x.wasPredefined = false;
                         }
                     });
-                    // savedState.columns = _.reject(savedState.columns, function (x) { return x.cellTemplate && !x.wasPredefined; }); // not sure why was this, but it rejected custom templated fields
+                 
                     initOptions.columnDefs = _.union(initOptions.columnDefs, savedState.columns);
                 } else {
                     // mark predefined columns
