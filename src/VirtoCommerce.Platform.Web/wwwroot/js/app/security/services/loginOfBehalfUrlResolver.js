@@ -2,7 +2,7 @@ angular.module('platformWebApp')
     .factory('platformWebApp.loginOfBehalfUrlResolver', [() => {
         var _resolver;
 
-        var service = {
+        return {
             // register the method to resolve the URL
             register: (resolver) => {
                 _resolver = resolver;
@@ -13,5 +13,5 @@ angular.module('platformWebApp')
                 }
             }
         };
-        return service;
+       
     }]);
