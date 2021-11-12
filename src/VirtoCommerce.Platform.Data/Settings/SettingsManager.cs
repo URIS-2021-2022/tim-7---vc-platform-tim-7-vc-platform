@@ -166,12 +166,19 @@ namespace VirtoCommerce.Platform.Data.Settings
             }
         }
 
-        public virtual async Task SaveObjectSettingsAsync(IEnumerable<ObjectSettingEntry> objectSettings)
-        {
+        public Task SaveObjectSettingsAsync(IEnumerable<ObjectSettingEntry> objectSettings) {
+
             if (objectSettings == null)
             {
                 throw new ArgumentNullException(nameof(objectSettings));
             }
+            return SaveObjectSettingsInternalAsync(objectSettings);
+        }
+
+
+        private  async Task SaveObjectSettingsInternalAsync(IEnumerable<ObjectSettingEntry> objectSettings)
+        {
+
 
             var changedEntries = new List<GenericChangedEntry<ObjectSettingEntry>>();
 
