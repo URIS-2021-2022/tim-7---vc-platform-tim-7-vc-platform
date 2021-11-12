@@ -83,14 +83,6 @@ angular.module('platformWebApp')
             //$scope.rename = function (listItem) {
             //    rename(listItem);
             //};
-
-            //function rename(listItem) {
-            //    var result = prompt("Enter new name", listItem.name);
-            //    if (result) {
-            //        listItem.name = result;
-            //    }
-            //}
-
             function isItemsChecked() {
                 return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
             }
