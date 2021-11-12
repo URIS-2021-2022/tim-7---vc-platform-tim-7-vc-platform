@@ -22,7 +22,7 @@
                                     <th scope="col" class="table-col" ng-click="blade.selectedAll=!blade.selectedAll; checkAll()">
                                         <div class="ui-grid-selection-row-header-buttons ui-grid-icon-ok" ng-class="{'ui-grid-row-selected': blade.selectedAll}">&nbsp;</div>
                                     </th>
-                                    <th class="table-col __link" ng-click="blade.orderDesc=!blade.orderDesc; applyOrder()">
+                                    <th class="table-col __link" ng-click="blade.orderDesc=!blade.orderDesc; applyOrder()" scope="col">
                                         <span>
                                             {{ 'platform.blades.setting-dictionary.labels.value' | translate }}
                                         </span>
