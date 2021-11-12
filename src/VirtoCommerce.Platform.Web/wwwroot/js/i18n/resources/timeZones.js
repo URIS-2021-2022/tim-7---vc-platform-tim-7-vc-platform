@@ -17,13 +17,13 @@ angular.module('platformWebApp')
             var hours = (offset - minutes) / 60;
             // format: ±HHMM
             var pad = function (n, withSign) {
-                var result = '';
+                var result1 = '';
                 if (withSign) {
-                    result = n >= 0 ? '+' : '-';
+                    result1 = n >= 0 ? '+' : '-';
                     n = n < 0 ? n * -1 : n;
                 }
-                result += n < 10 ? '0' + n : n;
-                return result;
+                result1 += n < 10 ? '0' + n : n;
+                return result1;
             }
             return { hours: hours, minutes: minutes, formatted: pad(hours, true) + ':' + pad(minutes) };
         },

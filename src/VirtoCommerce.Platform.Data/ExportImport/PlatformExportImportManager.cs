@@ -91,7 +91,7 @@ namespace VirtoCommerce.Platform.Data.ExportImport
             return retVal;
         }
 
-        public async Task ExportAsync(Stream outStream, PlatformExportManifest exportOptions, Action<ExportImportProgressInfo> progressCallback, ICancellationToken сancellationToken)
+        public Task ExportAsync(Stream outStream, PlatformExportManifest exportOptions, Action<ExportImportProgressInfo> progressCallback, ICancellationToken сancellationToken)
         {
             if (exportOptions == null)
             {
@@ -100,10 +100,8 @@ namespace VirtoCommerce.Platform.Data.ExportImport
 
             using (var zipArchive = new ZipArchive(outStream, ZipArchiveMode.Create, true))
             {
-                //Export all selected platform entries
-                await ExportPlatformEntriesInternalAsync(zipArchive, exportOptions, progressCallback, сancellationToken);
-                //Export all selected  modules
-                await ExportModulesInternalAsync(zipArchive, exportOptions, progressCallback, сancellationToken);
+
+                ExportInternalAsync(zipArchive, exportOptions, progressCallback, сancellationToken);
 
                 //Write system information about exported modules
                 var manifestZipEntry = zipArchive.CreateEntry(ManifestZipEntryName, CompressionLevel.Optimal);
@@ -114,9 +112,21 @@ namespace VirtoCommerce.Platform.Data.ExportImport
                     exportOptions.SerializeJson(stream, GetJsonSerializer());
                 }
             }
+
+            return null;
         }
 
-        public async Task ImportAsync(Stream inputStream, PlatformExportManifest importOptions, Action<ExportImportProgressInfo> progressCallback, ICancellationToken сancellationToken)
+        public async Task ExportInternalAsync(ZipArchive zipArchive, PlatformExportManifest exportOptions, Action<ExportImportProgressInfo> progressCallback, ICancellationToken сancellationToken)
+        {
+            //Export all selected platform entries
+            await ExportPlatformEntriesInternalAsync(zipArchive, exportOptions, progressCallback, сancellationToken);
+            //Export all selected  modules
+            await ExportModulesInternalAsync(zipArchive, exportOptions, progressCallback, сancellationToken);
+        }
+
+
+
+        public Task ImportAsync(Stream inputStream, PlatformExportManifest importOptions, Action<ExportImportProgressInfo> progressCallback, ICancellationToken сancellationToken)
         {
             if (importOptions == null)
             {
@@ -128,6 +138,14 @@ namespace VirtoCommerce.Platform.Data.ExportImport
             progressCallback(progressInfo);
 
             using (var zipArchive = new ZipArchive(inputStream, ZipArchiveMode.Read, true))
+
+            ImportInternalAsync(zipArchive, importOptions, progressCallback, сancellationToken);
+
+            return null;
+        }
+
+        public async Task ImportInternalAsync(ZipArchive zipArchive, PlatformExportManifest importOptions, Action<ExportImportProgressInfo> progressCallback, ICancellationToken сancellationToken)
+        {
             using (EventSuppressor.SupressEvents())
             {
                 //Import selected platform entries
@@ -488,7 +506,6 @@ namespace VirtoCommerce.Platform.Data.ExportImport
                         {
                             try
                             {
-                                //TODO: Add JsonConverter which will be materialized concrete ExportImport option type
                                 var options = manifest.Options
                                     .DefaultIfEmpty(new ExportImportOptions { HandleBinaryData = manifest.HandleBinaryData, ModuleIdentity = new ModuleIdentity(moduleDescriptor.Identity.Id, moduleDescriptor.Identity.Version) })
                                     .FirstOrDefault(x => x.ModuleIdentity.Id == moduleDescriptor.Identity.Id);
@@ -537,8 +554,6 @@ namespace VirtoCommerce.Platform.Data.ExportImport
                     {
                         try
                         {
-                            //TODO: Add JsonConverter which will be materialized concrete ExportImport option type
-                            //ToDo: Added check ExportImportOptions for modules (DefaultIfEmpty)
                             var options = manifest.Options
                                 .DefaultIfEmpty(new ExportImportOptions { HandleBinaryData = manifest.HandleBinaryData, ModuleIdentity = new ModuleIdentity(module.Id, SemanticVersion.Parse(module.Version)) })
                                 .FirstOrDefault(x => x.ModuleIdentity.Id == moduleDescriptor.Identity.Id);

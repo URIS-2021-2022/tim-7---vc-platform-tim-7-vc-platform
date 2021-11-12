@@ -53,11 +53,6 @@ angular.module('platformWebApp')
                 }
             }
 
-            //for (var i in b) {
-            //	if (!a.hasOwnProperty(i)) {
-            //		return false;
-            //	}
-            //}
             return true;
         };
 

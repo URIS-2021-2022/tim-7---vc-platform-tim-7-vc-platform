@@ -243,7 +243,7 @@ angular.module('platformWebApp')
                     var timepickerEl = angular.element(popupEl.children()[1]);
 
                     if (attrs.timepickerOptions) {
-                        var options = scope.$parent.$eval(attrs.timepickerOptions);
+                        options = scope.$parent.$eval(attrs.timepickerOptions);
                         angular.forEach(options, function (value, option) {
                             scope.watchData[option] = value;
                             timepickerEl.attr(cameltoDash(option), 'watchData.' + option);
@@ -366,7 +366,7 @@ angular.module('platformWebApp')
                             // dt will not be undefined if the now or today button is pressed
                             if (dt && dt != null) {
                                 // get the existing date and update the time
-                                var date = new Date(scope.date);
+                                date = new Date(scope.date);
                                 date.setHours(dt.getHours());
                                 date.setMinutes(dt.getMinutes());
                                 date.setSeconds(dt.getSeconds());

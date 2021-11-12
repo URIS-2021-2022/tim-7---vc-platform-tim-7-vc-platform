@@ -90,7 +90,6 @@ body
     color: #4c4c4c;
 }
 
-.swagger-ui .opblock-tag small
 .swagger-ui .opblock .opblock-summary-operation-id,
 .swagger-ui .opblock .opblock-summary-path__deprecated,
 .swagger-ui .opblock .opblock-section-header h4,
@@ -149,7 +148,7 @@ body
 {
     padding: 5px;
     border-radius:0;
-    font-family: 'Exo 2',sans-serif;
+    font-family: 'Exo 2', sans-serif;
 }
 
 

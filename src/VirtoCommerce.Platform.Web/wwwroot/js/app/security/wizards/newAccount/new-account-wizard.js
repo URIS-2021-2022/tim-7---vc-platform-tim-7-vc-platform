@@ -15,7 +15,7 @@ angular.module('platformWebApp').controller('platformWebApp.newAccountWizardCont
                 });
 
                 // Load statuses
-                settings.get({ id: 'VirtoCommerce.Other.AccountStatuses' }, function (data) {
+                settings.get({ id: 'VirtoCommerce.Other.AccountStatuses' }, function () {
                     blade.statuses = data.allowedValues;
                     blade.currentEntity.status = data.defaultValue;
                 });

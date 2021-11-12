@@ -17,7 +17,7 @@ angular.module('platformWebApp').config(['$stateProvider', function ($stateProvi
     $stateProvider.state('setupWizard.modulesInstallation', {
         url: '/modulesInstallation',
         templateUrl: '$(Platform)/Scripts/app/modularity/templates/modulesInstallation.tpl.html',
-        controller: ['$scope', '$state', '$stateParams', '$window', 'platformWebApp.modules', 'platformWebApp.WaitForRestart', 'platformWebApp.exportImport.resource', 'platformWebApp.setupWizard', '$timeout', function ($scope, $state, $stateParams, $window, modules, waitForRestart, exportImportResourse, setupWizard, $timeout) {
+        controller: ['$scope', '$state', '$stateParams', '$window', 'platformWebApp.modules', 'platformWebApp.WaitForRestart', 'platformWebApp.exportImport.resource', 'platformWebApp.setupWizard', '$timeout', function ($scope, $state, $stateParams, modules, waitForRestart, setupWizard, $timeout) {
             $scope.notification = {};
             if ($stateParams.notification) {
                 $scope.notification = $stateParams.notification;
@@ -58,7 +58,7 @@ angular.module('platformWebApp').config(['$stateProvider', function ($stateProvi
     });
 }])
     .run(
-        ['platformWebApp.pushNotificationTemplateResolver', 'platformWebApp.bladeNavigationService', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', '$rootScope', 'platformWebApp.modules', 'platformWebApp.setupWizard', function (pushNotificationTemplateResolver, bladeNavigationService, mainMenuService, widgetService, $state, $rootScope, modules, setupWizard) {
+        ['platformWebApp.pushNotificationTemplateResolver', 'platformWebApp.bladeNavigationService', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', '$rootScope', 'platformWebApp.modules', 'platformWebApp.setupWizard', function (pushNotificationTemplateResolver, bladeNavigationService, mainMenuService, $state, $rootScope, setupWizard) {
             //Register module in main menu
             var menuItem = {
                 path: 'configuration/modularity',

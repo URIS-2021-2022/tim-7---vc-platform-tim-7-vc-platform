@@ -31,7 +31,7 @@ angular.module('platformWebApp')
                         var paths = (setting.groupName ? setting.groupName : 'General').split('|');
                         var lastParent = settingsTree;
                         var lastParentId = '';
-                        _.each(paths, function (path, i) {
+                        _.each(paths, function (path) {
                             lastParentId += '|' + path;
                             if (!lastParent[path]) {
                                 var treeNode = { name: path, groupName: lastParentId.substring(1) }

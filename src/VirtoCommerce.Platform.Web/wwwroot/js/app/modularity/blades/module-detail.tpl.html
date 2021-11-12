@@ -28,7 +28,7 @@
                         <input type="file" uploader="uploader" nv-file-select>
                         <input type="text" readonly="">
                         <button class="btn __file" type="button" onclick="$('input[type=file]').trigger('click')">
-                            <i class="btn-ico fa fa-file-archive-o"></i>
+                            <em class="btn-ico fa fa-file-archive-o"></em>
                         </button>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                         <div class="list-t">{{ 'platform.blades.module-detail.labels.tags' | translate }}</div>
                         <ul class="list __tags">
                             <li class="list-item" ng-repeat="tag in blade.currentEntity.tagsArray track by $index">
-                                <i class="list-ico fa fa-tags"></i>
+                                <em class="list-ico fa fa-tags"></em>
                                 <div class="list-name">{{tag}}</div>
                             </li>
                         </ul>
