@@ -80,16 +80,7 @@ angular.module('platformWebApp')
             $scope.downloadUrl = function (data) {
                 window.open(data.url, '_blank');
             };
-
-         
-
-            //function rename(listItem) {
-            //    var result = prompt("Enter new name", listItem.name);
-            //    if (result) {
-            //        listItem.name = result;
-            //    }
-            //}
-
+          
             function isItemsChecked() {
                 return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
             }

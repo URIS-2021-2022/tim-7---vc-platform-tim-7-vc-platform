@@ -15,14 +15,15 @@ angular.module('platformWebApp')
 
         // Add support for moment
         $provide.decorator('dateFilter', ['$delegate', 'moment', 'platformWebApp.i18n', 'platformWebApp.common.timeZones', function ($delegate, moment, i18n, timeZones) {
-            var filter = function (date, format, timeZone) {
+            
+           return function (date, format, timeZone) {
                 if (moment.isMoment(date)) {
                     timeZone = timeZones.get(i18n.getTimeZone()).utcOffset.formatted.replace(':', '');
                     date = date.toDate();
                 }
                 return $delegate.apply(this, [date, format, timeZone]);
             };
-            return filter;
+           
         }]);
 
         // Add support for tag type 'number'

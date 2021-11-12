@@ -6,6 +6,6 @@
     <div class="notice-list__name"
          ng-bind="model.title+((model.repeatCount)?' ('+(model.repeatCount+1 | number:0) + ')':'')"></div>
     <div class="notice-list__descr" ng-bind="model.description"></div>
-    <div class="notice-list__errors" ng-if="model.errorCount">Errors: <b>{{model.errorCount}}</b></div>
+    <div class="notice-list__errors" ng-if="model.errorCount">Errors: <strong>{{model.errorCount}}</strong></div>
 </div>
 <div ng-show="!model.finished" class="notice-list__bar progress-bar" data-role="progress-bar" data-value="30"></div>

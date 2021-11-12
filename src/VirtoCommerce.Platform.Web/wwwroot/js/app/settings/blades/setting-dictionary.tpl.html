@@ -19,7 +19,7 @@
                         <table class="table __indexed" ng-init="setForm(formScope)" aria-describedby="table">
                             <thead>
                                 <tr>
-                                    <th class="table-col" ng-click="blade.selectedAll=!blade.selectedAll; checkAll()">
+                                    <th scope="col" class="table-col" ng-click="blade.selectedAll=!blade.selectedAll; checkAll()">
                                         <div class="ui-grid-selection-row-header-buttons ui-grid-icon-ok" ng-class="{'ui-grid-row-selected': blade.selectedAll}">&nbsp;</div>
                                     </th>
                                     <th class="table-col __link" ng-click="blade.orderDesc=!blade.orderDesc; applyOrder()">
@@ -45,7 +45,7 @@
                                                     <input id="dictValue" autocomplete="off" smart-float required ng-model="editValue.value" maxlength="36" num-type="float" ng-blur="!error && selectItem(null)" ng-keyup="inputKeyUp($event)"/>
                                                 </div>
                                                 <button ng-mousedown="applyValue()" type="button" class="btn">
-                                                    <i class="btn-ico fas fa-save" ng-class="icon"></i>
+                                                    <em class="btn-ico fas fa-save" ng-class="icon"></em>
                                                 </button>
                                             </div>
                                             <div class="form-error" ng-if="error">

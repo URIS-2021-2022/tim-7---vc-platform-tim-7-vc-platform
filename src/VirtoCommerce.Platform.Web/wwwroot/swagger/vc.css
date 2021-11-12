@@ -91,7 +91,6 @@ body
 }
 
 .swagger-ui .opblock .opblock-summary-operation-id,
-.swagger-ui .opblock .opblock-summary-path,
 .swagger-ui .opblock .opblock-summary-path__deprecated,
 .swagger-ui .opblock .opblock-section-header h4,
 .swagger-ui table thead tr td, .swagger-ui table thead tr th
@@ -140,7 +139,7 @@ body
 .swagger-ui .opblock .opblock-summary-path__deprecated,
 .swagger-ui .opblock .opblock-summary-method 
 {
-    font-family: 'Exo 2';
+    font-family: 'Exo 2', sans-serif;
     font-weight: bold;
     font-size: 0.9em;
 }

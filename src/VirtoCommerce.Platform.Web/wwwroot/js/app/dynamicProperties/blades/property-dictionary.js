@@ -136,17 +136,19 @@ angular.module('platformWebApp').controller('platformWebApp.propertyDictionaryCo
         return !angular.equals(blade.currentEntities, blade.origEntity) && blade.hasUpdatePermission();
     }
 
+    function confirmChanges() {
+        refresh();
+        if (blade.onChangesConfirmedFn)
+            blade.onChangesConfirmedFn();
+    }
+
     $scope.saveChanges = function () {
         if (blade.isApiSave) {
             blade.isLoading = true;
 
             dictionaryItemsApi.save({ id: blade.currentEntity.objectType, propertyId: blade.currentEntity.id },
                 blade.currentEntities,
-                function () {
-                    refresh();
-                    if (blade.onChangesConfirmedFn)
-                        blade.onChangesConfirmedFn();
-                },
+                confirmChanges,
                 function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
         } else {
             blade.onChangesConfirmedFn(blade.currentEntities);
@@ -211,11 +213,7 @@ angular.module('platformWebApp').controller('platformWebApp.propertyDictionaryCo
                 if (remove) {
                     blade.isLoading = true;
                     dictionaryItemsApi.delete({ id: blade.currentEntity.objectType, propertyId: blade.currentEntity.id, ids: ids }, null,
-                        function () {
-                            refresh();
-                            if (blade.onChangesConfirmedFn)
-                                blade.onChangesConfirmedFn();
-                        },
+                        confirmChanges,
                         function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
                 }
             }

@@ -57,6 +57,7 @@
             <div class="sub-t">{{ 'platform.blades.new-account-wizard.labels.assign-roles' | translate }}</div>
             <div class="table-wrapper">
                 <table class="table">
+                    <caption>caption</caption>
                     <tbody>
                         <tr class="table-item" ng-repeat="data in blade.currentEntities track by data.id" ng-class="{'__selected': data.id === selectedNodeId}">
                             <th scope="col" class="table-col">

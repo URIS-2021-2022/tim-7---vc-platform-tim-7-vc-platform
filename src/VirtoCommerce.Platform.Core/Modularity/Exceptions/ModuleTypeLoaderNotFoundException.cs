@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 {
@@ -12,7 +13,7 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 
     public partial class ModuleTypeLoaderNotFoundException : ModularityException
     {
-      
+        protected ModuleTypeLoaderNotFoundException(SerializationInfo info, StreamingContext context) { }
 
 
         /// <summary>

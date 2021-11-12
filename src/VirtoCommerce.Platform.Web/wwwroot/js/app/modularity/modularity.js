@@ -40,7 +40,7 @@ angular.module('platformWebApp').config(['$stateProvider', function ($stateProvi
                 modules.restart({}, function () {
                     setupWizard.showStep(step.nextStep);
                     // delay initial start for 3 seconds
-                    $timeout(function () { }, 3000).then(function () {
+                    $timeout(null, 3000).then(function () {
                         return waitForRestart(1000);
                     });
                 });
