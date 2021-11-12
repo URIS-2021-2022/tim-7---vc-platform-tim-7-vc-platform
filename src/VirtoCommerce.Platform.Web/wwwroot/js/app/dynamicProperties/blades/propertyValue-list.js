@@ -36,27 +36,23 @@ angular.module('platformWebApp')
 
                     _.each(rawProperties, function (x) {
                         x.values.sort(function (a, b) {
-                            if (!(a.value && b.value)) {
-                                return -1;
+                            if (a.value && b.value) {
+                                if (a.value.name) {
+                                    return a.value.name.localeCompare(b.value.name);
+                                }
+
+                                if (angular.isString(a.value) && angular.isString(b.value)) {
+                                    return a.value.localeCompare(b.value)
+                                }
+
+                                if (a.value < b.value) {
+                                    return -1;
+                                }
+
+                                return a.value > b.value ? 1 : 0;
                             }
 
-                            var value;
-
-                            if (a.value.name) {
-                                value = a.value.name.localeCompare(b.value.name);
-                            } else {
-                                value = angular.isString(a.value) && angular.isString(b.value);
-                            }
-
-                            if (value) {
-                                return a.value.localeCompare(b.value);
-                            }
-
-                            if (a.value < b.value) {
-                                return -1;
-                            }
-
-                            return  a.value > b.value ? 1 : 0;
+                            return -1
                         });
                     });
 
