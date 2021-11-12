@@ -1,14 +1,15 @@
-﻿<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/ok-cancel.tpl.html'"></div>
+<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/ok-cancel.tpl.html'"></div>
 <div class="blade-content">
     <div class="blade-inner">
         <div class="inner-block">
             <div class="sub-t">{{ 'platform.blades.permission-scopes.labels.select-bounded-scopes' | translate }}</div>
             <div class="table-wrapper">
                 <table class="table">
+                    <caption>c</caption>
                     <tbody>
                         <tr>
                             <th class="table-col">{{ 'platform.blades.permission-scopes.labels.selected' | translate }}</th>
-                            <th class="table-col">{{ 'platform.blades.permission-scopes.labels.scope-name' | translate }}</th>
+                            <th scope="col" class="table-col">{{ 'platform.blades.permission-scopes.labels.scope-name' | translate }}</th>
                         </tr>
                         <tr class="table-item" ng-repeat="data in availableScopes track by data.type" ng-class="{'__selected': data.type === selectedNodeId}">
                             <td class="table-col">

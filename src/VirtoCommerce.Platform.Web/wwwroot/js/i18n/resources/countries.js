@@ -16,7 +16,7 @@ angular.module('platformWebApp')
             },
             query: function () {
                 return $resource('api/platform/common/countries').query((data) => {
-                    for (let value of data) {
+                    for (int i = 0; i < data.lenght;i++) {
                         var translateKey = 'platform.countries.' + data[i].id;
                         var translated = $translate.instant(translateKey);
                         data[i].displayName = translated === translateKey ? data[i].name : translated;
