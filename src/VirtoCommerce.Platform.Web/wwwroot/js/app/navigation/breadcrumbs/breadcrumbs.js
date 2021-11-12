@@ -79,7 +79,6 @@ angular.module('platformWebApp')
                             x.isVisible = wasLastItemVisible;
                         }
 
-                        //console.log("Calc. breadcrumbs width: " + widthOfItems + ", avail: " + availableWidth);
                     }
 
                     function calculateWordWidth(word) {
@@ -89,7 +88,6 @@ angular.module('platformWebApp')
                         return Math.min(maxWidthForMenuLinkText, wordWidth) + paddingAndBorders;
 
                         
-                        //console.log("[calc. width] " + word + "\t=> " + (result - 6));
                         
                     }
 
