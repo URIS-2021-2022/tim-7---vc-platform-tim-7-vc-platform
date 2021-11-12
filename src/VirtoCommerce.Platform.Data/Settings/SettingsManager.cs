@@ -172,16 +172,9 @@ namespace VirtoCommerce.Platform.Data.Settings
             {
                 throw new ArgumentNullException(nameof(objectSettings));
             }
-            return SaveObjectSettingsInternalAsync(objectSettings);
-        }
-
-
-        private  async Task SaveObjectSettingsInternalAsync(IEnumerable<ObjectSettingEntry> objectSettings)
-        {
-
-
             return SaveObjectSettings(objectSettings);
         }
+
 
         private async Task SaveObjectSettings(IEnumerable<ObjectSettingEntry> objectSettings)
         {
