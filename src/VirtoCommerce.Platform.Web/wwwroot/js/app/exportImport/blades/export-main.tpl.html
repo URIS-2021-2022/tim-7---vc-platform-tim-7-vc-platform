@@ -45,7 +45,6 @@
                     <div class="table-wrapper">
                         <table class="table">
                             <caption>Table description</caption>
-                            <th>Table head</th>
                             <tbody>
                                 <tr class="table-item" ng-repeat="data in exportRequest.exportManifest.modules" ng-click="data.isChecked = !data.isChecked; updateModuleSelection()">
                                     <td>Header</td>
@@ -68,8 +67,8 @@
                     <div>
                         <div class="sub-t">{{blade.notification.description}}</div>
                         <div class="block" ng-if="blade.notification.created || blade.notification.finished">
-                            <em ng-if="blade.notification.created" ng-class="{'no-data': blade.notification.created}" class="text">{{ 'platform.blades.export-main.labels.start' | translate }} — <i class="fa fa-clock-o"></i>&nbsp;{{ blade.notification.created | amParse | date:'mediumTime' }}</em>
-                            <em ng-if="blade.notification.finished" ng-class="{'no-data': blade.notification.finished}" class="text">{{ 'platform.blades.export-main.labels.end' | translate }} — <i class="fa fa-clock-o"></i>&nbsp;{{ blade.notification.finished | amParse | date:'mediumTime' }}</em>
+                            <em ng-if="blade.notification.created" ng-class="{'no-data': blade.notification.created}" class="text">{{ 'platform.blades.export-main.labels.start' | translate }} — <em class="fa fa-clock-o"></em>&nbsp;{{ blade.notification.created | amParse | date:'mediumTime' }}</em>
+                            <em ng-if="blade.notification.finished" ng-class="{'no-data': blade.notification.finished}" class="text">{{ 'platform.blades.export-main.labels.end' | translate }} — <em class="fa fa-clock-o"></em>&nbsp;{{ blade.notification.finished | amParse | date:'mediumTime' }}</em>
                         </div>
                         <div ng-if="blade.notification.errorCount > 0">
                             <span class="sub-t">{{ 'platform.blades.export-main.labels.errors' | translate }}</span>

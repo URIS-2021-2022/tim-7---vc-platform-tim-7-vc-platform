@@ -12,7 +12,7 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
     public partial class ModuleInitializeException : ModularityException
     {
 
-        protected ModuleInitializeException(SerializationInfo info, StreamingContext context) { }
+        protected ModuleInitializeException(SerializationInfo info, StreamingContext context) :base(info, context) { }
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
