@@ -22,7 +22,7 @@ namespace VirtoCommerce.Platform.Web.Security
         private readonly IPlatformMemoryCache _memoryCache;
         private readonly RoleManager<Role> _roleManager;
         private readonly IEventPublisher _eventPublisher;
-        private readonly IUserPasswordHasher _userPasswordHasher;
+        private readonly IPasswordHasher<ApplicationUser> _userPasswordHasher;
         private readonly UserOptionsExtended _userOptionsExtended;
         private readonly Func<ISecurityRepository> _repositoryFactory;
         private readonly PasswordOptionsExtended _passwordOptionsExtended;
@@ -341,13 +341,18 @@ namespace VirtoCommerce.Platform.Web.Security
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        protected virtual async Task LoadUserDetailsAsync(ApplicationUser user)
+
+        public virtual Task LoadUserDetailsAsync(ApplicationUser user)
         {
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
             }
-
+            return LoadUserDetailsInternalAsync(user);
+        }
+        protected virtual async Task LoadUserDetailsInternalAsync(ApplicationUser user)
+        {
+ 
             // check password expiry policy and mark password as expired, if needed
             var lastPasswordChangeDate = user.LastPasswordChangedDate ?? user.CreatedDate;
             if (!user.PasswordExpired &&

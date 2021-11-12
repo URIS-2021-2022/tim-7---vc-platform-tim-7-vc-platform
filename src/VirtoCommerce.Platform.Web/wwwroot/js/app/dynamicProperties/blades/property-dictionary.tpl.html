@@ -19,6 +19,7 @@
                 </fieldset>
 
                 <fieldset ng-if="blade.currentEntity.isMultilingual">
+                    <legend>l</legend>
                     <label>{{ 'platform.blades.property-dictionary.labels.localized-values' | translate }}</label>
                     <div class="form-group">
                         <div class="form-input __langs" ng-repeat="data in newValue.displayNames | orderBy: 'locale'">

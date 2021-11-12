@@ -88,12 +88,19 @@ namespace VirtoCommerce.Platform.Web.Security
             return result;
         }
 
-        public override async Task<IdentityResult> UpdateAsync(Role updateRole)
+        public Task<IdentityResult> UpdateAsyncRoles(Role updateRole)
         {
             if (updateRole == null)
             {
                 throw new ArgumentNullException(nameof(updateRole));
             }
+
+            return UpdateAsync(updateRole);
+        }
+
+        public override async Task<IdentityResult> UpdateAsync(Role updateRole)
+        {
+            
             Role existRole = null;
             if (!string.IsNullOrEmpty(updateRole.Id))
             {
@@ -140,13 +147,18 @@ namespace VirtoCommerce.Platform.Web.Security
             return result;
         }
 
-        protected virtual async Task LoadRolePermissionsAsync(Role role)
+        protected virtual Task LoadRolePermissionsAsyncRoles(Role role)
         {
             if (role == null)
             {
                 throw new ArgumentNullException(nameof(role));
             }
 
+            return LoadRolePermissionsAsync(role);
+        }
+
+        protected virtual async Task LoadRolePermissionsAsync(Role role)
+        {
             if (SupportsRoleClaims)
             {
                 role.Permissions = new List<Permission>();

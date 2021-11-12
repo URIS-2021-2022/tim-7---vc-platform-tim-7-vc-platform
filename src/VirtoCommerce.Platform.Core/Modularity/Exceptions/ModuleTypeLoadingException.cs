@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 {
@@ -6,15 +7,22 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
     /// Exception thrown by <see cref="IModuleManager"/> implementations whenever
     /// a module fails to retrieve.
     /// </summary>
+    ///
+    [Serializable]
     public partial class ModuleTypeLoadingException : ModularityException
     {
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        public ModuleTypeLoadingException()
-            : base()
+        public ModuleTypeLoadingException() : base()
         {
         }
+
+        protected ModuleTypeLoadingException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+
+        }
+
 
         /// <summary>
         /// Initializes a new instance with a specified error message.

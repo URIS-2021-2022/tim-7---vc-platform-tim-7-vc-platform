@@ -161,9 +161,9 @@ namespace VirtoCommerce.Platform.Web.Swagger
             {
                 c.SwaggerEndpoint($"./{platformUIDocName}/swagger.json", platformUIDocName);
                 c.SwaggerEndpoint($"./{platformDocName}/swagger.json", platformDocName);
-                foreach (var module in modules)
+                foreach (var moduleID in modules.Select(m =>m.Id))
                 {
-                    c.SwaggerEndpoint($"./{module.Id}/swagger.json", module.Id);
+                    c.SwaggerEndpoint($"./{moduleID}/swagger.json", moduleID);
                 }
                 c.RoutePrefix = "docs";
                 c.EnableValidator();

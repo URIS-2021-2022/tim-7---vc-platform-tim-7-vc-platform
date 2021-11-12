@@ -44,7 +44,7 @@ angular.module('platformWebApp')
                                 if (angular.isString(a.value) && angular.isString(b.value)) {
                                     return a.value.localeCompare(b.value)
                                 }
-
+                              
                                 if (a.value < b.value) {
                                     return -1;
                                 }

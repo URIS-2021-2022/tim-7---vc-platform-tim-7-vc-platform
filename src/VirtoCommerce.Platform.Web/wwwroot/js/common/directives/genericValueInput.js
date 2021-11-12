@@ -142,7 +142,7 @@ angular.module('platformWebApp')
                                 extraKeys: { "Ctrl-Q": function (cm) { cm.foldCode(cm.getCursor()); } },
                                 foldGutter: true,
                                 gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                                onLoad: function (_editor) { }
+                                onLoad: function (_editor) { // this is intentional}
                             };
                         }
 
