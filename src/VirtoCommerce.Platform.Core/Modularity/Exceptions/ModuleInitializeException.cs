@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 {
@@ -10,6 +11,8 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
     [System.SerializableAttribute]
     public partial class ModuleInitializeException : ModularityException
     {
+
+        protected ModuleInitializeException(SerializationInfo info, StreamingContext context) { }
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
