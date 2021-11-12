@@ -66,7 +66,7 @@ angular.module('platformWebApp')
                 return notifyIsAnimated;
             }
 
-            var retVal = {
+            return {
                 addNotification: addNotification,
                 getNotifications: getNotifications,
                 getNewCount: getNewCount,
@@ -75,8 +75,6 @@ angular.module('platformWebApp')
                 clear: clear,
                 isAnimated: isAnimated
             };
-
-            return retVal;
         }])
     .directive('vaHeaderNotificationWidget', ['$document', 'platformWebApp.headerNotificationWidgetService', '$state',
         function ($document, headerNotifications, $state) {

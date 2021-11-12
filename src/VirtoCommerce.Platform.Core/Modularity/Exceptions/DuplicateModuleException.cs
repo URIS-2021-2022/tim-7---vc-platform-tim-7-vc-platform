@@ -1,10 +1,14 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 {
     /// <summary>
     /// Exception thrown when a module is declared twice in the same catalog.
     /// </summary>
+    ///
+
+    [Serializable]
     public class DuplicateModuleException : ModularityException
     {
         /// <summary>
@@ -20,6 +24,11 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
         /// <param name="message">The exception message.</param>
         public DuplicateModuleException(string message) : base(message)
         {
+        }
+
+        protected DuplicateModuleException(SerializationInfo info, StreamingContext context): base(info, context)
+        {
+
         }
 
         /// <summary>

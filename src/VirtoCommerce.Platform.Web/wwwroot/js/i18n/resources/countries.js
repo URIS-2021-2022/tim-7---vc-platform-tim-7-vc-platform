@@ -15,18 +15,16 @@ angular.module('platformWebApp')
                 return result;
             },
             query: function () {
-                var results = $resource('api/platform/common/countries').query((data) => {
-                    for (var i = 0; i < data.length; i++) {
+                return $resource('api/platform/common/countries').query((data) => {
+                    for (let value of data) {
                         var translateKey = 'platform.countries.' + data[i].id;
                         var translated = $translate.instant(translateKey);
                         data[i].displayName = translated === translateKey ? data[i].name : translated;
                     }
                 });
-
-                return results;
             },
             queryRegions: (countryCode) => {
-                var results = $resource('api/platform/common/countries/:countryCode/regions', { countryCode: countryCode }).query((data) => {
+                return $resource('api/platform/common/countries/:countryCode/regions', { countryCode: countryCode }).query((data) => {
                     for (var x of data) {
                         var translateKey = 'platform.' + countryCode + '.' + x.id;
                         var translated = $translate.instant(translateKey);

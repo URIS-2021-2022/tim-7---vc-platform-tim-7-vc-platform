@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 {
@@ -6,8 +7,12 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
     /// Exception thrown by <see cref="IModuleInitializer"/> implementations whenever
     /// a module fails to load.
     /// </summary>
+    ///
+    [System.SerializableAttribute]
     public partial class ModuleInitializeException : ModularityException
     {
+
+        protected ModuleInitializeException(SerializationInfo info, StreamingContext context) { }
         /// <summary>
         /// Initializes a new instance.
         /// </summary>

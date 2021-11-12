@@ -7,6 +7,7 @@ angular.module('platformWebApp')
                 blade.currentEntity = {};
             }
 
+
             blade.refresh = function () {
                 blade.isLoading = true;
                 assets.search(
@@ -79,10 +80,7 @@ angular.module('platformWebApp')
             $scope.downloadUrl = function (data) {
                 window.open(data.url, '_blank');
             };
-
-            //$scope.rename = function (listItem) {
-            //    rename(listItem);
-            //};
+          
             function isItemsChecked() {
                 return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
             }
