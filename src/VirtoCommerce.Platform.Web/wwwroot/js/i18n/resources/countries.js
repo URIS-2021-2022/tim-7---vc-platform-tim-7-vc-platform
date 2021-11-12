@@ -33,8 +33,6 @@ angular.module('platformWebApp')
                         x.displayName = translated === translateKey ? x.name : translated;
                     }
                 });
-
-                return results;
             }
         };
     }]);
