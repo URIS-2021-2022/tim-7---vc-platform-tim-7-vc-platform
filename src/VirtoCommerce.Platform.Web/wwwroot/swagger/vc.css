@@ -90,7 +90,6 @@ body
     color: #4c4c4c;
 }
 
-.swagger-ui .opblock-tag,
 .swagger-ui .opblock-tag small
 .swagger-ui .opblock .opblock-summary-operation-id,
 .swagger-ui .opblock .opblock-summary-path,
@@ -122,9 +121,9 @@ body
     padding: 0;
 }
 
-.swagger-ui .opblock-tag
-{
+.swagger-ui .opblock-tag {
     /* display: block; */
+    font-family: 'Exo 2';
     clear: none;
     float: left;
     font-weight: bold;
