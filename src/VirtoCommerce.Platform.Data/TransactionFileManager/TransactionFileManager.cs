@@ -59,43 +59,45 @@ namespace VirtoCommerce.Platform.Data.TransactionFileManager
         /// <param name="path"></param>
         public void SafeDelete(string path)
         {
-            if (Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
-                //try delete whole directory
+                return;
+            }
+
+            //try delete whole directory
+            try
+            {
+                Delete(path);
+            }
+            //Because some folder can be locked by ASP.NET Bundles file monitor we should ignore IOException
+            catch (IOException)
+            {
+                //If fail need to delete directory content first
+                //Files                 
+                foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
+                {
+                    Delete(file);
+                }
+                //Dirs
+                foreach (var subDirectory in Directory.EnumerateDirectories(path, "*", SearchOption.AllDirectories))
+                {
+                    try
+                    {
+                        Delete(subDirectory);
+                    }
+                    catch (IOException)
+                    {
+                        //Do nothing
+                    }
+                }
+                //Then try to delete main directory itself
                 try
                 {
                     Delete(path);
                 }
-                //Because some folder can be locked by ASP.NET Bundles file monitor we should ignore IOException
                 catch (IOException)
                 {
-                    //If fail need to delete directory content first
-                    //Files                 
-                    foreach (var file in Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
-                    {
-                        Delete(file);
-                    }
-                    //Dirs
-                    foreach (var subDirectory in Directory.EnumerateDirectories(path, "*", SearchOption.AllDirectories))
-                    {
-                        try
-                        {
-                            Delete(subDirectory);
-                        }
-                        catch (IOException)
-                        {
-                            //Do nothing
-                        }
-                    }
-                    //Then try to delete main directory itself
-                    try
-                    {
-                        Delete(path);
-                    }
-                    catch (IOException)
-                    {
-                        // Do nothing
-                    }
+                    // Do nothing
                 }
             }
         }
