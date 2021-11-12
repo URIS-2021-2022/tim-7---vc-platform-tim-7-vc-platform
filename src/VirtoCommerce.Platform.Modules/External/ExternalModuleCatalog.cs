@@ -160,15 +160,7 @@ namespace VirtoCommerce.Platform.Modules
                                 result.Add(latestCompatibleStable);
                             }
 
-                            if (_options.IncludePrerelease)
-                            {
-                                //load single the latests prerelease version for a module that have exactly the same major version as the current platform
-                                var latestCompatiblePrerelease = GetLatestCompatibleWithPlatformVersion(manifest, true);
-                                if (latestCompatiblePrerelease != null)
-                                {
-                                    result.Add(latestCompatiblePrerelease);
-                                }
-                            }
+                            OptionsIncludePrerelease(manifest, result);
                         }
                         else
                         {
@@ -180,6 +172,20 @@ namespace VirtoCommerce.Platform.Modules
 
             return result;
         }
+
+        private void OptionsIncludePrerelease(ExternalModuleManifest manifest, List<ManifestModuleInfo> result)
+        {
+            if (_options.IncludePrerelease)
+            {
+                //load single the latests prerelease version for a module that have exactly the same major version as the current platform
+                var latestCompatiblePrerelease = GetLatestCompatibleWithPlatformVersion(manifest, true);
+                if (latestCompatiblePrerelease != null)
+                {
+                    result.Add(latestCompatiblePrerelease);
+                }
+            }
+        }
+
         /// <summary>
         /// Get the  new ManifestModuleInfo for module version that has exactly the same major version as the current platform
         /// </summary>

@@ -13,7 +13,7 @@ angular.module('platformWebApp')
         return pattern;
     };
 
-    var result = {
+    return {
         validate: function (viewValue, minExclusive, min, maxExclusive, max, fraction, setValidity) {
             var negativeMatches;
             var value;
@@ -43,7 +43,6 @@ angular.module('platformWebApp')
             return $filter('currency')(parseFloat(modelValue), '', numberFormat.getVariables(pattern, minExclusive, min, maxExclusive, max, fraction || pattern.maxFrac).maximumFraction);
         }
     };
-    return result;
 }])
 // Service provide variables and functions for number (float & integer) convertion and validation with localization support
 .factory('platformWebApp.numberFormat', ['$filter', '$locale', function ($filter, $locale) {

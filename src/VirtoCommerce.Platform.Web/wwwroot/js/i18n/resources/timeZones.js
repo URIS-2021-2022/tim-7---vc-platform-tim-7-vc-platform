@@ -38,7 +38,10 @@ angular.module('platformWebApp')
                 };
             }).sort(function (a, b) {
                 if (!a.utcOffset || !b.utcOffset) {
-                    return !b.utcOffset ? -1 : !a.utcOffset ? 1 : 0;
+                    if (!b.utcOffset) {
+                        return -1;
+                    }
+                    return !a.utcOffset ? 1 : 0;
                 }
                 return a.utcOffset.hours === b.utcOffset.hours ? a.utcOffset.minutes - b.utcOffset.minutes : a.utcOffset.hours - b.utcOffset.hours;
             });
