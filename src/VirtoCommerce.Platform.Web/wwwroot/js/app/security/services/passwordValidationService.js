@@ -24,7 +24,7 @@ angular
             });
         };
 
-        var service = {
+        return  service = {
             throttleTimeoutMilliseconds: 100,
 
             validatePasswordAsync: function (value) {
@@ -61,5 +61,4 @@ angular
             }
         }
 
-        return service;
     }]);

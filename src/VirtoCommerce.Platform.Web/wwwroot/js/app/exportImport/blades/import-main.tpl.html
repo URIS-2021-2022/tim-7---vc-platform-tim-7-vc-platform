@@ -111,9 +111,9 @@
                                     ng-repeat="data in importRequest.exportManifest.modules"
                                     ng-click="data.isChecked = !data.isChecked; updateModuleSelection()"
                                     ng-class="{ '__selected' : data.isChecked }">
-                                    <td class="table-col">
+                                    <th class="table-col">
                                         <div class="ui-grid-selection-row-header-buttons ui-grid-icon-ok" ng-class="{'ui-grid-row-selected': data.isChecked}">&nbsp;</div>
-                                    </td>
+                                    </th>
                                     <td class="table-col">
                                         <span class="table-t">{{data.id}}</span>
                                         <span class="table-descr">{{'module.' + data.id + '.description' | translate}}</span>
