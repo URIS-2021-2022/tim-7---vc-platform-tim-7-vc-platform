@@ -40,9 +40,9 @@
                     <caption>import export tpl caption</caption>
                     <tbody>
                         <tr class="table-item" ng-mouseup="export()" ng-class="{'__selected': 'export' === selectedNodeId}">
-                            <td class="table-col">
+                            <th class="table-col">
                                 <em class="table-ico fa fa-file-archive-o" style="color: red"></em>
-                            </td>
+                            </th>
                             <td class="table-col" ng-click='exportRequest.handleSecurity = !exportRequest.handleSecurity'>
                                 <span class="table-t">{{ importRequest.fileName }}</span>
                                 <span class="table-descr">{{ blade.error }}</span>
@@ -54,9 +54,11 @@
 
             <form class="form ng-pristine ng-valid" ng-if="importRequest.exportManifest && !blade.notification">
                 <fieldset>
+                    <legend>Import fieldest legend</legend>
                     <div class="sub-t">{{ 'platform.blades.import-main.labels.platform-entries' | translate }}</div>
                     <div class="table-wrapper">
                         <table class="table">
+                            <caption>import table caption</caption>
                             <tbody>
                                 <tr>
                                     <th scope="col">Col 1</th>
@@ -100,6 +102,7 @@
                     </div>
                 </fieldset>
                 <fieldset>
+                    <legend>Import fieldest legend</legend>
                     <div class="sub-t">{{ 'platform.blades.import-main.labels.choose-modules' | translate }}</div>
                     <div class="table-wrapper">
                         <table class="table">
