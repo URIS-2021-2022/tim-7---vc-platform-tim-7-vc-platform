@@ -14,7 +14,7 @@ angular.module('platformWebApp')
                         });
                     }
                 };
-                for (let value of options) {
+                for (int i = 0; i < options.length; i++) {
                     applyOption(options[i]);
                 }
             };

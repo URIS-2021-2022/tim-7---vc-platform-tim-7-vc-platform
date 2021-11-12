@@ -13,7 +13,7 @@ namespace VirtoCommerce.Platform.Core.Modularity.Exceptions
 
     public partial class ModuleTypeLoaderNotFoundException : ModularityException
     {
-        protected ModuleTypeLoaderNotFoundException(SerializationInfo info, StreamingContext context) { }
+        protected ModuleTypeLoaderNotFoundException(SerializationInfo info, StreamingContext context) :base(info,context) { }
 
 
         /// <summary>

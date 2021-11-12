@@ -127,13 +127,13 @@ namespace VirtoCommerce.Platform.Data.Assets
             }
         }
 
-        public async Task DeleteAsync(IEnumerable<string> ids)
+        public Task DeleteAsync(IEnumerable<string> ids)
         {
             if (ids == null)
             {
                 throw new ArgumentNullException(nameof(ids));
             }
-            await DeleteInternalAsync(ids);
+            return DeleteInternalAsync(ids);
 
         }
 
